@@ -1,0 +1,311 @@
+{
+  "navigation": {
+    "home": "Home",
+    "shop": "E-Shop",
+    "about": "About us",
+    "services": "Services",
+    "consultancy": " Design and Construction Consultancy",
+    "smarthome": "Smart Home Systems",
+    "heatpump": "Air conditioning and heat pump systems",
+    "projects": "Projects",
+    "template": "Design Templates",
+    "contact": "Contact Us",
+    "warranty": "Warranty"
+  },
+
+  "shopBanner": {
+    "warrantyTitle": "Warranty",
+    "warrantyDesc": "Commitment to after-sales service and long-term support.",
+    "payTitle": "Effective Spending",
+    "payDesc": "A wide range of products and services, high quality at a preferential price.",
+    "professiionTitle": "Professionalism",
+    "professiionDesc": "A team of professional technicians with extensive experience."
+  },
+
+  "shop": {
+    "allProducts": "All products",
+    "priceAsc": "Price: Low to High",
+    "priceDesc": "Price: High to Low",
+    "nameAsc": "Name: A-Z",
+    "nameDesc": "Name: Z-A",
+    "sort": "Sort by",
+    "clear": "Clear",
+    "isNewArrival": "New Arrival",
+    "isFeatured": "Featured",
+    "tax": "Excluding VAT",
+    "addToCart": "Add to Cart",
+    "contactToBuy": "Contact",
+    "categories": "Categories",
+    "brands": "Brands",
+    "search": "Search...",
+    "buyNow": "Buy now",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "lowStock": "Low Stock",
+    "seeMore": "See More",
+    "loading": "Loading...",
+    "detailedDescription": "Detailed Description",
+    "noDesc": "No detailed description available.",
+    "technicalSpecifications": "Technical Specifications",
+    "noSpecifications": "No technical specifications.",
+    "productRelated": "Related Products",
+    "viewCartDetails": "View cart details",
+    "cart": "Shopping cart",
+    "deleteProductCart": "Are you sure you want to delete this product?",
+    "taxRate": "Tax rate",
+    "total": "Total",
+    "checkout": "Checkout",
+    "clearCart": "Clear Cart",
+    "emptyCart": "Your basket is empty at the moment.",
+    "orderSummary": "Payment",
+    "thankTitle": "Thank you! Your order has been confirmed.",
+    "products": "Product",
+    "noData": "No data."
+  },
+
+  "warranty": {
+    "warranty": "Warranty",
+    "active": "Under warranty",
+    "expired": "Warranty expired",
+    "code": "Warranty code",
+    "day": "Day",
+    "customer": "Customer",
+    "product": "Product",
+    "quantity": "Qty",
+    "pending": "Pending",
+    "warrantyLookupTitle": "Warranty lookup",
+    "warrantyLookupInstruction": "Please enter the warranty code (e.g., ABC-123) and click Check.",
+    "checkButton": "Check",
+    "noData": "No data.",
+    "noDataFromServer": "No data returned from server.",
+    "notFound": "Information not found.",
+    "invalidCode": "Invalid code.",
+    "enterWarrantyCode": "Please enter the warranty code.",
+    "checking": "Checking...",
+    "warrantyLookupPlaceholder": "Enter warranty code..."
+  },
+
+  "cart": {
+    "personalInformation": "Personal information",
+    "phoneNumber": "Phone number",
+    "address": "Address",
+    "country": "Country",
+    "provinceCity": "Province/City",
+    "postalCode": "Postal code",
+    "companyInformation": "Company information",
+    "companyName": "Company name",
+    "taxRate": "Tax rate",
+    "subtotal": "Subtotal",
+    "shippingFee": "Shipping fee",
+    "total": "Total",
+    "payment": "Payment",
+    "back": "Back",
+    "fullName": "Full name",
+    "deliveryMethod": "Delivery method",
+    "free": "Free",
+    "Enterfullname": "Enter full name",
+    "Enteremail": "Enter email",
+    "Enterphonenumber": "Enter phone number",
+    "Enteraddress": "Enter address",
+    "Selectcountry": "Select country",
+    "Enterprovincecity": "Enter province/city",
+    "Enterpostalcode": "Enter postal code",
+    "Selectmethod": "Select method",
+    "Orderplacedsuccessfully": "Order placed successfully!",
+    "Failedtoplaceorder": "Failed to place order."
+  },
+
+  "account": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "username": "Username",
+    "profileUser": "Account information",
+    "resetPassword": "Reset Password",
+    "placeholderUsername": "Enter email or phone number...",
+    "resetPasswordInfo": "If this email is valid, please check your inbox – we’ve sent you a link to reset your password.",
+    "placeholderEmail": "Enter email...",
+    "placeholder": "Please enter",
+    "placeholderOldPassword": "Enter old password...",
+    "placeholderNewPassword": "Enter new password...",
+    "validateNewPassword": "Please enter the new password",
+    "validateOldPassword": "Please enter the old password",
+    "validatePassword": "Password must be at least 8 characters long, contain 1 uppercase letter, 1 lowercase letter, and 1 number",
+    "validateConfirmNewPassword": "Please confirm the new password",
+    "validateConfirmPassword": "Confirm password does not match the new password",
+    "changeInforSuccess": "Information updated successfully!",
+    "changeInforFailed": "Information update failed. Please try again.",
+    "odlPasswordRequest": "Old password is incorrect. Please try again.",
+    "phoneNumberUnique": "Phone number or email is already registered. Please use a different one or log in.",
+    "changePasswordSuccess": "Password changed successfully!",
+    "changePasswordFailed": "Password change failed. Please try again.",
+    "confirmSuccess": "You have successfully changed your password. Press OK to log in.",
+
+    "password": "Password",
+    "changePassword": "Change password",
+    "odlPassword": "Old password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "placeholderPassword": "Enter password...",
+    "confirmPassword": "Confirm Password",
+    "placeholderConfirmPassword": "Re-enter password...",
+    "forgotPassword": "Forgot password?",
+    "loginWithFacebook": "Login with Facebook",
+    "fullname": "Full Name",
+    "placeholderFullname": "Enter full name...",
+    "createAccount": "Create Account",
+    "send": "Send",
+    "notification": {
+      "loginSuccess": "Login successful!",
+      "loginFailed": "Login failed! Check your email or password.",
+      "registerSuccess": "Registration successful! Please log in to start your experience.",
+      "registerFailed": "Registration failed. Check your email or password.",
+      "logoutSuccess": "Logout successful!",
+      "logoutFailed": "Logout failed!",
+      "accountLocked": "Your account has been locked.",
+      "tokenExpired": "The password reset link has expired. Please request a new one.",
+      "passwordChanged": "Your password has been changed successfully!",
+      "passwordChangedFailed": "Password change failed. Please try again.",
+      "emailRegisteredFB": "This email is already registered. Please log in using this email account.",
+      "usernameWrong": "Please check your email or phone number again",
+      "passwordWrong": "The password is incorrect, please try again"
+    },
+
+    "errors": {
+      "username": {
+        "invalid": "Username must be a valid email or phone number",
+        "empty": "Username cannot be empty",
+        "required": "Username is required"
+      },
+
+      "password": {
+        "empty": "Password cannot be empty",
+        "required": "Password is required",
+        "min": "Password must be at least {limit} characters",
+        "max": "Password must be at most {limit} characters",
+        "pattern": "Password must contain at least one lowercase letter, one uppercase letter, and one number"
+      },
+
+      "fullName": {
+        "empty": "Full name cannot be empty",
+        "required": "Full name is required"
+      },
+
+      "confirmPassword": {
+        "required": "Confirm password is required",
+        "only": "Confirm password does not match password"
+      },
+      "email": {
+        "empty": "Please enter your email.",
+        "invalid": "Please enter a valid email address.",
+        "required": "Email is required."
+      }
+    },
+
+    "profile": "Profile",
+    "settings": "Settings"
+  },
+
+  "header": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "service": {
+    "bestFeatures": "Best Features",
+    "ourServices": "Our Services",
+    "projects": "Projects",
+    "ourWorks": "Our Works",
+    "designTemplates": "Design templates",
+    "ourDesignSamples": "Our design samples"
+  },
+  "content": {
+    "welcome": "Welcome to our website!"
+  },
+  "footer": {
+    "copyright": "© 2023 Your Company",
+    "subscribe": "Subscribe",
+    "quickLinks": "Quick Links",
+    "content": "Want to be notified about our services? Just sign up and we'll send you a notification by email."
+  },
+  "notfound": {
+    "Pagenotfound": "Oops! The page you are looking for doesn't exist",
+    "Returntohomepage": "Return to homepage"
+  },
+
+  "contact": {
+    "OurAddress": "Our Address",
+    "CallUs": "Call Us",
+    "GetinTouch": "Get in Touch",
+    "YourName": "Your Name",
+    "YourEmail": "Your E‑mail",
+    "Subject": "Subject",
+    "Message": "Message",
+    "SendMessage": "Send Message",
+    "Location": "Location"
+  },
+  "accountPage": "Account",
+
+  "cancel": "Cancel",
+
+  "order": {
+    "order": "Order",
+    "orderCode": "Order Code",
+    "quantity": "Qty",
+    "price": "Unit Price",
+    "address": "Address",
+    "date": "Order Date",
+    "quantityProducts": "Number of Products",
+    "showmore": "View All",
+    "hide": "Collapse",
+    "cancel": "Cancel",
+    "processing": "Processing",
+    "confirm": "Confirmed",
+    "canceled": "Canceled",
+    "cancelOrder": "Order has been cancelled successfully!",
+    "updateOrderFail": "Failed to update status",
+    "updateOrderSuccess": "Do you want to cancel this order?",
+    "emptyHint": "No orders yet"
+  },
+
+  "logoutdesc": "Are you sure you want to log out?",
+
+  "thanks": {
+    "thank_you": "Thank you!",
+    "order_success": "Your order has been placed successfully. We will send a confirmation email and shipping status to you soon.",
+    "back_home": "Return to the homepage.",
+    "view_more_products": "View more products.",
+    "check_email": "Check your email to view order and shipping information.",
+    "review_after_receive": "You can review the product after you receive it.",
+    "contact_if_need_support": "Contact us if you need any assistance.",
+    "you_can": "You can:"
+  },
+
+  "projects": {
+    "projectCode": "Project Code",
+    "dateStart": "Start Date",
+    "dateEnd": "End Date",
+    "started": "Project Started",
+    "finished": "Project Finished",
+    "unpaid": "Unpaid",
+    "deposited": "Deposited",
+    "partial": "Partially Paid",
+    "paid": "Paid",
+    "projectInformation": "Project Information",
+    "depositPlaced": "Deposit Paid",
+    "totalPhase": "Payment Phases",
+    "totalPaid": "Total Paid",
+    "totalQuoted": "Total Quoted",
+    "totalExtraCosts": "Total Extra Costs",
+    "totalProjectValue": "Total Project Value",
+    "quotedPrice": "Quoted Price",
+    "extraCosts": "Extra Costs",
+    "projectProgress": "Project Progress",
+    "dailyProgress": "Daily Progress",
+    "jobDescription": "Job Description",
+    "estimatedQuantity": "Estimated Quantity",
+    "unitPrice": "Unit Price",
+    "totalAmount": "Total Amount",
+    "emptyHint": "No projects yet"
+  }
+}

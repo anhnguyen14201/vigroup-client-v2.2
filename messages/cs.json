@@ -1,0 +1,303 @@
+{
+  "navigation": {
+    "home": "Domov",
+    "shop": "E-Shop",
+    "about": "O nás",
+    "services": "Služby",
+    "consultancy": "Konzultace pro návrh a výstavbu",
+    "smarthome": "Systémy chytré domácnosti",
+    "heatpump": "Klimatizační systémy a tepelná čerpadla",
+    "projects": "Projekty",
+    "template": "Šablona návrhu",
+    "contact": "Kontaktujte nás",
+    "warranty": "Záruka"
+  },
+
+  "shopBanner": {
+    "warrantyTitle": "Záruka",
+    "warrantyDesc": "Závazek k poprodejním službám a dlouhodobé podpoře.",
+    "payTitle": "Efektivní Utrácení",
+    "payDesc": "Široká škála produktů a služeb, vysoká kvalita za výhodnou cenu.",
+    "professiionTitle": "Profesionalita",
+    "professiionDesc": "Tým profesionálních techniků s rozsáhlými zkušenostmi."
+  },
+
+  "shop": {
+    "allProducts": "Všechny produkty",
+    "priceAsc": "Cena: Od nejnižší po nejvyšší",
+    "priceDesc": "Cena: Od nejvyšší po nejnižší",
+    "nameAsc": "Název: A-Z",
+    "nameDesc": "Název: Z-A",
+    "sort": "Seřadit podle",
+    "clear": "Zrušit výběr",
+    "isNewArrival": "Novinka",
+    "isFeatured": "Doporučené",
+    "tax": "Bez DPH",
+    "addToCart": "Přidat do košíku",
+    "contactToBuy": "Kontakt",
+    "categories": "Kategorie",
+    "brands": "Značka",
+    "search": "Hledat...",
+    "buyNow": "Koupit hned.",
+    "inStock": "Skladem",
+    "outOfStock": "Není skladem",
+    "lowStock": "Poslední kusy",
+    "seeMore": "Zjistit více",
+    "loading": "Načítání...",
+    "detailedDescription": "Podrobný popis",
+    "noDesc": "Není k dispozici žádný podrobný popis.",
+    "technicalSpecifications": "Technické specifikace",
+    "noSpecifications": "Žádné technické specifikace.",
+    "productRelated": "Související produkty",
+    "viewCartDetails": "Zobrazit podrobnosti košíku",
+    "cart": "Nákupní košík",
+    "deleteProductCart": "Opravdu chcete tento produkt smazat?",
+    "taxRate": "Daňová sazba",
+    "total": "Celkem",
+    "checkout": "Pokladna",
+    "clearCart": "Vymazat košík",
+    "emptyCart": "Vypadá to, že v košíku nic nemáte.",
+    "orderSummary": "Platba",
+    "thankTitle": "Děkujeme! Vaše objednávka byla potvrzena.",
+    "products": "Produkt",
+    "noData": "Žádná data."
+  },
+
+  "warranty": {
+    "warranty": "Záruka",
+    "active": "V záruce",
+    "expired": "Záruka vypršela",
+    "code": "Kód záruky",
+    "day": "Den",
+    "customer": "Zákazník",
+    "product": "Produkt",
+    "quantity": "Množství",
+    "pending": "Čeká na vyřízení",
+    "warrantyLookupTitle": "Vyhledání záruky",
+    "warrantyLookupInstruction": "Zadejte prosím záruční kód (např. ABC-123) a klikněte na Zkontrolovat.",
+    "checkButton": "Zkontrolovat",
+    "noData": "Žádná data.",
+    "noDataFromServer": "Ze serveru nebyla vrácena žádná data.",
+    "notFound": "Informace nebyly nalezeny.",
+    "invalidCode": "Neplatný kód.",
+    "enterWarrantyCode": "Prosím zadejte kód záruky.",
+    "checking": "Probíhá kontrola...",
+    "warrantyLookupPlaceholder": "Zadejte kód záruky..."
+  },
+
+  "cart": {
+    "personalInformation": "Osobní údaje",
+    "phoneNumber": "Telefonní číslo",
+    "address": "Adresa",
+    "country": "Země",
+    "provinceCity": "Provincie/Město",
+    "postalCode": "PSČ",
+    "companyInformation": "Informace o společnosti",
+    "companyName": "Název společnosti",
+    "taxRate": "Daňová sazba",
+    "subtotal": "Mezisoučet",
+    "shippingFee": "Poplatek za dopravu",
+    "total": "Celkem",
+    "payment": "Platba",
+    "back": "Zpět",
+    "fullName": "Jméno a příjmení",
+    "deliveryMethod": "Způsob doručení",
+    "free": "Zdarma",
+    "Enterfullname": "Zadejte jméno a příjmení",
+    "Enteremail": "Zadejte e-mail",
+    "Enterphonenumber": "Zadejte telefonní číslo",
+    "Enteraddress": "Zadejte adresu",
+    "Selectcountry": "Vyberte zemi",
+    "Enterprovincecity": "Zadejte provincii/město",
+    "Enterpostalcode": "Zadejte PSČ",
+    "Selectmethod": "Vyberte metodu",
+    "Orderplacedsuccessfully": "Objednávka byla úspěšně vytvořena!",
+    "Failedtoplaceorder": "Nepodařilo se vytvořit objednávku."
+  },
+
+  "service": {
+    "bestFeatures": "Nejlepší funkce",
+    "ourServices": "Naše služby",
+    "projects": "Projekty",
+    "ourWorks": "Naše práce",
+    "designTemplates": "designové šablony",
+    "ourDesignSamples": "Naše vzorové návrhy"
+  },
+
+  "account": {
+    "login": "Přihlásit se",
+    "register": "Registrovat se",
+    "logout": "Odhlásit se",
+    "username": "Uživatelské jméno",
+    "profileUser": "Informace o účtu",
+    "resetPassword": "Obnovit heslo",
+    "placeholderUsername": "Zadejte e-mail nebo telefonní číslo...",
+    "placeholderEmail": "Zadejte e-mail...",
+    "resetPasswordInfo": "V případě, že je tento e-mail platný, zkontrolujte prosím svou schránku – poslali jsme vám odkaz pro obnovení hesla.",
+    "password": "Heslo",
+    "placeholder": "Zadejte prosím",
+    "placeholderOldPassword": "Zadejte staré heslo...",
+    "placeholderNewPassword": "Zadejte nové heslo...",
+    "validateNewPassword": "Prosím zadejte nové heslo",
+    "validateOldPassword": "Prosím zadejte staré heslo",
+    "validatePassword": "Heslo musí mít alespoň 8 znaků, jedno velké písmeno, jedno malé písmeno a jedno číslo",
+    "validateConfirmNewPassword": "Prosím potvrďte nové heslo",
+    "validateConfirmPassword": "Potvrzené heslo se neshoduje s novým heslem",
+    "changeInforSuccess": "Informace byly úspěšně aktualizovány!",
+    "changeInforFailed": "Aktualizace informací se nezdařila. Zkuste to prosím znovu.",
+    "odlPasswordRequest": "Staré heslo je nesprávné. Zkuste to prosím znovu.",
+    "phoneNumberUnique": "Telefonní číslo nebo e-mail je již zaregistrováno. Použijte jiné nebo se přihlaste.",
+    "changePasswordSuccess": "Heslo bylo úspěšně změněno!",
+    "changePasswordFailed": "Změna hesla se nezdařila. Zkuste to prosím znovu.",
+    "confirmSuccess": "Heslo bylo úspěšně změněno. Stiskněte OK pro přihlášení.",
+
+    "changePassword": "Změnit heslo",
+    "odlPassword": "Staré heslo",
+    "newPassword": "Nové heslo",
+    "confirmNewPassword": "Potvrďte nové heslo",
+    "placeholderPassword": "Zadejte heslo...",
+    "confirmPassword": "Potvrdit heslo",
+    "placeholderConfirmPassword": "Zadejte heslo znovu...",
+    "forgotPassword": "Zapomněli jste heslo?",
+    "loginWithFacebook": "Přihlásit se pomocí Facebooku",
+    "fullname": "Hod a jméno",
+    "placeholderFullname": "Zadejte celé jméno...",
+    "createAccount": "Vytvořit účet",
+    "send": "Odeslat",
+
+    "notification": {
+      "loginSuccess": "Přihlášení bylo úspěšné!",
+      "loginFailed": "Přihlášení se nezdařilo! Zkontrolujte svůj e-mail nebo heslo.",
+      "registerSuccess": "Registrace byla úspěšná! Přihlaste se prosím, abyste mohli začít.",
+      "registerFailed": "Registrace se nezdařila. Zkontrolujte svůj e-mail nebo heslo.",
+      "logoutSuccess": "Odhlášení bylo úspěšné!",
+      "logoutFailed": "Odhlášení se nezdařilo!",
+      "accountLocked": "Váš účet byl zablokován.",
+      "tokenExpired": "Odkaz pro resetování hesla vypršel. Požádejte prosím o nový.",
+      "passwordChanged": "Vaše heslo bylo úspěšně změněno!",
+      "passwordChangedFailed": "Změna hesla se nezdařila. Zkuste to prosím znovu.",
+      "emailRegisteredFB": "Tento e‑mail je již registrován. Prosím přihlaste se pomocí tohoto e‑mailového účtu.",
+      "usernameWrong": "Zkontrolujte prosím znovu svůj e‑mail nebo telefonní číslo",
+      "passwordWrong": "Heslo není správné, zkuste to prosím znovu"
+    },
+
+    "errors": {
+      "username": {
+        "invalid": "Uživatelské jméno musí být platný e‑mail nebo telefonní číslo",
+        "empty": "Uživatelské jméno nesmí být prázdné",
+        "required": "Uživatelské jméno je povinné"
+      },
+
+      "password": {
+        "empty": "Heslo nesmí být prázdné",
+        "required": "Heslo je povinné",
+        "min": "Heslo musí mít alespoň {limit} znaků",
+        "max": "Heslo nesmí mít více než {limit} znaků",
+        "pattern": "Heslo musí obsahovat alespoň jedno malé písmeno, jedno velké písmeno a jedno číslo"
+      },
+
+      "fullName": {
+        "empty": "Celé jméno nesmí být prázdné",
+        "required": "Celé jméno je povinné"
+      },
+
+      "confirmPassword": {
+        "required": "Potvrzení hesla je povinné",
+        "only": "Potvrzení hesla neodpovídá heslu"
+      },
+      "email": {
+        "empty": "Prosím zadejte e-mail.",
+        "invalid": "Prosím zadejte platnou e-mailovou adresu.",
+        "required": "E-mail je povinný."
+      }
+    },
+
+    "profile": "Profil",
+    "settings": "Nastavení"
+  },
+
+  "footer": {
+    "copyright": "© 2023 Công ty của bạn",
+    "subscribe": "Přihlásit se k odběru",
+    "quickLinks": "Rychlé odkazy",
+    "content": "Chcete být informováni o našich službách? Stačí se přihlásit a my vám odešleme oznámení e-mailem."
+  },
+
+  "notfound": {
+    "Pagenotfound": "Ups! Stránka, kterou hledáte, neexistuje",
+    "Returntohomepage": "Zpět na domovskou stránku"
+  },
+
+  "accountPage": "Účet",
+
+  "cancel": "Zrušit",
+  "order": {
+    "order": "Objednávka",
+    "orderCode": "Kód objednávky",
+    "quantity": "Množství",
+    "price": "Cena za jednotku",
+    "address": "Adresa",
+    "date": "Datum objednávky",
+    "quantityProducts": "Počet produktů",
+    "showmore": "Zobrazit vše",
+    "hide": "Skrýt",
+    "cancel": "Zrušit",
+    "processing": "Ve zpracování",
+    "confirm": "Potvrzeno",
+    "canceled": "Zrušeno",
+    "cancelOrder": "Objednávka byla úspěšně zrušena!",
+    "updateOrderFail": "Aktualizace stavu se nezdařila",
+    "updateOrderSuccess": "Chcete zrušit tuto objednávku?",
+    "emptyHint": "Zatím žádné objednávky"
+  },
+  "logoutdesc": "Opravdu se chcete odhlásit?",
+
+  "contact": {
+    "OurAddress": "Naše adresa",
+    "CallUs": "Kontaktujte nás",
+    "GetinTouch": "Spojte se s námi",
+    "YourName": "Vaše jméno",
+    "YourEmail": "Váš e‑mail",
+    "Subject": "Předmět",
+    "Message": "Zpráva",
+    "SendMessage": "Odeslat zprávu",
+    "Location": "Naše poloha"
+  },
+  "thanks": {
+    "thank_you": "Děkuji vám!",
+    "order_success": "Vaše objednávka byla úspěšně zadána. Brzy vám zašleme potvrzovací e‑mail a stav dopravy.",
+    "back_home": "Vrátit se na domovskou stránku.",
+    "view_more_products": "Zobrazit další produkty.",
+    "check_email": "Zkontrolujte svůj e‑mail, abyste viděli informace o objednávce a přepravě.",
+    "review_after_receive": "Můžete produkt ohodnotit poté, co ho obdržíte.",
+    "contact_if_need_support": "Kontaktujte nás, pokud budete potřebovat pomoc.",
+    "you_can": "Můžete:"
+  },
+  "projects": {
+    "projectCode": "Kód projektu",
+    "dateStart": "Datum zahájení",
+    "dateEnd": "Datum ukončení",
+    "started": "Projekt zahájen",
+    "finished": "Projekt ukončen",
+    "unpaid": "Nezaplaceno",
+    "deposited": "Záloha složena",
+    "partial": "Částečně zaplaceno",
+    "paid": "Zaplaceno",
+    "projectInformation": "Informace o projektu",
+    "depositPlaced": "Záloha uhrazena",
+    "totalPhase": "Platební fáze",
+    "totalPaid": "Celkem zaplaceno",
+    "totalQuoted": "Celková nabídková cena",
+    "totalExtraCosts": "Celkové dodatečné náklady",
+    "totalProjectValue": "Celková hodnota projektu",
+    "quotedPrice": "Nabídková cena",
+    "extraCosts": "Dodatečné náklady",
+    "projectProgress": "Průběh projektu",
+    "dailyProgress": "Denní pokrok",
+    "jobDescription": "Popis práce",
+    "estimatedQuantity": "Odhadované množství",
+    "unitPrice": "Jednotková cena",
+    "totalAmount": "Celková částka",
+    "emptyHint": "Zatím žádné projekty"
+  }
+}

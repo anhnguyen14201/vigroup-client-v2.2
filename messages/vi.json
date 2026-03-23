@@ -1,0 +1,313 @@
+{
+  "header": {
+    "home": "Trang Chủ",
+    "about": "Giới Thiệu",
+    "contact": "Liên Hệ"
+  },
+  "shop": {
+    "allProducts": "Tất cả sản phẩm",
+    "priceAsc": "Giá: Thấp đến cao",
+    "priceDesc": "Giá: Cao đến thấp",
+    "nameAsc": "Tên: A-Z",
+    "nameDesc": "Tên: Z-A",
+    "clear": "Bỏ chọn",
+    "sort": "Sắp xếp theo",
+    "isNewArrival": "Sản phẩm mới",
+    "isFeatured": "Nổi bật",
+    "tax": "Chưa bao gồm thuế DPH",
+    "addToCart": "Thêm vào giỏ hàng",
+    "contactToBuy": "Liên hệ",
+    "categories": "Danh mục",
+    "brands": "Thương hiệu",
+    "buyNow": "Mua ngay",
+    "search": "Tìm kiếm...",
+    "inStock": "Còn hàng",
+    "outOfStock": "Hết hàng",
+    "lowStock": "Sắp hết hàng",
+    "seeMore": "Xem Thêm",
+    "loading": "Đang tải...",
+    "technicalSpecifications": "Thông số kỹ thuật",
+    "noSpecifications": "Không có thông số kỹ thuật.",
+    "detailedDescription": "Mô tả chi tiết",
+    "noDesc": "Không có mô tả chi tiết.",
+    "productRelated": "Sản phẩm liên quan",
+    "viewCartDetails": "Xem chi tiết giỏ hàng",
+    "cart": "Giỏ hàng",
+    "deleteProductCart": "Bạn có chắc chắn muốn xóa sản phẩm này không?",
+    "taxRate": "Mức thuế",
+    "total": "Tổng cộng",
+    "checkout": "Thanh toán",
+    "clearCart": "Xóa giỏ hàng",
+    "emptyCart": "Ôi, giỏ hàng của bạn vẫn chưa có sản phẩm nào!",
+    "orderSummary": "Thanh toán",
+    "thankTitle": "Cảm ơn bạn! Đơn hàng đã được xác nhận.",
+    "products": "Sản phẩm",
+    "noData": "Không có dữ liệu."
+  },
+
+  "shopBanner": {
+    "warrantyTitle": "Bảo hành",
+    "warrantyDesc": "Cam kết dịch vụ sau bán hàng và hậu mãi về sau.",
+    "payTitle": "Chi Tiêu Hiệu Quả",
+    "payDesc": "Đa dạng sản phẩm và dịch vụ, chất lượng cao với giá ưu đãi.",
+    "professiionTitle": "Chuyên Nghiệp",
+    "professiionDesc": "Đội ngũ Kỹ thuật viên chuyên nghiệp, dày dặn kinh nghiệm."
+  },
+
+  "warranty": {
+    "warranty": "Thời gian bảo hành",
+    "active": "Đang bảo hành",
+    "expired": "Hết bảo hành",
+    "code": "Mã bảo hành",
+    "day": "Ngày",
+    "customer": "Khách hàng",
+    "product": "Sản phẩm",
+    "quantity": "SL",
+    "pending": "Chờ xử lý",
+    "warrantyLookupTitle": "Tra cứu thông tin bảo hành",
+    "warrantyLookupInstruction": "Vui lòng nhập mã bảo hành (ví dụ: ABC-123) và nhấn Kiểm tra.",
+    "checkButton": "Kiểm tra",
+    "noData": "Không có dữ liệu.",
+    "noDataFromServer": "Không có dữ liệu trả về từ server.",
+    "notFound": "Không tìm thấy thông tin.",
+    "invalidCode": "Mã không đúng.",
+    "enterWarrantyCode": "Vui lòng nhập mã bảo hành.",
+    "checking": "Đang kiểm tra...",
+    "warrantyLookupPlaceholder": "Nhập mã bảo hành..."
+  },
+
+  "account": {
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "logout": "Đăng xuất",
+    "username": "Tên đăng nhập",
+    "profileUser": "Thông tin tài khoản",
+    "resetPassword": "Đổi mật khẩu",
+    "resetPasswordInfo": "Trong trường hợp email này hợp lệ, vui lòng kiểm tra hộp thư – chúng tôi đã gửi cho bạn đường dẫn để khôi phục mật khẩu.",
+    "placeholder": "Vui lòng nhập",
+    "placeholderOldPassword": "Nhập mật khẩu cũ...",
+    "placeholderNewPassword": "Nhập mật khẩu mới...",
+    "validateNewPassword": "Vui lòng nhập mật khẩu mới",
+    "validateOldPassword": "Vui lòng nhập mật khẩu cũ",
+    "validatePassword": "Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 chữ thường và 1 số",
+    "validateConfirmNewPassword": "Vui lòng xác nhận mật khẩu mới",
+    "validateConfirmPassword": "Mật khẩu xác nhận không khớp với mật khẩu mới",
+    "changePasswordSuccess": "Đổi mật khẩu thành công!",
+    "changePasswordFailed": "Đổi mật khẩu không thành công. Vui lòng thử lại.",
+    "changeInforSuccess": "Cập nhật thông tin thành công!",
+    "confirmSuccess": "Bạn đã đổi mật khẩu thành công. Nhấn OK để đăng nhập.",
+    "changeInforFailed": "Cập nhật thông tin không thành công. Vui lòng thử lại.",
+    "odlPasswordRequest": "Mật khẩu cũng không đúng. Vui lòng nhập lại.",
+    "phoneNumberUnique": "Số điện thoại hoặc email đã được đăng ký. Vui lòng dùng số khác hoặc đăng nhập.",
+    "errors": {
+      "username": {
+        "invalid": "Tên đăng nhập phải là email hoặc số điện thoại hợp lệ",
+        "empty": "Tên đăng nhập không được để trống",
+        "required": "Tên đăng nhập là bắt buộc"
+      },
+
+      "fullName": {
+        "empty": "Họ và tên không được để trống",
+        "required": "Họ và tên là bắt buộc"
+      },
+
+      "password": {
+        "empty": "Mật khẩu không được để trống",
+        "required": "Mật khẩu là bắt buộc",
+        "min": "Mật khẩu phải có ít nhất {limit} ký tự",
+        "max": "Mật khẩu phải có tối đa {limit} ký tự",
+        "pattern": "Mật khẩu phải chứa ít nhất một chữ cái thường, một chữ cái in hoa và một số"
+      },
+
+      "confirmPassword": {
+        "required": "Xác nhận mật khẩu là bắt buộc",
+        "only": "Xác nhận mật khẩu không khớp với mật khẩu"
+      },
+      "email": {
+        "empty": "Vui lòng nhập email.",
+        "invalid": "Vui lòng nhập địa chỉ email hợp lệ.",
+        "required": "Email là bắt buộc."
+      }
+    },
+
+    "placeholderUsername": "Nhập email hoặc số điện thoại...",
+    "placeholderEmail": "Nhập email...",
+    "password": "Mật khẩu",
+    "changePassword": "Đổi mật khẩu",
+    "odlPassword": "Mật khẩu cũ",
+    "newPassword": "Mật khẩu mới",
+    "confirmNewPassword": "Xác nhận mật khẩu",
+    "placeholderPassword": "Nhập mật khẩu...",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "placeholderConfirmPassword": "Nhập lại mật khẩu...",
+    "forgotPassword": "Quên mật khẩu?",
+    "loginWithFacebook": "Đăng nhập bằng Facebook",
+    "fullname": "Họ và tên",
+    "placeholderFullname": "Nhập họ và tên...",
+    "createAccount": "Tạo tài khoản",
+    "send": "Gửi",
+
+    "notification": {
+      "loginSuccess": "Đăng nhập thành công!",
+      "loginFailed": "Đăng nhập thất bại! Kiểm tra email hoặc mật khẩu.",
+      "registerSuccess": "Đăng ký thành công! Vui lòng đăng nhập để bắt đầu trải nghiệm.",
+      "registerFailed": "Đăng ký thất bại. Kiểm tra email hoặc mật khẩu.",
+      "logoutSuccess": "Đăng xuất thành công!",
+      "logoutFailed": "Đăng xuất thất bại!",
+      "accountLocked": "Tài khoản của bạn đã bị khóa",
+      "tokenExpired": " Liên kết đổi mật khẩu đã hết hạn. Vui lòng yêu cầu lại.",
+      "passwordChanged": "Mật khẩu đã được thay đổi thành công!",
+      "passwordChangedFailed": "Đổi mật khẩu không thành công. Vui lòng thử lại.",
+      "emailRegisteredFB": "Email này đã được đăng ký. Vui lòng đăng nhập bằng tài khoản email này.",
+      "usernameWrong": "Vui lòng kiểm tra lại email hoặc số điện thoại",
+      "passwordWrong": "Mật khẩu chưa đúng, hãy thử lại"
+    },
+
+    "profile": "Hồ Sơ",
+    "settings": "Cài Đặt"
+  },
+
+  "cart": {
+    "personalInformation": "Thông tin cá nhân",
+    "phoneNumber": "Số điện thoại",
+    "address": "Địa chỉ",
+    "country": "Quốc gia",
+    "provinceCity": "Tỉnh/Thành phố",
+    "postalCode": "Mã bưu điện",
+    "companyInformation": "Thông tin công ty",
+    "companyName": "Tên công ty",
+    "taxRate": "Tax rate",
+    "subtotal": "Tạm tính",
+    "shippingFee": "Phí vận chuyển",
+    "total": "Tổng cộng",
+    "payment": "Thanh toán",
+    "back": "Quay lại",
+    "fullName": "Họ và tên",
+    "deliveryMethod": "Phương thức nhận hàng",
+    "free": "Miễn phí",
+    "Enterfullname": "Nhập họ và tên",
+    "Enteremail": "Nhập email",
+    "Enterphonenumber": "Nhập SĐT",
+    "Enteraddress": "Nhập địa chỉ",
+    "Selectcountry": "Chọn quốc gia",
+    "Enterprovincecity": "Nhập tỉnh/thành",
+    "Enterpostalcode": "Nhập mã bưu điện",
+    "Selectmethod": "Chọn phương thức",
+    "Orderplacedsuccessfully": "Đơn hàng đã được đặt thành công!",
+    "Failedtoplaceorder": "Đặt hàng không thành công."
+  },
+
+  "navigation": {
+    "home": "Trang chủ",
+    "shop": "E-Shop",
+    "about": "Giới thiệu",
+    "services": "Dịch vụ",
+    "consultancy": "Tư vấn thiết kế, xây dựng",
+    "smarthome": "Hệ thống nhà thông minh",
+    "heatpump": "Hệ thống điều hòa, bơm nhiệt",
+    "projects": "Dự án",
+    "template": "Mẫu thiết kế",
+    "contact": "Liên hệ",
+    "warranty": "Bảo Hành"
+  },
+
+  "content": {
+    "welcome": "Chào mừng đến với website của chúng tôi!"
+  },
+
+  "service": {
+    "bestFeatures": "Những tính năng nổi bật",
+    "ourServices": "Dịch vụ của chúng tôi",
+    "projects": "Dự án",
+    "ourWorks": "Các dự án của chúng tôi",
+    "designTemplates": "mẫu thiết kế",
+    "ourDesignSamples": "Các mẫu thiết kế của chúng tôi"
+  },
+
+  "footer": {
+    "copyright": "© 2023 Công ty của bạn",
+    "subscribe": "Đăng ký",
+    "quickLinks": "Liên kết nhanh",
+    "content": "Muốn nhận thông báo về dịch vụ của chúng tôi? Hãy đăng ký và chúng tôi sẽ gửi thông báo qua email cho bạn."
+  },
+
+  "notfound": {
+    "Pagenotfound": "Oops! Trang bạn đang tìm kiếm không tồn tại",
+    "Returntohomepage": "Quay về trang chủ"
+  },
+
+  "contact": {
+    "OurAddress": "Địa chỉ của chúng tôi",
+    "CallUs": "Liên hệ với chúng tôi",
+    "GetinTouch": "Liên hệ ngay",
+    "YourName": "Tên của bạn",
+    "YourEmail": "Email của bạn",
+    "Subject": "Tiêu đề",
+    "Message": "Nội dung tin nhắn",
+    "SendMessage": "Gửi tin nhắn",
+    "Location": "Địa điểm của chúng tôi"
+  },
+
+  "accountPage": "Tài khoản",
+
+  "cancel": "Hủy",
+  "order": {
+    "order": "Đơn hàng",
+    "orderCode": "Mã đơn hàng",
+    "quantity": "SL",
+    "price": "Đơn giá",
+    "address": "Địa chỉ",
+    "date": "Ngày đặt",
+    "quantityProducts": "Số lượng sản phẩm",
+    "showmore": "Xem tất cả",
+    "hide": "Thu gọn",
+    "cancel": "Hủy",
+    "processing": "Đang xử lý",
+    "confirm": "Đã xác nhận",
+    "canceled": "Đã hủy",
+    "cancelOrder": "Hủy đơn hàng thành công!",
+    "updateOrderFail": "Cập nhật trạng thái thất bại",
+    "updateOrderSuccess": "Bạn có muốn hủy đơn hàng này không?",
+    "emptyHint": "Chưa có đơn hàng"
+  },
+
+  "logoutdesc": "Bạn có chắc muốn đăng xuất không?",
+
+  "thanks": {
+    "thank_you": "Cảm ơn bạn!",
+    "order_success": "Đơn hàng của bạn đã được đặt thành công. Chúng tôi sẽ gửi email xác nhận và tình trạng vận chuyển đến bạn sớm.",
+    "back_home": "Về trang chủ.",
+    "view_more_products": "Xem thêm sản phẩm.",
+    "check_email": "Kiểm tra email để xem thông tin đơn hàng & vận chuyển.",
+    "review_after_receive": "Đánh giá sản phẩm sau khi nhận hàng.",
+    "contact_if_need_support": "Liên hệ chúng tôi nếu cần hỗ trợ.",
+    "you_can": "Bạn có thể:"
+  },
+  "projects": {
+    "projectCode": "Mã dự án",
+    "dateStart": "Ngày bắt đầu",
+    "dateEnd": "Ngày kết thúc",
+    "started": "Bắt đầu dự án",
+    "finished": "Kết thúc dự án",
+    "unpaid": "Chưa thanh toán",
+    "deposited": "Đã đặt cọc",
+    "partial": "Thanh toán một phần",
+    "paid": "Đã thanh toán",
+    "projectInformation": "Thông tin Dự án",
+    "depositPlaced": "Đã đặt cọc",
+    "totalPhase": "Thanh toán đợt",
+    "totalPaid": "Tổng đã thanh toán",
+    "totalQuoted": "Tổng báo giá",
+    "totalExtraCosts": "Tổng phát sinh",
+    "totalProjectValue": "Tổng dự án",
+    "quotedPrice": "Báo giá",
+    "extraCosts": "Chi phí phát sinh",
+    "projectProgress": "Tiến độ dự án",
+    "dailyProgress": "Tiến độ ngày",
+    "jobDescription": "Nội dung công việc",
+    "estimatedQuantity": "Khối lượng (tạm tính)",
+    "unitPrice": "Đơn giá",
+    "totalAmount": "Thành tiền",
+    "emptyHint": "Chưa có dự án nào"
+  }
+}
