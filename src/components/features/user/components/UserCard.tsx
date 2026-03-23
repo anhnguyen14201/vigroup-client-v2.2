@@ -152,14 +152,14 @@ const UserCard = React.memo(
         </div>
 
         {/* Thông tin liên hệ */}
-        <div className='space-y-1 mb-2'>
+        <div className='mb-2'>
           <div className='flex items-center gap-3'>
             <Phone
               size={14}
               className={isActive ? 'text-slate-400' : 'text-rose-300'}
             />
             <span
-              className={`text-sm font-bold ${isActive ? 'text-slate-700' : 'text-rose-800/80'}`}
+              className={`text-sm font-medium ${isActive ? 'text-slate-700' : 'text-rose-800/80'}`}
             >
               {formatPhone(user.phone)}
             </span>

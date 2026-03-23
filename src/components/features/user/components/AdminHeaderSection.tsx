@@ -4,6 +4,7 @@ import React from 'react'
 
 const AdminHeaderSection = () => {
   const { subTab, user, handleLogout } = useUserContext()
+
   return (
     <AdminHeader user={user} onLogout={handleLogout}>
       <h1 className='text-lg font-bold tracking-tight text-slate-900 mb-2'>

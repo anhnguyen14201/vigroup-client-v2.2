@@ -1,4 +1,6 @@
 export * from './authService'
 export * from './userService'
 export * from './projectService'
+export * from './languageService'
 export * from './attendanceService'
+export * from './categoryProjectService'
