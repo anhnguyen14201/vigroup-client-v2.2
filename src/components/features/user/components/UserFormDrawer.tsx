@@ -131,7 +131,9 @@ const UserFormDrawer = () => {
 
   // Cập nhật form khi mở Drawer hoặc đổi User cần sửa
   useEffect(() => {
-    const currentId = editingUser?.employeeId || editingUser?._id || 'new'
+    const currentId = editingUser
+      ? editingUser.employeeId || editingUser._id
+      : `new-${subTab}`
     if (prevEditingUserId.current !== currentId) {
       if (editingUser) {
         reset({
@@ -172,7 +174,7 @@ const UserFormDrawer = () => {
       }
       prevEditingUserId.current = currentId
     }
-  }, [editingUser, reset, isStaff])
+  }, [editingUser, reset, isStaff, subTab])
 
   const onSubmit = async (data: any) => {
     try {

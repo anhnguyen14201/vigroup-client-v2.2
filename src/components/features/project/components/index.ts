@@ -1,2 +1,8 @@
+export * from './ProjectDetails'
+export { default as ProjectCard } from './ProjectCard'
+export { default as ProjectList } from './ProjectList'
+export { default as ProjectFilters } from './ProjectFilters'
+export { default as ProjectImageItem } from './ProjectImageItem'
 export { default as ProjectFormModal } from './ProjectFormModal'
+export { default as ProjectTypeTable } from './ProjectTypeTable'
 export { default as CategoryFormModal } from './CategoryFormModal'

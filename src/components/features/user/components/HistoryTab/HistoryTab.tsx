@@ -26,7 +26,7 @@ const HistoryTab = () => {
   // Fetch Projects
   const { items: projects } = usePaginatedCollection(
     '/projects',
-    {},
+    { kind: 'project' },
     projectService.getProjects,
     1,
     'all',
@@ -47,14 +47,6 @@ const HistoryTab = () => {
     page,
     10,
   )
-
-  const getVNProjectName = (project: any) => {
-    if (!project) return 'Chưa xác định'
-    const vnTranslation = project.translations?.find(
-      (t: any) => t.language?.code === 'vi',
-    )
-    return vnTranslation?.projectName || project.projectName || ''
-  }
 
   const handleEditShift = (
     recordId: string,
@@ -148,7 +140,6 @@ const HistoryTab = () => {
         onOpenChange={setIsModalOpen}
         selectedShift={selectedShift}
         startedProjects={startedProjects}
-        getVNProjectName={getVNProjectName}
         onSubmit={onSubmit}
       />
     </div>

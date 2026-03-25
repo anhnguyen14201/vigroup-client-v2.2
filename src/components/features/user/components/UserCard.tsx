@@ -41,8 +41,6 @@ const UserCard = React.memo(
       return { isHourly: false, totalIncome: 0 }
     }, [user])
 
-    console.log(user)
-
     return (
       <div
         className={`p-6 rounded-4xl border group relative transition-all duration-300

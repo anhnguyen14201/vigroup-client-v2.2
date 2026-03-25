@@ -42,8 +42,8 @@ export function usePaginatedCollection<T, F = any>(
     items: data?.data ?? [],
 
     // Metadata cho phân trang
-    totalItems: data?.pagination?.total ?? 0,
-    totalPages: data?.pagination?.totalPages ?? 0,
+    totalItems: (data?.pagination?.totalItems || data?.totalItems) ?? 0,
+    totalPages: (data?.pagination?.totalPages || data?.totalPages) ?? 0,
 
     // Các trường mở rộng cho báo cáo/thống kê (ANGEN POS specific)
     totalAmount: data?.totalAmount ?? 0,
@@ -51,6 +51,7 @@ export function usePaginatedCollection<T, F = any>(
     soldVoucherTotal: data?.soldVoucherTotal ?? 0,
     soldVoucherCount: data?.soldVoucherCount ?? 0,
     discountVoucherTotal: data?.discountVoucherTotal ?? 0,
+    totalInvoiceAmount: data?.totalInvoiceAmount ?? 0,
 
     // States
     isLoading,

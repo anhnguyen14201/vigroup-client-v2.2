@@ -13,6 +13,29 @@ export const attendanceService = {
     return response.data
   },
 
+  /**
+   * Lấy chi tiết lịch trình làm việc của 1 nhân viên trong 1 dự án cụ thể
+   */
+  getAttendanceByProjectAndEmployee: async ({
+    pageIndex,
+    pageSize,
+    filters,
+  }: {
+    pageIndex?: number
+    pageSize?: number | 'all'
+    filters: { projectId: string; employeeId: string }
+  }) => {
+    const response = await api.get('/attendance/by-project', {
+      params: {
+        // Chuyển đổi tên field cho khớp với Backend của bạn (page, limit)
+        page: pageIndex,
+        limit: pageSize === 'all' ? 1000 : pageSize,
+        ...filters, // Giải nén projectId và employeeId vào params
+      },
+      withCredentials: true,
+    })
+    return response.data
+  },
   updateAttendance: async (
     id: string,
     data: Record<string, any> | FormData,

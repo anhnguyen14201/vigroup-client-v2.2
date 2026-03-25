@@ -52,6 +52,7 @@ export const userSchema = z
       path: ['confirmPassword'],
     },
   )
+  
   // 2. Kiểm tra độ mạnh mật khẩu (Chỉ khi có nhập)
   .refine(
     data => {

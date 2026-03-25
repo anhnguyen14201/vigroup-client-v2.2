@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import nProgress from 'nprogress'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
 
 import { authService, userService } from '@/services'
 import { useAuthStore } from '@/stores'
@@ -12,7 +11,6 @@ export const useUserManagement = (itemsPerPage: number) => {
   // ==========================================
   // 1. ROUTER, STORES & CUSTOM HOOKS
   // ==========================================
-  const router = useRouter()
   const { searchParams, setQuery } = useQueryState()
 
   const { user, signOut } = useAuthStore() as any
@@ -94,7 +92,7 @@ export const useUserManagement = (itemsPerPage: number) => {
     isLoading: isLoadingCustomer,
     mutate: refreshCustomer,
   } = usePaginatedCollection(
-    isLoggedIn ? '/users' : null,
+    '/customer',
     { tab: 'customer', search: searchQuery }, // Khách hàng luôn là tab customer
     userService.getUsers,
     currentPage,
@@ -144,9 +142,15 @@ export const useUserManagement = (itemsPerPage: number) => {
   // ==========================================
   const setSubTab = (tab: string) => {
     _setSubTab(tab)
-    setQuery({ tab, page: 1 }) // Reset page khi đổi tab
-  }
+    _setSearchQuery('') // 1. Reset state local của search về trống
 
+    // 2. Cập nhật URL: chuyển tab, reset page về 1 và xóa param 'q' (search)
+    setQuery({
+      tab,
+      page: 1,
+      q: '', // Gửi chuỗi rỗng lên URL để đồng bộ
+    })
+  }
   const setCurrentPage = (page: number) => {
     _setCurrentPage(page)
     setQuery({ page })

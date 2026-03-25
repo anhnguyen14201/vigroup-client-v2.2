@@ -57,3 +57,11 @@ export const getTranslation = (translations: any[], lang: string) => {
     (t: any) => (t.language?.code || t.language) === lang,
   )
 }
+
+export const getVNProjectName = (project: any) => {
+  if (!project) return 'Chưa xác định'
+  const vnTranslation = project.translations?.find(
+    (t: any) => t.language?.code === 'vi',
+  )
+  return vnTranslation?.projectName || project.projectName || ''
+}

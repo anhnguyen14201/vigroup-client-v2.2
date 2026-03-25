@@ -41,7 +41,7 @@ export const GenericActionBar = ({
         <Button
           disabled={disabled}
           onClick={onButtonClick}
-          className='h-11 w-full md:w-auto px-8 cursor-pointer rounded-full font-bold text-[11px] tracking-widest uppercase transition-all flex items-center justify-center gap-2 bg-primary text-white hover:opacity-90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed'
+          className='hidden md:flex h-11 w-auto px-8 cursor-pointer rounded-full font-bold text-[11px] tracking-widest uppercase transition-all items-center justify-center gap-2 bg-primary text-white hover:opacity-90 active:scale-95 disabled:opacity-50'
         >
           <ButtonIcon size={18} strokeWidth={2.5} />
           <span className='whitespace-nowrap'>{buttonLabel}</span>

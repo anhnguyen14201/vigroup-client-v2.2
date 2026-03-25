@@ -9,20 +9,27 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
-        pathname: '/**'
+        pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
-        pathname: '/**'
-      }
-    ]
+        pathname: '/**',
+      },
+
+      // THÊM DÒNG NÀY CHO BACKBLAZE B2
+      {
+        protocol: 'https',
+        hostname: '**.backblazeb2.com',
+        pathname: '/**',
+      },
+    ],
   },
 
   typescript: {
     // Cho phép production build kể cả khi TS errors
-    ignoreBuildErrors: true
-  }
+    ignoreBuildErrors: true,
+  },
 }
 
 // Wrap bằng next-intl plugin

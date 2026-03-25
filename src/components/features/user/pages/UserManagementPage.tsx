@@ -1,7 +1,7 @@
 'use client'
 
 import { createPortal } from 'react-dom'
-import { ConfirmDeleteModal } from '@/components/shared'
+import { ConfirmDeleteModal, FloatingActionButton } from '@/components/shared'
 import UserFormDrawer from '@/components/features/user/components/UserFormDrawer'
 import UserDetailModal from '@/components/features/user/components/UserDetailModal'
 import {
@@ -27,6 +27,7 @@ const UserManagementPageContent = () => {
     userToDelete,
     confirmDelete,
     selectedDetail,
+    handleOpenForm,
   } = useUserContext()
 
   return (
@@ -40,7 +41,6 @@ const UserManagementPageContent = () => {
         <div className='mx-auto w-full mb-8'>
           <div className='flex flex-col md:flex-row md:items-end justify-between gap-6'>
             <div>
-              {' '}
               <UserFilterSection />
             </div>
 
@@ -56,6 +56,11 @@ const UserManagementPageContent = () => {
         <div className='mx-auto w-full flex-1 no-scrollbar'>
           <UserGridList />
         </div>
+
+        <FloatingActionButton
+          onClick={() => handleOpenForm(null)}
+          // icon={Wallet} // Nếu không truyền sẽ mặc định là dấu Plus
+        />
 
         <PaginationWrapper />
 

@@ -12,7 +12,15 @@ import {
   MapPin,
   Settings2,
   Scissors,
-  FolderKanban, // Icon cho Dịch vụ
+  FolderKanban,
+  Box,
+  HardHat,
+  Palette,
+  PackageSearch,
+  ShoppingCart,
+  Wind,
+  Globe,
+  Building2, // Icon cho Dịch vụ
 } from 'lucide-react'
 
 import {
@@ -28,13 +36,8 @@ export function ClientSidebar({
 }: React.ComponentProps<typeof Sidebar>) {
   const params = useParams()
   const slug = (params?.slug as string) || ''
-  const [isSupportOpen, setIsSupportOpen] = React.useState(false)
 
   const getAppUrl = React.useCallback((path: string) => `/admin${path}`, [slug])
-  const getPosUrl = React.useCallback(
-    (path: string) => `/pos/${slug}${path}`,
-    [slug],
-  )
 
   const navData = React.useMemo(
     () => ({
@@ -44,21 +47,59 @@ export function ClientSidebar({
           url: getAppUrl('/dashboard'),
           icon: LayoutDashboard,
         },
-        { title: 'Người dùng', url: getAppUrl('/users'), icon: Users2 },
-        { title: 'Dự án', url: getAppUrl('/projects'), icon: FolderKanban },
-        { title: 'Đặt lịch', url: getAppUrl('/bookings'), icon: CalendarDays },
-        { title: 'Dịch vụ', url: getAppUrl('/services'), icon: Scissors }, // THÊM DỊCH VỤ
         {
-          title: 'Khuyến mãi',
-          url: getAppUrl('/promotions'),
-          icon: TicketPercent,
+          title: 'Người dùng',
+          url: getAppUrl('/users'),
+          icon: Users2,
         },
-        { title: 'Hóa đơn', url: getAppUrl('/invoices'), icon: FileText },
-        { title: 'Chi nhánh', url: getAppUrl('/branches'), icon: MapPin },
-        { title: 'Cài đặt', url: getAppUrl('/settings'), icon: Settings2 },
+        {
+          title: 'Dự án',
+          url: getAppUrl('/projects'),
+          icon: FolderKanban,
+        },
+        {
+          title: 'Vật tư',
+          url: getAppUrl('/materials'), // Đổi từ /bookings sang /materials cho đúng nghĩa
+          icon: Box,
+        },
+        {
+          title: 'Thiết bị',
+          url: getAppUrl('/equipments'), // Đổi sang /equipments
+          icon: HardHat,
+        },
+        {
+          title: 'Mẫu thiết kế',
+          url: getAppUrl('/designs'), // Đổi từ /promotions sang /designs
+          icon: Palette,
+        },
+        {
+          title: 'Sản phẩm',
+          url: getAppUrl('/products'), // Đổi từ /invoices sang /products
+          icon: PackageSearch,
+        },
+        {
+          title: 'Đơn hàng',
+          url: getAppUrl('/orders'), // Đổi từ /branches sang /orders
+          icon: ShoppingCart,
+        },
+        {
+          title: 'Điều hòa',
+          url: getAppUrl('/air-conditioners'),
+          icon: Wind,
+        },
+        {
+          title: 'SEO',
+          url: getAppUrl('/seo-settings'),
+          icon: Globe,
+        },
+        {
+          title: 'Thông tin công ty',
+          url: getAppUrl('/company-info'),
+          icon: Building2,
+        },
       ],
     }),
-    [getAppUrl, getPosUrl],
+    [getAppUrl],
   )
 
   return (
