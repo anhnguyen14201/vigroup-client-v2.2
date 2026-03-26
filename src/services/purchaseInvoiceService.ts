@@ -1,9 +1,30 @@
 import { api } from '@/lib'
 
 export const purchaseInvoiceService = {
-  /**
-   * Lấy danh sách hóa đơn vật tư theo Project ID
-   */
+  getSummaryPurchaseProjects: async ({ pageIndex, pageSize, filters }: any) => {
+    const response = await api.get('/purchase-invoice/purchase-projects', {
+      params: {
+        page: pageIndex, // Chuyển pageIndex thành page cho backend
+        limit: pageSize, // Chuyển pageSize thành limit
+        ...filters, // Giải nén { tab, search } vào params
+      },
+      withCredentials: true,
+    })
+    return response.data
+  },
+
+  getSummaryPurchasePlace: async ({ pageIndex, pageSize, filters }: any) => {
+    const response = await api.get('/purchase-invoice/purchase-places', {
+      params: {
+        page: pageIndex, // Chuyển pageIndex thành page cho backend
+        limit: pageSize, // Chuyển pageSize thành limit
+        ...filters, // Giải nén { tab, search } vào params
+      },
+      withCredentials: true,
+    })
+    return response.data
+  },
+
   getAllPurchaseInvoiceByProjectId: async ({
     projectId,
     pageIndex,

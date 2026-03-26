@@ -25,14 +25,17 @@ import {
   useMaterialContext,
 } from '@/components/features/materials/hooks'
 import DateFilter from '@/components/shared/DateFilter'
-import { MaterialList } from '@/components/features/materials/components'
+import {
+  AddInvoiceModal,
+  MaterialList,
+} from '@/components/features/materials/components'
+import MaterialFilters from '@/components/features/materials/components/MaterialFilters'
+import { useState } from 'react'
+import { Button } from '@/components/ui'
 
 const MaterialManagementContent = () => {
-  const { user, handleLogout, invoices, day, month, year, setDateFilter } =
-    useMaterialContext()
-
-  console.log(invoices)
-
+  const { user, handleLogout, projects } = useMaterialContext()
+  const [isModalOpen, setIsModalOpen] = useState(false)
   return (
     <>
       <AdminHeader user={user} onLogout={handleLogout}>
@@ -46,83 +49,27 @@ const MaterialManagementContent = () => {
       >
         <div className='mx-auto w-full mb-8'>
           <div className='flex flex-col md:flex-row md:items-end justify-between gap-6'>
-            <DateFilter
-              day={day}
-              month={month}
-              year={year}
-              onFilterChange={setDateFilter}
-            />
-
-            {/* <div>{isAllProjects && <ProjectFilters />}</div>
-
-            <div className='flex flex-col md:flex-row md:items-end justify-between gap-6'>
-              <LanguageSwitcher
-                languagesData={languagesData}
-                currentLang={activeLangCode}
-                onLangChange={setActiveLangCode}
-              />
-
-              <TabSwitcher
-                options={tabs}
-                activeTab={subTab}
-                onChange={id => setSubTab(id)}
-              />
-            </div> */}
+            <MaterialFilters />
           </div>
         </div>
-
-        {/* <GenericActionBar
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          placeholder={
-            isAllProjects
-              ? 'Nhâp vào tên dự án hoặc mã dự án...'
-              : 'Nhập vào tên kiểu dự án...'
-          }
-          buttonLabel={isAllProjects ? 'Tạo dự án mới' : 'Thêm kiểu dự án'}
-          buttonIcon={isAllProjects ? FolderPlus : Plus}
-          onButtonClick={handleCreateNew}
-        /> */}
-        {/* --- RENDER CONTENT --- */}
-        {/*  <div className='mx-auto w-full flex-1 no-scrollbar'>
-          <ProjectList />
-        </div> */}
-
-        {/* <FloatingActionButton
-          onClick={handleCreateNew}
-          // icon={Wallet} // Nếu không truyền sẽ mặc định là dấu Plus
-        /> */}
-
-        {/* 1. Modal Thêm Dự Án */}
-        {/* <ProjectFormModal />
-
-        <ConfirmDeleteModal
-          open={isDeleteModalOpen}
-          onOpenChange={setIsDeleteModalOpen}
-          onConfirm={handleConfirmDeleteProject}
-          loading={false}
-          title='Xóa dự án?'
-          description={`Bạn có chắc chắn muốn xóa dự án ${
-            projectToDelete?.code || projectToDelete?.name || ''
-          } không? Hành động này không thể hoàn tác.`}
-        />
-
-        <ConfirmDeleteModal
-          open={isDeleteModalTypeOpen}
-          onOpenChange={setIsDeleteModalTypeOpen}
-          onConfirm={handleConfirmDeleteProjectType}
-          loading={isDeleting}
-          title='Xóa kiểu dự án?'
-          description='Bạn có chắc chắn muốn xóa loại dự án này? Các dự án thuộc loại này có thể bị ảnh hưởng.'
-        />
-        <CategoryFormModal />
-
-        <ProjectDetailModal /> */}
 
         <div className='w-full flex-1'>
           <MaterialList />
         </div>
+        <Button onClick={() => setIsModalOpen(true)}>thêm hóa đơn</Button>
       </div>
+      <AddInvoiceModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        projects={projects} // Truyền list projects từ context
+      />
+
+      {/* 2. Nút FAB để mở Modal */}
+      <FloatingActionButton
+        onClick={() => setIsModalOpen(true)}
+        icon={Plus}
+        className='bg-blue-600 active:bg-blue-700' // Đổi màu cho nổi bật
+      />
     </>
   )
 }

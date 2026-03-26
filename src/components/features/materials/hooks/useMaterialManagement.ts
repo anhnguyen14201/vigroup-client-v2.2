@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { useAuth, usePaginatedCollection, useQueryState } from '@/hooks'
 import { purchaseInvoiceService } from '@/services/purchaseInvoiceService'
 import { useAuthStore } from '@/stores'
+import { projectService, userService } from '@/services'
 
 export const useMaterialManagement = (itemsPerPage: number = 10) => {
   const { handleLogout } = useAuth()
@@ -11,14 +12,14 @@ export const useMaterialManagement = (itemsPerPage: number = 10) => {
   const { searchParams, setQuery } = useQueryState()
 
   // ==========================================
-  // 1. LOCAL STATES (Sync with URL)
+  // 1. LOCAL STATES (Sync ban đầu từ URL)
   // ==========================================
   const [currentPage, _setCurrentPage] = useState(
     Number(searchParams.get('page')) || 1,
   )
   const [searchTerm, _setSearchTerm] = useState(searchParams.get('q') || '')
 
-  // Các bộ lọc nâng cao
+  // Bộ lọc nâng cao
   const [userId, _setUserId] = useState(searchParams.get('userId') || 'all')
   const [paymentMethod, _setPaymentMethod] = useState(
     searchParams.get('paymentMethod') || 'all',
@@ -41,17 +42,17 @@ export const useMaterialManagement = (itemsPerPage: number = 10) => {
   )
 
   // ==========================================
-  // 2. API FETCHING
+  // 2. DATA FETCHING (Gom tất cả filters vào đây)
   // ==========================================
-  const filterParams = useMemo(
+  const fetchParams = useMemo(
     () => ({
       search: searchTerm,
-      userId,
-      paymentMethod,
-      invoiceGroup,
-      projIds,
-      purchasePlace,
-      day,
+      userId: userId !== 'all' ? userId : undefined,
+      paymentMethod: paymentMethod !== 'all' ? paymentMethod : undefined,
+      invoiceGroup: invoiceGroup !== 'all' ? invoiceGroup : undefined,
+      projIds: projIds !== 'all' ? projIds : undefined,
+      purchasePlace: purchasePlace !== 'all' ? purchasePlace : undefined,
+      day: day !== 'all' ? day : undefined,
       month,
       year,
     }),
@@ -75,12 +76,40 @@ export const useMaterialManagement = (itemsPerPage: number = 10) => {
     isLoading,
     mutate: refreshInvoices,
   } = usePaginatedCollection(
-    'purchase-invoices-all', // Key duy nhất cho SWR
-    { search: searchTerm, day, month, year },
+    'purchase-invoices-all',
+    fetchParams,
     purchaseInvoiceService.getAllPurchaseInvoices,
     currentPage,
     itemsPerPage,
   )
+
+  const { items: staffData } = usePaginatedCollection(
+    '/staff',
+    { tab: 'staff' }, // Khách hàng luôn là tab customer
+    userService.getUsers,
+    1,
+    'all',
+  )
+
+  const { items: projectsData } = usePaginatedCollection(
+    `/purchase-invoice/purchase-projects`,
+    { month, year },
+    purchaseInvoiceService.getSummaryPurchaseProjects,
+    1,
+    'all',
+  )
+  const { items: placeData } = usePaginatedCollection(
+    `/purchase-invoice/purchase-places`,
+    { month, year },
+    purchaseInvoiceService.getSummaryPurchasePlace,
+    1,
+    'all',
+  )
+
+  // Giả định lấy list từ service khác hoặc fetch riêng (cần bổ sung để list filter có data)
+  const users = staffData // Fetch từ userService
+  const projects = projectsData // Fetch từ projectService
+  const places = placeData
 
   // ==========================================
   // 3. SYNC URL EFFECTS
@@ -91,7 +120,7 @@ export const useMaterialManagement = (itemsPerPage: number = 10) => {
   }, [searchParams])
 
   // ==========================================
-  // 4. UPDATER FUNCTIONS
+  // 4. UPDATER FUNCTIONS (Viết gọn lại để dùng trực tiếp)
   // ==========================================
   const setSearchTerm = (q: string) => {
     _setSearchTerm(q)
@@ -103,15 +132,29 @@ export const useMaterialManagement = (itemsPerPage: number = 10) => {
     setQuery({ page })
   }
 
-  // Hàm cập nhật filter tổng hợp
-  const updateFilters = (newFilters: any) => {
-    if (newFilters.userId) _setUserId(newFilters.userId)
-    if (newFilters.paymentMethod) _setPaymentMethod(newFilters.paymentMethod)
-    if (newFilters.invoiceGroup) _setInvoiceGroup(newFilters.invoiceGroup)
-    if (newFilters.projIds) _setProjIds(newFilters.projIds)
-    if (newFilters.purchasePlace) _setPurchasePlace(newFilters.purchasePlace)
+  const setInvoiceGroup = (val: string) => {
+    _setInvoiceGroup(val)
+    setQuery({ invoiceGroup: val, page: 1 })
+  }
 
-    setQuery({ ...newFilters, page: 1 })
+  const setPaymentMethod = (val: string) => {
+    _setPaymentMethod(val)
+    setQuery({ paymentMethod: val, page: 1 })
+  }
+
+  const setUserId = (val: string) => {
+    _setUserId(val)
+    setQuery({ userId: val, page: 1 })
+  }
+
+  const setProjIds = (val: string) => {
+    _setProjIds(val)
+    setQuery({ projIds: val, page: 1 })
+  }
+
+  const setPurchasePlace = (val: string) => {
+    _setPurchasePlace(val)
+    setQuery({ purchasePlace: val, page: 1 })
   }
 
   const setDateFilter = (d: string | number, m: number, y: number) => {
@@ -122,8 +165,8 @@ export const useMaterialManagement = (itemsPerPage: number = 10) => {
   }
 
   const resetFilters = () => {
-    const defaultMonth = new Date().getMonth() + 1
-    const defaultYear = new Date().getFullYear()
+    const dM = new Date().getMonth() + 1
+    const dY = new Date().getFullYear()
 
     _setSearchTerm('')
     _setUserId('all')
@@ -132,8 +175,8 @@ export const useMaterialManagement = (itemsPerPage: number = 10) => {
     _setProjIds('all')
     _setPurchasePlace('all')
     _setDay('all')
-    _setMonth(defaultMonth)
-    _setYear(defaultYear)
+    _setMonth(dM)
+    _setYear(dY)
 
     setQuery({
       q: '',
@@ -143,25 +186,20 @@ export const useMaterialManagement = (itemsPerPage: number = 10) => {
       projIds: '',
       purchasePlace: '',
       day: '',
-      month: defaultMonth,
-      year: defaultYear,
+      month: dM,
+      year: dY,
       page: 1,
     })
   }
 
   return {
-    // Auth
     user,
     handleLogout,
-
-    // Data
     invoices: invoices || [],
     totalItems: totalItems || 0,
     totalPages: totalPages || 1,
     isLoading,
     refreshInvoices,
-
-    // Filter States
     currentPage,
     searchTerm,
     userId,
@@ -172,11 +210,16 @@ export const useMaterialManagement = (itemsPerPage: number = 10) => {
     day,
     month,
     year,
-
-    // Handlers
+    users, // Truyền xuống để Filter có data render
+    projects, // Truyền xuống để Filter có data render
+    places,
     setSearchTerm,
     setCurrentPage,
-    updateFilters,
+    setInvoiceGroup,
+    setPaymentMethod,
+    setUserId,
+    setProjIds,
+    setPurchasePlace,
     setDateFilter,
     resetFilters,
   }

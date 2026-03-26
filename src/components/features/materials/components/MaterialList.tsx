@@ -45,12 +45,12 @@ export const MaterialList = () => {
 
   return (
     <div className='flex flex-col gap-6'>
-      <div className='flex items-center justify-between px-2'>
+      {/* <div className='flex items-center justify-between px-2'>
         <span className='text-sm text-slate-500 font-medium'>
           Hiển thị <span className='text-slate-900'>{invoices.length}</span>{' '}
           trên <span className='text-slate-900'>{totalItems}</span> hóa đơn
         </span>
-      </div>{' '}
+      </div> */}
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
         {invoices.map((invoice: any, index: any) => (
           <motion.div

@@ -36,6 +36,7 @@ export const attendanceService = {
     })
     return response.data
   },
+
   updateAttendance: async (
     id: string,
     data: Record<string, any> | FormData,

@@ -67,7 +67,7 @@ const ProjectFilters = () => {
 
         <SelectContent
           position='popper'
-          sideOffset={4}
+          sideOffset={0}
           className='rounded-xl border-slate-100 z-100 bg-white shadow-lg min-w-45'
         >
           {Object.entries(statusLabels).map(([value, label]) => (
@@ -102,7 +102,7 @@ const ProjectFilters = () => {
 
         <SelectContent
           position='popper'
-          sideOffset={4}
+          sideOffset={0}
           className='rounded-xl border-slate-100 z-100 bg-white shadow-lg min-w-45'
         >
           {Object.entries(paymentLabels).map(([value, label]) => (

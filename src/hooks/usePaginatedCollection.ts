@@ -37,9 +37,11 @@ export function usePaginatedCollection<T, F = any>(
     },
   )
 
+  console.log(data)
+
   return {
     // Data chính
-    items: data?.data ?? [],
+    items: (data?.data || data) ?? [],
 
     // Metadata cho phân trang
     totalItems: (data?.pagination?.totalItems || data?.totalItems) ?? 0,
