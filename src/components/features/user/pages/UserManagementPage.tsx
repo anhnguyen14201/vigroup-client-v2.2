@@ -45,15 +45,15 @@ const UserManagementPageContent = () => {
         data-lenis-prevent
       >
         <div className='mx-auto w-full mb-8'>
-          <div className='flex flex-col lg:flex-row lg:items-end justify-between gap-6'>
-            <div className='flex gap-3 flex-col lg:flex-row  justify-center items-center'>
+          <div className='flex flex-col xl:flex-row xl:items-end justify-between gap-6'>
+            <div className='flex gap-3 flex-col xl:flex-row xl:items-center justify-center items-start'>
               <UserFilterSection />
 
               <div className=''>
                 <ItemCounter
                   currentCount={displayUsers.length}
                   totalCount={totalItems}
-                  label='người dùng'
+                  label={subTab === 'staff' ? 'nhân viên' : 'khách hàng'}
                   className='ml-auto' // Đẩy sang bên phải nếu nằm trong flex container
                 />
               </div>

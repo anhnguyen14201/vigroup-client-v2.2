@@ -1,7 +1,9 @@
-import React from 'react'
-
+import { MaterialManagementPage } from '@/components'
+export const metadata = {
+  title: 'Vigroup | Quản lý hóa đơn',
+}
 const page = () => {
-  return <div>page</div>
+  return <MaterialManagementPage />
 }
 
 export default page

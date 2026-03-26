@@ -3,7 +3,6 @@ import InfoItem from './InfoItem'
 import { formatCurrency, formatDateCzech, formatPhone } from '@/utils'
 
 const SummaryTab = ({ user }: any) => {
-  console.log(user)
   return (
     <div className='space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500'>
       <header>
