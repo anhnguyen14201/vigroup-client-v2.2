@@ -66,7 +66,7 @@ const DateFilter = ({
           </SelectTrigger>
           <SelectContent
             position='popper'
-            sideOffset={5}
+            sideOffset={0}
             className='rounded-xl border-slate-100 z-10000 bg-white'
           >
             {' '}
@@ -98,7 +98,7 @@ const DateFilter = ({
           </SelectTrigger>
           <SelectContent
             position='popper'
-            sideOffset={5}
+            sideOffset={0}
             className='rounded-xl border-slate-100 z-10000 bg-white'
           >
             {' '}
@@ -130,7 +130,7 @@ const DateFilter = ({
           </SelectTrigger>
           <SelectContent
             position='popper'
-            sideOffset={5}
+            sideOffset={0}
             className='rounded-xl border-slate-100 z-10000 bg-white'
           >
             {' '}

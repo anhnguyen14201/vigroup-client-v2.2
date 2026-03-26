@@ -24,9 +24,14 @@ import {
   MaterialManagementProvider,
   useMaterialContext,
 } from '@/components/features/materials/hooks'
+import DateFilter from '@/components/shared/DateFilter'
+import { MaterialList } from '@/components/features/materials/components'
 
 const MaterialManagementContent = () => {
-  const { user, handleLogout } = useMaterialContext()
+  const { user, handleLogout, invoices, day, month, year, setDateFilter } =
+    useMaterialContext()
+
+  console.log(invoices)
 
   return (
     <>
@@ -41,6 +46,13 @@ const MaterialManagementContent = () => {
       >
         <div className='mx-auto w-full mb-8'>
           <div className='flex flex-col md:flex-row md:items-end justify-between gap-6'>
+            <DateFilter
+              day={day}
+              month={month}
+              year={year}
+              onFilterChange={setDateFilter}
+            />
+
             {/* <div>{isAllProjects && <ProjectFilters />}</div>
 
             <div className='flex flex-col md:flex-row md:items-end justify-between gap-6'>
@@ -106,6 +118,10 @@ const MaterialManagementContent = () => {
         <CategoryFormModal />
 
         <ProjectDetailModal /> */}
+
+        <div className='w-full flex-1'>
+          <MaterialList />
+        </div>
       </div>
     </>
   )
@@ -113,7 +129,7 @@ const MaterialManagementContent = () => {
 
 export default function MaterialManagementPage() {
   return (
-    <MaterialManagementProvider itemsPerPage={8}>
+    <MaterialManagementProvider itemsPerPage={10}>
       <MaterialManagementContent />
     </MaterialManagementProvider>
   )
