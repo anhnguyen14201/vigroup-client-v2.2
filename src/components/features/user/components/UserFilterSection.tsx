@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { Briefcase, RotateCcw } from 'lucide-react'
 import {
+  ItemCounter,
   Select,
   SelectContent,
   SelectItem,
@@ -21,7 +22,6 @@ const UserFilterSection = () => {
     filteredRoles,
     setDateFilter,
     setSelectedRole,
-    setSearchQuery,
     resetAllFilters,
   } = useUserContext()
 

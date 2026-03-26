@@ -1,7 +1,11 @@
 'use client'
 
 import { createPortal } from 'react-dom'
-import { ConfirmDeleteModal, FloatingActionButton } from '@/components/shared'
+import {
+  ConfirmDeleteModal,
+  FloatingActionButton,
+  ItemCounter,
+} from '@/components/shared'
 import UserFormDrawer from '@/components/features/user/components/UserFormDrawer'
 import UserDetailModal from '@/components/features/user/components/UserDetailModal'
 import {
@@ -28,6 +32,8 @@ const UserManagementPageContent = () => {
     confirmDelete,
     selectedDetail,
     handleOpenForm,
+    displayUsers,
+    totalItems,
   } = useUserContext()
 
   return (
@@ -39,9 +45,18 @@ const UserManagementPageContent = () => {
         data-lenis-prevent
       >
         <div className='mx-auto w-full mb-8'>
-          <div className='flex flex-col md:flex-row md:items-end justify-between gap-6'>
-            <div>
+          <div className='flex flex-col lg:flex-row lg:items-end justify-between gap-6'>
+            <div className='flex gap-3 flex-col lg:flex-row  justify-center items-center'>
               <UserFilterSection />
+
+              <div className=''>
+                <ItemCounter
+                  currentCount={displayUsers.length}
+                  totalCount={totalItems}
+                  label='người dùng'
+                  className='ml-auto' // Đẩy sang bên phải nếu nằm trong flex container
+                />
+              </div>
             </div>
 
             {/* Tab Switcher */}

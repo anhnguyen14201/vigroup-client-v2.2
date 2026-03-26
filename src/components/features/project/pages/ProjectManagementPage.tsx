@@ -54,7 +54,6 @@ const ProjectManagementContent = () => {
 
     handleCreateNew,
   } = useProjectContext()
-  const FABIcon = isAllProjects ? FolderPlus : Plus
 
   return (
     <>

@@ -77,6 +77,7 @@ export const useUserManagement = (itemsPerPage: number) => {
     items: usersData,
     totalPages: apiTotalPages,
     isLoading,
+    totalItems: totalItemsUsers,
     mutate: refresh,
   } = usePaginatedCollection(
     isLoggedIn ? '/attendances' : null,
@@ -90,6 +91,7 @@ export const useUserManagement = (itemsPerPage: number) => {
     items: customerData,
     totalPages: apiTotalCustomerPages,
     isLoading: isLoadingCustomer,
+    totalItems: totalItemsCustomer,
     mutate: refreshCustomer,
   } = usePaginatedCollection(
     '/customer',
@@ -293,6 +295,11 @@ export const useUserManagement = (itemsPerPage: number) => {
   // ==========================================
   // 8. DERIVED COMPUTED DATA (Logic động)
   // ==========================================
+
+  const totalItems = useMemo(() => {
+    return subTab === 'staff' ? totalItemsUsers : totalItemsCustomer
+  }, [subTab, totalItemsUsers, totalItemsCustomer])
+
   const displayData = useMemo(() => {
     return subTab === 'staff' ? usersData : customerData
   }, [subTab, usersData, customerData])
@@ -346,6 +353,7 @@ export const useUserManagement = (itemsPerPage: number) => {
     // --- Data & Loading ---
     isLoading: isAnyLoading,
     displayUsers: displayData || [],
+    totalItems: totalItems || 0,
 
     usersData,
     apiTotalPages,
