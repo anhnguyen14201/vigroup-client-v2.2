@@ -154,7 +154,8 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className='relative bg-white w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl border-none'
+            className='relative bg-white w-full max-w-lg rounded-[2.5rem] overflow-hidden 
+                     '
           >
             {/* Header section - Adaptive color based on type */}
             <div
@@ -165,7 +166,10 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                   : 'bg-blue-600',
               )}
             >
-              <div className='flex items-center gap-3 text-2xl font-black uppercase tracking-tight'>
+              <div
+                className='flex items-center gap-3 text-2xl font-bold uppercase 
+                          tracking-tight'
+              >
                 {form.watch('type') === 'deposit' ? (
                   <Wallet className='w-7 h-7' />
                 ) : (
@@ -195,7 +199,7 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                   control={form.control}
                   name='type'
                   render={({ field }) => (
-                    <div className='flex bg-slate-100 p-1 rounded-full relative'>
+                    <div className='flex bg-slate-100 p-0.5 border rounded-full relative'>
                       {['payment', 'deposit'].map(t => {
                         const isDepositOption = t === 'deposit'
                         const isDisabled = isDepositOption && hasDeposit
@@ -249,7 +253,7 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                             type='number'
                             {...field}
                             onFocus={e => e.target.select()}
-                            className='h-12 px-5 text-md rounded-full border-none bg-slate-50 text-xl font-semibold focus-visible:ring-2 
+                            className='h-12 px-5 text-md rounded-full bg-slate-50 text-xl font-semibold focus-visible:ring-2 
                                     focus-visible:ring-slate-200 transition-all'
                           />
                         </FormControl>
@@ -273,7 +277,7 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                               <Button
                                 variant='outline'
                                 className={cn(
-                                  'h-12 rounded-full border-none bg-slate-50 pl-4 text-left font-bold text-slate-700',
+                                  'h-12 rounded-full bg-slate-50 pl-4 text-left font-bold text-slate-700',
                                   !field.value && 'text-muted-foreground',
                                 )}
                               >
@@ -287,7 +291,7 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                             </FormControl>
                           </PopoverTrigger>
                           <PopoverContent
-                            className='w-auto p-0 bg-white rounded-3xl border-none shadow-full z-300'
+                            className='w-auto p-0 bg-white rounded-3xl shadow-full z-300'
                             align='start'
                           >
                             <Calendar
@@ -317,7 +321,7 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                           defaultValue={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className='h-12 py-6 w-full rounded-full border-none bg-slate-50 font-bold text-slate-700 shadow-none'>
+                            <SelectTrigger className='h-12 py-6 w-full rounded-full bg-slate-50 font-bold text-slate-700 shadow-none'>
                               <SelectValue placeholder='Chọn phương thức' />
                             </SelectTrigger>
                           </FormControl>
@@ -361,7 +365,7 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                             }}
                             onFocus={() => setShowResults(true)}
                             // Thêm padding-right lớn hơn để không bị đè lên các icon
-                            className='h-12 px-5 pr-12 rounded-full border-none bg-slate-50 font-semibold text-slate-700 focus-visible:ring-2 focus-visible:ring-blue-100 transition-all'
+                            className='h-12 px-5 pr-12 rounded-full bg-slate-50 font-semibold text-slate-700 focus-visible:ring-2 focus-visible:ring-blue-100 transition-all'
                           />
                         </FormControl>
 
@@ -399,7 +403,7 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 5 }}
                             exit={{ opacity: 0, y: -10 }}
-                            className='absolute z-300 top-18 w-full bg-white rounded-2xl shadow-2xl border border-slate-50 max-h-[250px] overflow-y-auto p-2 custom-scrollbar'
+                            className='absolute z-300 top-18 w-full bg-white rounded-2xl shadow-2xl border border-slate-50 max-h-62.5 overflow-y-auto p-2 custom-scrollbar'
                           >
                             {customerData?.length > 0
                               ? customerData.map((person: any) => (
@@ -459,7 +463,7 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                           placeholder='Thông tin bổ sung...'
                           {...field}
                           onFocus={e => e.target.select()}
-                          className='rounded-2xl border-none bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-200 min-h-[100px] p-4 resize-none'
+                          className='rounded-2xl bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-200 min-h-25 p-4 resize-none'
                         />
                       </FormControl>
                       <FormMessage className='text-[11px]' />

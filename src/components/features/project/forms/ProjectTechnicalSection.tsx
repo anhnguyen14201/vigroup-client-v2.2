@@ -45,11 +45,12 @@ const ProjectTechnicalSection = ({
         {/* Mã dự án */}
         <Field label='Mã dự án' required>
           <Input
+            autoFocus
             value={commonData.projectCode}
             onChange={e => onProjectCodeChange(e.target.value)}
             onFocus={e => e.target.select()}
             placeholder='VIGROUP-2026'
-            className='rounded-full font-semibold bg-slate-50 border-none h-10 focus:ring-2 focus:ring-indigo-500/20'
+            className='rounded-full font-semibold bg-slate-50  h-10 focus:ring-2 focus:ring-indigo-500/20'
           />
           <ErrorMessage message={errors.projectCode} />
         </Field>
@@ -57,7 +58,7 @@ const ProjectTechnicalSection = ({
         {/* Kiểu dự án */}
         <Field label='Kiểu dự án' required>
           <Select value={commonData.category} onValueChange={onCategoryChange}>
-            <SelectTrigger className='w-full z-[1000] rounded-full bg-slate-50 border-none h-10 px-5 font-semibold focus:ring-indigo-500/20 outline-none shadow-none cursor-pointer'>
+            <SelectTrigger className='w-full z-1000 rounded-full bg-slate-50  h-10 px-5 font-semibold focus:ring-indigo-500/20 outline-none shadow-none cursor-pointer'>
               <SelectValue>
                 {selectedProjectType?.translations?.find(
                   (t: any) => t.language?.code === 'vi',
@@ -67,8 +68,8 @@ const ProjectTechnicalSection = ({
 
             <SelectContent
               position='popper'
-              sideOffset={4}
-              className='rounded-xl border-slate-100 z-[10000] bg-white shadow-lg'
+              sideOffset={0}
+              className='rounded-xl border-slate-100 z-1000 bg-white'
             >
               {allProjectTypes?.map((type: any) => {
                 const viName =
@@ -103,7 +104,7 @@ const ProjectTechnicalSection = ({
               }
               onFocus={e => e.target.select()}
               onWheel={e => (e.target as HTMLInputElement).blur()}
-              className='rounded-full bg-slate-50 border-none h-10 pl-10 focus:ring-2 focus:ring-indigo-500/20'
+              className='rounded-full bg-slate-50  h-10 pl-10 focus:ring-2 focus:ring-indigo-500/20'
             />
             <DollarSign
               size={14}
@@ -122,7 +123,7 @@ const ProjectTechnicalSection = ({
             }
             onFocus={e => e.target.select()}
             onWheel={e => (e.target as HTMLInputElement).blur()}
-            className='rounded-full bg-slate-50 border-none h-10 focus:ring-2 focus:ring-indigo-500/20'
+            className='rounded-full bg-slate-50  h-10 focus:ring-2 focus:ring-indigo-500/20'
           />
         </Field>
       </div>

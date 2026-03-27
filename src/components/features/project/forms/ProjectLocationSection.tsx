@@ -30,7 +30,7 @@ const ProjectLocationSection = ({
           onChange={e => onChange('location', e.target.value)}
           onFocus={e => e.target.select()}
           placeholder='VD: 123 Street, Prague, Czech Republic'
-          className='rounded-full bg-slate-50 border-none h-11 font-medium focus:ring-2 focus:ring-indigo-500/20'
+          className='rounded-full bg-slate-50 h-11 font-medium focus:ring-2 focus:ring-indigo-500/20'
         />
       </Field>
 
@@ -40,14 +40,14 @@ const ProjectLocationSection = ({
           value={longitude}
           onChange={e => onChange('longitude', e.target.value)}
           onFocus={e => e.target.select()}
-          className='rounded-full bg-slate-50 border-none h-10 focus:ring-2 focus:ring-indigo-500/20'
+          className='rounded-full bg-slate-50 h-10 focus:ring-2 focus:ring-indigo-500/20'
         />
         <Input
           placeholder='Vĩ độ (Lat)'
           value={latitude}
           onChange={e => onChange('latitude', e.target.value)}
           onFocus={e => e.target.select()}
-          className='rounded-full bg-slate-50 border-none h-10 focus:ring-2 focus:ring-indigo-500/20'
+          className='rounded-full bg-slate-50 h-10 focus:ring-2 focus:ring-indigo-500/20'
         />
       </div>
     </section>

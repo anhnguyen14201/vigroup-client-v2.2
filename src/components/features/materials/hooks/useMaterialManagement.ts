@@ -10,7 +10,9 @@ export const useMaterialManagement = (itemsPerPage: number = 10) => {
   const { handleLogout } = useAuth()
   const { user } = useAuthStore() as any
   const { searchParams, setQuery } = useQueryState()
-
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  // Thêm vào phần LOCAL STATES
+  const [selectedInvoice, setSelectedInvoice] = useState<any>(null)
   // ==========================================
   // 1. LOCAL STATES (Sync ban đầu từ URL)
   // ==========================================
@@ -73,6 +75,7 @@ export const useMaterialManagement = (itemsPerPage: number = 10) => {
     items: invoices,
     totalPages,
     totalItems,
+    totalInvoiceAmount,
     isLoading,
     mutate: refreshInvoices,
   } = usePaginatedCollection(
@@ -192,6 +195,21 @@ export const useMaterialManagement = (itemsPerPage: number = 10) => {
     })
   }
 
+  const handleEditInvoice = (invoice: any) => {
+    setSelectedInvoice(invoice)
+    setIsModalOpen(true)
+  }
+
+  const handleAddInvoice = () => {
+    setSelectedInvoice(null)
+    setIsModalOpen(true)
+  }
+
+  const closeInvoiceModal = () => {
+    setIsModalOpen(false)
+    setSelectedInvoice(null)
+  }
+
   return {
     user,
     handleLogout,
@@ -199,6 +217,10 @@ export const useMaterialManagement = (itemsPerPage: number = 10) => {
     totalItems: totalItems || 0,
     totalPages: totalPages || 1,
     isLoading,
+    isModalOpen,
+    setIsModalOpen,
+    selectedInvoice,
+    setSelectedInvoice,
     refreshInvoices,
     currentPage,
     searchTerm,
@@ -222,5 +244,9 @@ export const useMaterialManagement = (itemsPerPage: number = 10) => {
     setPurchasePlace,
     setDateFilter,
     resetFilters,
+    handleEditInvoice,
+    handleAddInvoice,
+    closeInvoiceModal,
+    totalInvoiceAmount,
   }
 }

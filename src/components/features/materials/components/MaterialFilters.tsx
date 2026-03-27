@@ -10,6 +10,7 @@ import {
 import { ItemCounter } from '@/components/shared'
 import { useMaterialContext } from '../hooks' // Giả định hook của Anh
 import DateFilter from '@/components/shared/DateFilter'
+import { Button } from '@/components/ui'
 
 // 1. Config cho Nhóm hóa đơn (invoiceGroup)
 const groupLabels: Record<string, string> = {
@@ -53,6 +54,7 @@ const MaterialFilters = () => {
     setProjIds,
     purchasePlace,
     setPurchasePlace,
+    setIsModalOpen,
     // Giả định Anh có list users và projects từ context để render select
     users,
     projects,
@@ -274,6 +276,13 @@ const MaterialFilters = () => {
           ))}
         </SelectContent>
       </Select>
+
+      <Button
+        onClick={() => setIsModalOpen(true)}
+        className='rounded-full uppercase text-xs'
+      >
+        thêm hóa đơn
+      </Button>
 
       {/* 5. Item Counter */}
       <div className='ml-auto'>

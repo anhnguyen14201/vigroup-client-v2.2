@@ -226,7 +226,7 @@ const UserFormDrawer = () => {
                   {...register('fullName', {})}
                   onFocus={e => e.target.select()}
                   placeholder='VD: Nguyen Van A'
-                  className={`rounded-full bg-slate-50 border-none h-10 focus-visible:ring-1 ${errors.fullName ? 'ring-1 ring-red-500' : ''}`}
+                  className={`rounded-full bg-slate-50 h-10 focus-visible:ring-1 ${errors.fullName ? 'ring-1 ring-red-500' : ''}`}
                 />
                 <ErrorMessage message={errors.fullName?.message as string} />
               </div>
@@ -239,7 +239,7 @@ const UserFormDrawer = () => {
                   {...register('phone')}
                   onFocus={e => e.target.select()}
                   placeholder='777...'
-                  className={`rounded-full bg-slate-50 border-none h-10 focus-visible:ring-1 ${errors.phone ? 'ring-1 ring-red-500' : ''}`}
+                  className={`rounded-full bg-slate-50 h-10 focus-visible:ring-1 ${errors.phone ? 'ring-1 ring-red-500' : ''}`}
                 />
                 <ErrorMessage message={errors.phone?.message as string} />
               </div>
@@ -251,7 +251,7 @@ const UserFormDrawer = () => {
                   {...register('email')}
                   onFocus={e => e.target.select()}
                   placeholder='example@gmail.com'
-                  className={`rounded-full bg-slate-50 border-none h-10 focus-visible:ring-1 ${errors.email ? 'ring-1 ring-red-500' : ''}`}
+                  className={`rounded-full bg-slate-50 h-10 focus-visible:ring-1 ${errors.email ? 'ring-1 ring-red-500' : ''}`}
                 />
                 <ErrorMessage message={errors.email?.message as string} />
               </div>
@@ -271,7 +271,7 @@ const UserFormDrawer = () => {
                     <Input
                       {...register('street')}
                       placeholder='Số nhà, tên đường...'
-                      className='rounded-full bg-slate-50 border-none h-10 focus-visible:ring-1'
+                      className='rounded-full bg-slate-50 h-10 focus-visible:ring-1'
                     />
                   </div>
 
@@ -281,14 +281,14 @@ const UserFormDrawer = () => {
                       <Input
                         {...register('province')}
                         placeholder='Thành phố / Tỉnh'
-                        className='rounded-full bg-slate-50 border-none h-10 focus-visible:ring-1'
+                        className='rounded-full bg-slate-50 h-10 focus-visible:ring-1'
                       />
                     </div>
                     <div className='space-y-1.5'>
                       <Input
                         {...register('postalCode')}
                         placeholder='Mã bưu điện (PSC)'
-                        className='rounded-full bg-slate-50 border-none h-10 focus-visible:ring-1'
+                        className='rounded-full bg-slate-50 h-10 focus-visible:ring-1'
                       />
                     </div>
                   </div>
@@ -313,7 +313,7 @@ const UserFormDrawer = () => {
                           value={field.value}
                         >
                           <SelectTrigger
-                            className={`rounded-full w-full bg-slate-50 border-none h-11 shadow-none focus:ring-0 focus:ring-offset-0 
+                            className={`rounded-full w-full bg-slate-50 h-11 shadow-none focus:ring-0 focus:ring-offset-0 
                         focus:outline-none focus-visible:ring-0 focus-visible:outline-none ${errors.role ? 'ring-1 ring-primary' : ''}`}
                           >
                             <SelectValue placeholder='Chọn Role' />
@@ -348,7 +348,7 @@ const UserFormDrawer = () => {
                     {...register('position')}
                     onFocus={e => e.target.select()}
                     placeholder='Vị trí...'
-                    className={`rounded-full bg-slate-50 border-none h-10 focus-visible:ring-1 ${errors.position ? 'ring-1 ring-red-500' : ''}`}
+                    className={`rounded-full bg-slate-50 h-10 focus-visible:ring-1 ${errors.position ? 'ring-1 ring-red-500' : ''}`}
                   />
                   <ErrorMessage message={errors.position?.message as string} />
                 </div>
@@ -361,7 +361,7 @@ const UserFormDrawer = () => {
                       {...register('hourlyRate')}
                       onFocus={e => e.target.select()}
                       type='number'
-                      className={`rounded-full bg-slate-50 border-none h-10 pr-8 focus-visible:ring-1 ${errors.hourlyRate ? 'ring-1 ring-red-500' : ''}`}
+                      className={`rounded-full bg-slate-50 h-10 pr-8 focus-visible:ring-1 ${errors.hourlyRate ? 'ring-1 ring-red-500' : ''}`}
                     />
                     <span className='absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400'>
                       Kč
@@ -385,7 +385,7 @@ const UserFormDrawer = () => {
                     {...register('companyName')}
                     onFocus={e => e.target.select()}
                     placeholder='VD: VI Group s.r.o'
-                    className={`rounded-full bg-slate-50 border-none h-10 focus-visible:ring-1 ${errors.companyName ? 'ring-1 ring-red-500' : ''}`}
+                    className={`rounded-full bg-slate-50 h-10 focus-visible:ring-1 ${errors.companyName ? 'ring-1 ring-red-500' : ''}`}
                   />
                   <ErrorMessage
                     message={errors.companyName?.message as string}
@@ -400,7 +400,7 @@ const UserFormDrawer = () => {
                       {...register('ico')}
                       onFocus={e => e.target.select()}
                       placeholder='12345...'
-                      className='rounded-full bg-slate-50 border-none h-10'
+                      className='rounded-full bg-slate-50 h-10'
                     />
                   </div>
                   <div className='space-y-1.5'>
@@ -411,7 +411,7 @@ const UserFormDrawer = () => {
                       {...register('dic')}
                       onFocus={e => e.target.select()}
                       placeholder='CZ123...'
-                      className='rounded-full bg-slate-50 border-none h-10'
+                      className='rounded-full bg-slate-50 h-10'
                     />
                   </div>
                 </div>
@@ -441,7 +441,7 @@ const UserFormDrawer = () => {
                     onFocus={e => e.target.select()}
                     type={showPass ? 'text' : 'password'}
                     placeholder='Mật khẩu'
-                    className={`rounded-full bg-slate-50 border-none h-10 pr-10 focus-visible:ring-1 ${errors.password ? 'ring-1 ring-red-500' : ''}`}
+                    className={`rounded-full bg-slate-50 h-10 pr-10 focus-visible:ring-1 ${errors.password ? 'ring-1 ring-red-500' : ''}`}
                   />
                   <button
                     type='button'
@@ -458,7 +458,7 @@ const UserFormDrawer = () => {
                     onFocus={e => e.target.select()}
                     type={showConfirmPass ? 'text' : 'password'}
                     placeholder='Xác nhận mật khẩu'
-                    className={`rounded-full bg-slate-50 border-none h-10 pr-10 focus-visible:ring-1 ${errors.confirmPassword ? 'ring-1 ring-red-500' : ''}`}
+                    className={`rounded-full bg-slate-50 h-10 pr-10 focus-visible:ring-1 ${errors.confirmPassword ? 'ring-1 ring-red-500' : ''}`}
                   />
                   <button
                     type='button'

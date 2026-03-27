@@ -57,7 +57,7 @@ const ProjectImageSection = ({
         <button
           type='button'
           onClick={() => fileInputRef.current?.click()}
-          className='aspect-square rounded-[40px] cursor-pointer border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-slate-400 hover:bg-slate-50 hover:border-indigo-300 transition-all group'
+          className='aspect-square rounded-[40px] cursor-pointer border-2 border-dashed flex flex-col items-center justify-center text-slate-400 hover:bg-slate-50 hover:border-indigo-300 transition-all group'
         >
           <div className='w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center mb-3 group-hover:bg-indigo-50 group-hover:text-indigo-500 transition-colors'>
             <Camera size={28} />

@@ -77,7 +77,7 @@ const ProjectCustomerSection = ({
             disabled={!!customerInfo.customerId}
             onFocus={e => e.target.select()}
             onChange={e => handleSearchChange(e.target.value)}
-            className='rounded-full bg-slate-50 border-none h-10 pl-12 focus:ring-2 focus:ring-indigo-500/20 disabled:bg-indigo-50 disabled:text-indigo-900 disabled:font-bold'
+            className='rounded-full bg-slate-50 h-10 pl-12 focus:ring-2 focus:ring-indigo-500/20 disabled:bg-indigo-50 disabled:text-indigo-900 disabled:font-bold'
           />
 
           {customerInfo.customerId && (
@@ -92,7 +92,7 @@ const ProjectCustomerSection = ({
 
         {/* DROPDOWN KẾT QUẢ (Nổi lên trên) */}
         {!isLoading && isDropdownOpen && customerData.length > 0 && (
-          <div className='absolute z-[110] w-full mt-2 bg-white border border-slate-100 rounded-3xl shadow-2xl overflow-hidden max-h-60 overflow-y-auto top-full'>
+          <div className='absolute z-110 w-full mt-2 bg-white border rounded-3xl overflow-hidden max-h-60 overflow-y-auto top-full'>
             {customerData.map(c => (
               <div
                 key={c._id}
@@ -113,14 +113,14 @@ const ProjectCustomerSection = ({
       </div>
 
       {/* FORM CHI TIẾT - Luôn hiển thị để người dùng nhập tiếp SĐT/Email */}
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-slate-50/50 rounded-[32px] border border-dashed border-slate-200'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-slate-50/50 rounded-4xl border border-dashed border-slate-200'>
         <Field label='Tên hiển thị'>
           <Input
             value={customerInfo.name}
             disabled={!!customerInfo.customerId}
             onChange={e => onChange({ ...customerInfo, name: e.target.value })}
             onFocus={e => e.target.select()}
-            className='rounded-full bg-white border-none h-10'
+            className='rounded-full bg-white h-10'
             placeholder='Tên khách hàng...'
           />
         </Field>
@@ -138,7 +138,7 @@ const ProjectCustomerSection = ({
                 onChange({ ...customerInfo, phone: e.target.value })
               }
               onFocus={e => e.target.select()}
-              className='rounded-full bg-white border-none h-10 pl-10'
+              className='rounded-full bg-white h-10 pl-10'
               placeholder='Số điện thoại...'
             />
           </div>
@@ -157,7 +157,7 @@ const ProjectCustomerSection = ({
                 onChange({ ...customerInfo, email: e.target.value })
               }
               onFocus={e => e.target.select()}
-              className='rounded-full bg-white border-none h-10 pl-10'
+              className='rounded-full bg-white h-10 pl-10'
               placeholder='Địa chỉ email...'
             />
           </div>

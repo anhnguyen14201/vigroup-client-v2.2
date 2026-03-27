@@ -1,6 +1,27 @@
 import { api } from '@/lib'
 
 export const purchaseInvoiceService = {
+  createPurchaseInvoice: async (formData: FormData) => {
+    const response = await api.post('/purchase-invoice', formData, {
+      withCredentials: true,
+    })
+    return response.data
+  },
+
+  updatePurchaseInvoice: async (_id: string, data: any) => {
+    const response = await api.put(`/purchase-invoice/${_id}`, data, {
+      withCredentials: true,
+    })
+    return response.data
+  },
+
+  deletePurchaseInvoice: async (_id: string) => {
+    const response = await api.delete(`/purchase-invoice/${_id}`, {
+      withCredentials: true,
+    })
+    return response.data
+  },
+
   getSummaryPurchaseProjects: async ({ pageIndex, pageSize, filters }: any) => {
     const response = await api.get('/purchase-invoice/purchase-projects', {
       params: {

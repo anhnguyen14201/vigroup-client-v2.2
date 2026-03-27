@@ -73,6 +73,7 @@ const ProjectFormModal: FC = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className='absolute inset-0 bg-slate-900/40 backdrop-blur-md'
+          onClick={handleBackdropClick}
         />
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 10 }}

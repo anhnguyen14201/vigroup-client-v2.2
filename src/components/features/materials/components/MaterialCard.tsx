@@ -10,6 +10,8 @@ import {
   Layers,
   FileClock,
   Banknote,
+  Pencil,
+  Trash2,
 } from 'lucide-react'
 import { format } from 'date-fns'
 import { vi } from 'date-fns/locale'
@@ -18,9 +20,16 @@ import { formatCurrency } from '@/utils'
 interface MaterialCardProps {
   invoice: any
   onPreview: (files: string[], index: number) => void
+  onEdit: (invoice: any) => void // Thêm prop onEdit
+  onDelete: (invoice: any) => void // Thêm prop onDelete
 }
 
-export const MaterialCard = ({ invoice, onPreview }: MaterialCardProps) => {
+export const MaterialCard = ({
+  invoice,
+  onPreview,
+  onEdit,
+  onDelete,
+}: MaterialCardProps) => {
   // 1. Cấu hình nhóm hóa đơn (invoiceGroup)
   const getGroupConfig = (group: string) => {
     switch (group) {
@@ -86,6 +95,58 @@ export const MaterialCard = ({ invoice, onPreview }: MaterialCardProps) => {
                 hover:border-primary gap-2'
       onClick={() => hasImages && onPreview(invoice.invoiceImages, 0)}
     >
+      <div
+        className='absolute inset-0 bg-white/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 
+                      transition-all duration-300 flex items-center justify-center gap-3 z-10'
+      >
+        <button
+          onClick={e => {
+            e.stopPropagation() // Ngăn sự kiện click vào Card (mở preview)
+            onEdit(invoice)
+          }}
+          className='w-12 h-12 bg-white text-emerald-500 rounded-full border cursor-pointer 
+                     hover:bg-emerald-400 hover:text-white transition-all duration-200 
+                     flex items-center justify-center scale-90 group-hover:scale-100'
+        >
+          <Pencil size={20} />
+        </button>
+        <button
+          onClick={e => {
+            e.stopPropagation()
+            onDelete(invoice)
+          }}
+          className='w-12 h-12 bg-white text-rose-500 rounded-full cursor-pointer border
+                     hover:bg-rose-400 hover:text-white transition-all duration-200 
+                     flex items-center justify-center scale-90 group-hover:scale-100'
+        >
+          <Trash2 size={20} />
+        </button>
+      </div>
+
+      {/* --- 2. MOBILE ACTIONS (Hiện trực tiếp nút nhỏ trên Mobile) --- */}
+      <div className='lg:hidden absolute top-10 right-3 flex gap-2 z-10'>
+        <button
+          onClick={e => {
+            e.stopPropagation()
+            onEdit(invoice)
+          }}
+          className='w-8 h-8 bg-slate-100/80 backdrop-blur-md text-slate-600 rounded-full 
+                     flex items-center justify-center border border-white shadow-sm active:bg-blue-500 active:text-white'
+        >
+          <Pencil size={14} />
+        </button>
+        <button
+          onClick={e => {
+            e.stopPropagation()
+            onDelete(invoice)
+          }}
+          className='w-8 h-8 bg-slate-100/80 backdrop-blur-md text-red-500 rounded-full 
+                     flex items-center justify-center border border-white shadow-sm active:bg-red-500 active:text-white'
+        >
+          <Trash2 size={14} />
+        </button>
+      </div>
+
       {/* Header: Nhóm & Trạng thái ảnh */}
       <div className='flex justify-between items-start'>
         <div className='flex items-center gap-3'>

@@ -1,41 +1,24 @@
 'use client'
 
+import { Plus, Wallet } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { FolderPlus, Plus } from 'lucide-react'
-
 import { AdminHeader } from '@/components/layouts'
-import {
-  ConfirmDeleteModal,
-  FloatingActionButton,
-  GenericActionBar,
-  LanguageSwitcher,
-  TabSwitcher,
-} from '@/components/shared'
+import { FloatingActionButton } from '@/components/shared'
 
-import {
-  CategoryFormModal,
-  ProjectDetailModal,
-  ProjectFilters,
-  ProjectFormModal,
-  ProjectList,
-} from '@/components/features/project/components'
-import { useProjectContext } from '@/components/features/project/hooks/ProjectManagementContext'
 import {
   MaterialManagementProvider,
   useMaterialContext,
 } from '@/components/features/materials/hooks'
-import DateFilter from '@/components/shared/DateFilter'
 import {
   AddInvoiceModal,
   MaterialList,
 } from '@/components/features/materials/components'
 import MaterialFilters from '@/components/features/materials/components/MaterialFilters'
-import { useState } from 'react'
-import { Button } from '@/components/ui'
+import { formatCurrency } from '@/utils'
 
 const MaterialManagementContent = () => {
-  const { user, handleLogout, projects } = useMaterialContext()
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const { user, handleLogout, handleAddInvoice, totalInvoiceAmount } =
+    useMaterialContext()
   return (
     <>
       <AdminHeader user={user} onLogout={handleLogout}>
@@ -53,30 +36,42 @@ const MaterialManagementContent = () => {
           </div>
         </div>
 
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
+          {/* Card Tổng Tiền */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className='bg-white rounded-2xl
+                      flex items-center gap-4'
+          >
+            <div className='w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600'>
+              <Wallet className='w-6 h-6' />
+            </div>
+            <div>
+              <p className='text-sm font-medium text-slate-500'>
+                Tổng giá trị hóa đơn
+              </p>
+              <h2 className='text-2xl font-bold text-slate-900'>
+                {formatCurrency(totalInvoiceAmount)}
+              </h2>
+            </div>
+          </motion.div>
+        </div>
+
         <div className='w-full flex-1'>
           <MaterialList />
         </div>
-        <Button onClick={() => setIsModalOpen(true)}>thêm hóa đơn</Button>
       </div>
-      <AddInvoiceModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        projects={projects} // Truyền list projects từ context
-      />
-
+      <AddInvoiceModal />
       {/* 2. Nút FAB để mở Modal */}
-      <FloatingActionButton
-        onClick={() => setIsModalOpen(true)}
-        icon={Plus}
-        className='bg-blue-600 active:bg-blue-700' // Đổi màu cho nổi bật
-      />
+      <FloatingActionButton onClick={handleAddInvoice} icon={Plus} />{' '}
     </>
   )
 }
 
 export default function MaterialManagementPage() {
   return (
-    <MaterialManagementProvider itemsPerPage={10}>
+    <MaterialManagementProvider itemsPerPage={12}>
       <MaterialManagementContent />
     </MaterialManagementProvider>
   )

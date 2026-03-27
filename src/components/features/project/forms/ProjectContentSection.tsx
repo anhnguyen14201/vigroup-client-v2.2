@@ -48,7 +48,7 @@ const ProjectContentSection = ({
           onChange={e => onTranslationChange('name', e.target.value)}
           onFocus={e => e.target.select()}
           placeholder='Tên dự án hiển thị...'
-          className='rounded-full bg-slate-50 border-none h-11 text-base font-semibold focus:ring-2 focus:ring-indigo-500/20'
+          className='rounded-full bg-slate-50 h-11 text-base font-semibold focus:ring-2 focus:ring-indigo-500/20'
         />
         <ErrorMessage message={errors[`name_${globalLang}`]} />
       </Field>
@@ -60,7 +60,7 @@ const ProjectContentSection = ({
           onChange={e => onTranslationChange('buildingType', e.target.value)}
           onFocus={e => e.target.select()}
           placeholder='VD: Biệt thự vườn, Chung cư cao cấp...'
-          className='rounded-full bg-slate-50 border-none h-11 font-medium focus:ring-2 focus:ring-indigo-500/20'
+          className='rounded-full bg-slate-50 h-11 font-medium focus:ring-2 focus:ring-indigo-500/20'
         />
       </Field>
 
@@ -74,7 +74,7 @@ const ProjectContentSection = ({
             }
             onFocus={e => e.target.select()}
             placeholder='Nhập mô tả chuẩn SEO (nên từ 150-160 ký tự)...'
-            className='rounded-2xl bg-slate-50 border-none min-h-20 resize-none text-sm pb-8 focus:ring-2 focus:ring-indigo-500/20'
+            className='rounded-2xl bg-slate-50 min-h-20 resize-none text-sm pb-8 focus:ring-2 focus:ring-indigo-500/20'
           />
 
           <div className='absolute bottom-2 right-4 flex items-center gap-1.5'>

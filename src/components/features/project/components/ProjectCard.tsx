@@ -147,6 +147,28 @@ const ProjectCard = () => {
                 </div>
               </div>
 
+              {/* Thêm vào ngay dưới thẻ Thumbnail Area hoặc Info Section */}
+              <div className='absolute top-4 right-4 md:hidden flex gap-2'>
+                <button
+                  onClick={e => {
+                    e.stopPropagation()
+                    handleEditProject?.(project)
+                  }}
+                  className='p-2 bg-white/90 backdrop-blur-md rounded-full shadow-sm border border-slate-200 text-slate-600'
+                >
+                  <Pencil size={14} />
+                </button>
+                <button
+                  onClick={e => {
+                    e.stopPropagation()
+                    handleDeleteProject?.(project)
+                  }}
+                  className='p-2 bg-white/90 backdrop-blur-md rounded-full shadow-sm border border-slate-200 text-red-500'
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+
               {/* Project Info Section */}
               <div className='space-y-2'>
                 <div className='flex flex-col gap-1'>

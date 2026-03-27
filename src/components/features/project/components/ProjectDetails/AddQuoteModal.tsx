@@ -103,7 +103,7 @@ const AddQuoteModal = ({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className='fixed inset-0 z-[250] flex items-center justify-center p-4'>
+        <div className='fixed inset-0 z-250 flex items-center justify-center p-4'>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -162,7 +162,7 @@ const AddQuoteModal = ({
                         <Input
                           placeholder='Ví dụ: Xây tường...'
                           {...field}
-                          className='h-12 rounded-full border-none bg-slate-50 font-semibold'
+                          className='h-12 rounded-full bg-slate-50 font-semibold'
                         />
                       </FormControl>
                       <FormMessage />
@@ -180,9 +180,11 @@ const AddQuoteModal = ({
                         </FormLabel>
                         <FormControl>
                           <Input
+                            onWheel={e => (e.target as HTMLInputElement).blur()}
+                            onFocus={e => e.target.select()}
                             type='number'
                             {...field}
-                            className='h-12 rounded-full border-none bg-slate-50 font-bold text-center'
+                            className='h-12 rounded-full bg-slate-50 font-semibold text-center'
                           />
                         </FormControl>
                       </FormItem>
@@ -198,9 +200,11 @@ const AddQuoteModal = ({
                         </FormLabel>
                         <FormControl>
                           <Input
+                            onWheel={e => (e.target as HTMLInputElement).blur()}
+                            onFocus={e => e.target.select()}
                             type='number'
                             {...field}
-                            className='h-12 rounded-full border-none bg-slate-50 font-bold text-blue-600'
+                            className='h-12 rounded-full font-semibold bg-slate-50'
                           />
                         </FormControl>
                       </FormItem>

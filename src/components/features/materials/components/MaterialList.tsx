@@ -5,10 +5,14 @@ import { useMaterialContext } from '../hooks'
 import { MaterialCard } from './MaterialCard'
 import Pagination from '@/components/shared/Pagination'
 import {
+  ConfirmDeleteModal,
   DocumentPreviewModal,
   EmptyState,
   LoadingState,
 } from '@/components/shared'
+import { purchaseInvoiceService } from '@/services/purchaseInvoiceService'
+import nProgress from 'nprogress'
+import { toast } from 'sonner'
 
 export const MaterialList = () => {
   const {
@@ -17,7 +21,13 @@ export const MaterialList = () => {
     currentPage,
     totalPages,
     setCurrentPage,
-    totalItems,
+    selectedInvoice,
+    setSelectedInvoice,
+    handleEditInvoice,
+    refreshInvoices,
+
+    // Giả sử context có hàm deleteInvoice
+    // deleteInvoice
   } = useMaterialContext()
 
   // Trạng thái modal
@@ -30,6 +40,56 @@ export const MaterialList = () => {
     files: [],
     index: 0,
   })
+
+  // Trạng thái cho Sửa & Xóa
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  const handleDeleteClick = (invoice: any) => {
+    setSelectedInvoice(invoice)
+    setIsDeleteModalOpen(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!selectedInvoice?._id) return // Bảo vệ nếu chưa có ID
+
+    setIsDeleting(true)
+    nProgress.start()
+
+    try {
+      const result = await purchaseInvoiceService.deletePurchaseInvoice(
+        selectedInvoice._id,
+      )
+
+      if (result.success) {
+        // 1. Đóng modal ngay lập tức
+        setIsDeleteModalOpen(false)
+
+        // 2. Hiển thị thông báo thành công (Dùng toast của sonner)
+        toast.success(
+          `Đã xóa hóa đơn tại ${selectedInvoice.purchasePlace} thành công!`,
+        )
+
+        // 3. Load lại danh sách mới
+        refreshInvoices()
+
+        // 4. Reset state hóa đơn đang chọn
+        setSelectedInvoice(null)
+      } else {
+        // Trường hợp backend trả về success: false
+        toast.error(result.message || 'Không thể xóa hóa đơn này.')
+      }
+    } catch (error: any) {
+      // Lỗi logic hoặc lỗi mạng
+      toast.error(
+        error.response?.data?.message || 'Có lỗi xảy ra, vui lòng thử lại!',
+      )
+      console.error('❌ Delete Invoice Error:', error)
+    } finally {
+      nProgress.done()
+      setIsDeleting(false)
+    }
+  }
 
   const handleOpenPreview = (files: string[], index: number) => {
     setPreviewConfig({ isOpen: true, files, index })
@@ -60,13 +120,24 @@ export const MaterialList = () => {
             transition={{ delay: index * 0.05 }}
           >
             <MaterialCard
-              key={invoice._id}
               invoice={invoice}
               onPreview={handleOpenPreview}
+              onEdit={() => handleEditInvoice(invoice)}
+              onDelete={handleDeleteClick}
             />
           </motion.div>
         ))}
       </div>
+
+      {/* 2. Modal Xác nhận xóa */}
+      <ConfirmDeleteModal
+        open={isDeleteModalOpen}
+        onOpenChange={setIsDeleteModalOpen}
+        onConfirm={handleConfirmDelete}
+        loading={isDeleting}
+        title='Xóa hóa đơn?'
+        description={`Bạn có chắc chắn muốn xóa hóa đơn tại ${selectedInvoice?.purchasePlace}?`}
+      />
       <div className='mt-4'>
         <Pagination
           currentPage={currentPage}
