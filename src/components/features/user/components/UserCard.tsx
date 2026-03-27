@@ -41,6 +41,7 @@ const UserCard = React.memo(
       return { isHourly: false, totalIncome: 0 }
     }, [user])
 
+
     return (
       <div
         className={`p-6 rounded-4xl border group relative transition-all duration-300
@@ -225,6 +226,14 @@ const UserCard = React.memo(
                 </p>
                 <p className='text-sm font-mono font-bold text-slate-600'>
                   {user.dic || '---'}
+                </p>
+              </div>
+            </div>
+            <div className='flex items-start gap-3'>
+              <MapPin size={14} className='mt-0.5 text-indigo-500' />
+              <div className='flex-1 min-w-0'>
+                <p className='text-sm font-semibold italic text-slate-700 truncate'>
+                  {user.address || 'N/A'}
                 </p>
               </div>
             </div>

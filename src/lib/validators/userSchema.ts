@@ -34,6 +34,7 @@ export const userSchema = z
     street: z.string().trim().optional(),
     province: z.string().trim().optional(),
     postalCode: z.string().trim().optional(),
+    address: z.string().trim().optional(),
 
     // BẢO MẬT
     password: z.string().trim().optional().or(z.literal('')),
@@ -52,7 +53,7 @@ export const userSchema = z
       path: ['confirmPassword'],
     },
   )
-  
+
   // 2. Kiểm tra độ mạnh mật khẩu (Chỉ khi có nhập)
   .refine(
     data => {

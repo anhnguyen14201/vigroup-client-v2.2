@@ -37,8 +37,6 @@ export function usePaginatedCollection<T, F = any>(
     },
   )
 
-  console.log(data)
-
   return {
     // Data chính
     items: (data?.data || data) ?? [],

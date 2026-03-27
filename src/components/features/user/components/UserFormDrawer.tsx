@@ -20,6 +20,7 @@ import {
   Fingerprint,
   ShieldAlert,
   MapPin,
+  Loader2,
 } from 'lucide-react'
 
 import { userSchema } from '@/lib'
@@ -40,6 +41,7 @@ import {
 } from '@/components/ui'
 import { DrawerFooter, ErrorMessage } from '@/components/shared'
 import { useUserContext } from '../hooks/UserManagementContext'
+import { useAresLookup } from '@/hooks'
 
 const itemVariants = {
   hidden: { opacity: 0, y: 15 },
@@ -104,6 +106,8 @@ const UserFormDrawer = () => {
     control,
     reset,
     watch,
+    setValue,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(userSchema),
@@ -118,6 +122,7 @@ const UserFormDrawer = () => {
       password: '',
       confirmPassword: '',
       companyName: '',
+      address: '',
       ico: '',
       dic: '',
       street: '', // Thêm mới
@@ -126,6 +131,16 @@ const UserFormDrawer = () => {
       isBlock: false,
     },
   })
+
+  const { isFetching } = useAresLookup({
+    register,
+    handleSubmit,
+    control,
+    reset,
+    watch,
+    setValue,
+    getValues,
+  } as any)
 
   const isBlocked = watch('isBlock')
 
@@ -148,6 +163,7 @@ const UserFormDrawer = () => {
           companyName: editingUser.companyName || '',
           ico: editingUser.ico || '',
           dic: editingUser.dic || '',
+          address: editingUser.address || '',
           street: editingUser.street || '', // Thêm mới
           province: editingUser.province || '', // Thêm mới
           postalCode: editingUser.postalCode || '', // Thêm mới
@@ -166,6 +182,7 @@ const UserFormDrawer = () => {
           companyName: '',
           ico: '',
           dic: '',
+          address: '',
           street: '', // Thêm mới
           province: '', // Thêm mới
           postalCode: '', // Thêm mới
@@ -376,44 +393,66 @@ const UserFormDrawer = () => {
 
             {/* PHẦN RIÊNG CHO CUSTOMER */}
             {!isStaff && (
-              <motion.div variants={itemVariants} className='space-y-4 pt-2'>
-                <div className='space-y-1.5'>
-                  <Label className='text-[10px] font-bold uppercase tracking-widest text-indigo-600 flex items-center gap-2 ml-1'>
-                    <Building2 size={14} /> Tên công ty
-                  </Label>
-                  <Input
-                    {...register('companyName')}
-                    onFocus={e => e.target.select()}
-                    placeholder='VD: VI Group s.r.o'
-                    className={`rounded-full bg-slate-50 h-10 focus-visible:ring-1 ${errors.companyName ? 'ring-1 ring-red-500' : ''}`}
-                  />
-                  <ErrorMessage
-                    message={errors.companyName?.message as string}
-                  />
-                </div>
+              <motion.div
+                variants={itemVariants}
+                className='space-y-4 pt-4 border-t border-dashed'
+              >
+                <Label className='text-[10px] font-bold uppercase tracking-widest text-indigo-600 flex items-center gap-2 ml-1'>
+                  <Building2 size={14} /> Thông tin Công ty
+                </Label>
+
                 <div className='grid grid-cols-2 gap-3'>
                   <div className='space-y-1.5'>
-                    <Label className='text-[10px] font-bold uppercase tracking-widest text-indigo-600 flex items-center gap-2 ml-1'>
-                      <Fingerprint size={14} /> ICO
+                    <Label className='text-[9px] font-medium text-slate-400 ml-3'>
+                      ICO
                     </Label>
-                    <Input
-                      {...register('ico')}
-                      onFocus={e => e.target.select()}
-                      placeholder='12345...'
-                      className='rounded-full bg-slate-50 h-10'
-                    />
+                    <div className='relative'>
+                      <Input
+                        {...register('ico')}
+                        placeholder='12345...'
+                        className='rounded-full bg-indigo-50/30 border-indigo-100 h-10'
+                      />
+                      {isFetching && (
+                        <Loader2
+                          size={14}
+                          className='absolute right-3 top-3 animate-spin text-indigo-500'
+                        />
+                      )}
+                    </div>
                   </div>
                   <div className='space-y-1.5'>
-                    <Label className='text-[10px] font-bold uppercase tracking-widest text-indigo-600 flex items-center gap-2 ml-1'>
-                      <Hash size={14} /> DIC
+                    <Label className='text-[9px] font-medium text-slate-400 ml-3'>
+                      DIC
                     </Label>
                     <Input
                       {...register('dic')}
-                      onFocus={e => e.target.select()}
-                      placeholder='CZ123...'
+                      placeholder='CZ...'
                       className='rounded-full bg-slate-50 h-10'
                     />
                   </div>
+                </div>
+
+                <div className='space-y-1.5'>
+                  <Label className='text-[9px] font-medium text-slate-400 ml-3'>
+                    Tên công ty
+                  </Label>
+                  <Input
+                    {...register('companyName')}
+                    placeholder='Tên doanh nghiệp...'
+                    className='rounded-full bg-slate-50 h-10'
+                  />
+                </div>
+
+                <div className='space-y-1.5'>
+                  <Label className='text-[9px] font-medium text-slate-400 ml-3'>
+                    Địa chỉ công ty
+                  </Label>
+                  <Input
+                    {...register('address')}
+                    placeholder='Địa chỉ trụ sở...'
+                    className='rounded-full bg-slate-50 h-10 text-xs italic text-slate-500'
+                    // Để address là read-only nếu muốn dữ liệu chuẩn từ ARES
+                  />
                 </div>
               </motion.div>
             )}

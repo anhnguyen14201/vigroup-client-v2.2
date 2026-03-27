@@ -72,7 +72,7 @@ const ProjectCustomerSection = ({
             size={16}
           />
           <Input
-            placeholder='Tìm kiếm hoặc nhập tên khách hàng mới...'
+            placeholder='Nhập vào tên, số điện thoại hoặc email...'
             value={customerInfo.customerId ? customerInfo.name : searchValue}
             disabled={!!customerInfo.customerId}
             onFocus={e => e.target.select()}
