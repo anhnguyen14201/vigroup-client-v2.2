@@ -1,52 +1,62 @@
-import { useState, useEffect } from 'react'
-import { toast } from 'sonner'
-import { UseFormReturn } from 'react-hook-form'
+'use client'
 
-export const useAresLookup = (form: UseFormReturn<any>) => {
+import { useEffect, useRef, useState } from 'react'
+
+type AresLookupResult = {
+  companyName?: string
+  dic?: string
+  companyAddress?: string
+}
+
+type UseAresLookupParams = {
+  ico?: string
+  enabled?: boolean
+  onSuccess: (data: AresLookupResult) => void
+}
+
+export const useAresLookup = ({
+  ico,
+  enabled = true,
+  onSuccess,
+}: UseAresLookupParams) => {
   const [isFetching, setIsFetching] = useState(false)
-
-  // Lấy giá trị ico
-  const wIco = form.watch('ico')
+  const onSuccessRef = useRef(onSuccess)
+  useEffect(() => {
+    onSuccessRef.current = onSuccess
+  }, [onSuccess])
 
   useEffect(() => {
-    // CHẶN: Nếu không có ICO hoặc độ dài chưa đủ (ICO Séc thường là 8 số)
-    // Điều này ngăn việc gọi API ngay khi vừa mở Form (lúc ico = "")
-    if (!wIco || wIco.length < 8) {
-      return
-    }
+    const normalizedIco = (ico || '').trim()
+    if (!enabled || normalizedIco.length < 8) return
 
-    // DEBOUNCE: Đợi người dùng ngừng gõ 500ms rồi mới gọi API
     const delayDebounceFn = setTimeout(async () => {
       setIsFetching(true)
       try {
         const res = await fetch(
-          `https://ares.gov.cz/ekonomicke-subjekty-v-be/rest/ekonomicke-subjekty/${wIco}`,
+          `https://ares.gov.cz/ekonomicke-subjekty-v-be/rest/ekonomicke-subjekty/${normalizedIco}`,
         )
+        if (!res.ok) return
 
-        if (res.ok) {
-          const data = await res.json()
+        const data = await res.json()
+        const sidlo = data.sidlo || {}
+        const formattedAddress =
+          `${sidlo.nazevUlice || sidlo.nazevObce || ''} ${sidlo.cisloDomovni || ''}${sidlo.cisloOrientacni ? '/' + sidlo.cisloOrientacni : ''}, ${sidlo.nazevObce || ''} ${sidlo.psc || ''}`.trim()
 
-          // Sử dụng { shouldDirty: false } để tránh làm form bị đánh dấu là đã thay đổi bởi user
-          form.setValue('companyName', data.obchodniJmeno)
-          form.setValue('dic', data.dic || `CZ${wIco}`)
-
-          const addr = data.sidlo
-          const formattedAddr =
-            `${addr.nazevUlice || addr.nazevObce} ${addr.cisloDomovni}${addr.cisloOrientacni ? '/' + addr.cisloOrientacni : ''}, ${addr.nazevObce} ${addr.psc || ''}`.trim()
-
-          form.setValue('address', formattedAddr)
-
-          toast.success('Xác thực doanh nghiệp thành công!')
-        }
+        // Gọi qua Ref thay vì gọi trực tiếp onSuccess từ props
+        onSuccessRef.current({
+          companyName: data.obchodniJmeno || '',
+          dic: data.dic || `CZ${normalizedIco}`,
+          companyAddress: formattedAddress,
+        })
       } catch (err) {
         console.error('ARES Error:', err)
       } finally {
         setIsFetching(false)
       }
-    }, 500) // Đợi 500ms
+    }, 500)
 
     return () => clearTimeout(delayDebounceFn)
-  }, [wIco, form.setValue]) // Chỉ nên depend vào những thứ thực sự cần thiết
+  }, [ico, enabled]) // BỎ onSuccess khỏi đây
 
   return { isFetching }
 }

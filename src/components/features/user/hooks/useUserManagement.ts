@@ -184,6 +184,8 @@ export const useUserManagement = (itemsPerPage: number) => {
         toast.error('Bạn không có quyền thực hiện thao tác này.')
         return
       }
+
+      console.log(userToEdit)
       setEditingUser(userToEdit)
       setIsFormOpen(true)
     },
@@ -209,7 +211,14 @@ export const useUserManagement = (itemsPerPage: number) => {
       }
 
       if (editingUser) {
-        await userService.updateUser(editingUser.employeeId, payload)
+        // --- ĐOẠN SỬA Ở ĐÂY ---
+        // Nếu là staff thì ưu tiên employeeId, ngược lại dùng _id
+        const targetId =
+          subTab === 'staff'
+            ? editingUser.employeeId || editingUser._id
+            : editingUser._id
+
+        await userService.updateUser(targetId, payload)
         toast.success('Cập nhật thành công!', { id: toastId })
       } else {
         await authService.signUp(payload)

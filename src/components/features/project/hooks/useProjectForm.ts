@@ -27,6 +27,14 @@ interface CustomerInfo {
   name: string
   phone: string
   email: string
+  // Thêm các trường này vào interface
+  companyName?: string
+  ico?: string
+  dic?: string
+  companyAddress?: string
+  street?: string
+  province?: string
+  postalCode?: string
 }
 
 const createImageId = (file?: File, url?: string) => {
@@ -70,6 +78,13 @@ export const useProjectForm = () => {
       name: '',
       phone: '',
       email: '',
+      companyName: '',
+      ico: '',
+      dic: '',
+      companyAddress: '',
+      street: '', // Thêm mới
+      province: '', // Thêm mới
+      postalCode: '', // Thêm mới
     } as CustomerInfo,
   })
 
@@ -109,7 +124,19 @@ export const useProjectForm = () => {
       location: '',
       images: [],
       removedImages: [],
-      customer: { customerId: undefined, name: '', phone: '', email: '' },
+      customer: {
+        customerId: undefined,
+        name: '',
+        phone: '',
+        email: '',
+        companyName: '',
+        ico: '',
+        dic: '',
+        companyAddress: '',
+        street: '', // Thêm mới
+        province: '', // Thêm mới
+        postalCode: '', // Thêm mới
+      },
     })
     setTranslations(buildBlankTranslations())
     setErrors({})
@@ -165,20 +192,45 @@ export const useProjectForm = () => {
         })),
         removedImages: [],
         // Mapping dữ liệu khách hàng từ API cũ nếu có
+        // ... bên trong useEffect khi (isEdit && selectedProject)
         customer: {
           customerId:
             selectedProject.customer?._id || selectedProject.customerId,
           name:
-            selectedProject.customerName ||
             selectedProject.customer?.fullName ||
+            selectedProject.customerName ||
             '',
           phone:
-            selectedProject.customerPhone ||
             selectedProject.customer?.phone ||
+            selectedProject.customerPhone ||
             '',
           email:
-            selectedProject.customerEmail ||
             selectedProject.customer?.email ||
+            selectedProject.customerEmail ||
+            '',
+          companyName:
+            selectedProject.customer?.companyName ||
+            selectedProject.customerCompanyName ||
+            '',
+          ico:
+            selectedProject.customer?.ico || selectedProject.customerIco || '',
+          dic:
+            selectedProject.customer?.dic || selectedProject.customerDic || '',
+          companyAddress:
+            selectedProject.customer?.companyAddress ||
+            selectedProject.companyAddress ||
+            '',
+          street:
+            selectedProject.customer?.street ||
+            selectedProject.customerStreet ||
+            '',
+          province:
+            selectedProject.customer?.province ||
+            selectedProject.customerProvince ||
+            '',
+          postalCode:
+            selectedProject.customer?.postalCode ||
+            selectedProject.customerPostalCode ||
             '',
         },
       })
@@ -275,6 +327,9 @@ export const useProjectForm = () => {
 
     setLoading(true)
     nProgress.start()
+    const toastId = toast.loading(
+      isEdit ? 'Đang cập nhật dự án...' : 'Đang tạo dự án mới...',
+    )
     try {
       const formData = new FormData()
       formData.append('kind', 'project')
@@ -286,14 +341,21 @@ export const useProjectForm = () => {
       formData.append('nightShiftPay', commonData.nightShiftCoeff)
       formData.append('totalAmount', commonData.contractAmount)
       formData.append('location', commonData.location)
-
+      const { customer } = commonData
       // --- PHẦN CUSTOMER DATA ---
-      if (commonData.customer.customerId) {
-        formData.append('customer', commonData.customer.customerId)
+      if (customer.customerId) {
+        formData.append('customer', customer.customerId)
       }
-      formData.append('customerName', commonData.customer.name)
-      formData.append('customerPhone', commonData.customer.phone)
-      formData.append('customerEmail', commonData.customer.email)
+      formData.append('customerName', customer.name)
+      formData.append('customerPhone', customer.phone)
+      formData.append('customerEmail', customer.email)
+      formData.append('customerIco', customer.ico || '')
+      formData.append('customerDic', customer.dic || '')
+      formData.append('customerCompanyName', customer.companyName || '')
+      formData.append('companyAddress', customer.companyAddress || '') // Đã đồng bộ tên key      formData.append('customerStreet', customer.street || '')
+      formData.append('customerStreet', customer.street || '')
+      formData.append('customerProvince', customer.province || '')
+      formData.append('customerPostalCode', customer.postalCode || '')
       // --------------------------
 
       const validTrans = Object.values(translations).filter(
@@ -348,11 +410,15 @@ export const useProjectForm = () => {
       }
 
       handleClose()
-      toast.success(isEdit ? 'Cập nhật thành công!' : 'Tạo dự án thành công!')
+      toast.success(isEdit ? 'Cập nhật thành công!' : 'Tạo dự án thành công!', {
+        id: toastId,
+      })
       refreshProjects?.()
       refreshProjectTypes?.()
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Lỗi hệ thống!')
+      const errorMsg = error.response?.data?.message || 'Lỗi hệ thống!'
+      // Tắt toast loading và hiện lỗi
+      toast.error(errorMsg, { id: toastId })
     } finally {
       setLoading(false)
       nProgress.done()

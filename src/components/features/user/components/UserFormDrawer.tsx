@@ -132,16 +132,22 @@ const UserFormDrawer = () => {
     },
   })
 
-  const { isFetching } = useAresLookup({
-    register,
-    handleSubmit,
-    control,
-    reset,
-    watch,
-    setValue,
-    getValues,
-  } as any)
+  const watchedIco = watch('ico')
 
+  const { isFetching } = useAresLookup({
+    ico: watchedIco,
+    // Chỉ cho phép lookup khi không phải đang edit user cũ (hoặc tùy anh quyết định)
+    enabled: !editingUser,
+    onSuccess: data => {
+      // Cập nhật các field vào react-hook-form
+      if (data.companyName) setValue('companyName', data.companyName)
+      if (data.dic) setValue('dic', data.dic)
+      if (data.companyAddress) setValue('address', data.companyAddress)
+
+      // Nếu anh muốn bóc tách thêm street, province từ data thô,
+      // anh có thể cập nhật thêm ở hook hoặc xử lý ở đây.
+    },
+  })
   const isBlocked = watch('isBlock')
 
   // Cập nhật form khi mở Drawer hoặc đổi User cần sửa

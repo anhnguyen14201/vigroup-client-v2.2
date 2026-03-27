@@ -40,18 +40,14 @@ const ProjectFormModal: FC = () => {
 
   const [searchQuery, setSearchQuery] = useState('')
 
-  const {
-    items: customerData,
-    totalPages: apiTotalCustomerPages,
-    isLoading: isLoadingCustomer,
-    mutate: refreshCustomer,
-  } = usePaginatedCollection(
-    '/customer',
-    { tab: 'customer', search: searchQuery }, // Khách hàng luôn là tab customer
-    userService.getUsers,
-    1,
-    'all',
-  )
+  const { items: customerData, isLoading: isLoadingCustomer } =
+    usePaginatedCollection(
+      '/customer',
+      { tab: 'customer', search: searchQuery }, // Khách hàng luôn là tab customer
+      userService.getUsers,
+      1,
+      'all',
+    )
 
   const handleBackdropClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -132,37 +128,41 @@ const ProjectFormModal: FC = () => {
                   }
                 />
 
-                <ProjectCustomerSection
-                  customerData={customerData || []}
-                  isLoading={isLoadingCustomer}
-                  onSearch={setSearchQuery}
-                  customerInfo={{
-                    // Sửa ở đây: Truy cập vào commonData.customer trước
-                    customerId: commonData.customer.customerId,
-                    name: commonData.customer.name,
-                    phone: commonData.customer.phone,
-                    email: commonData.customer.email,
-                  }}
-                  onChange={info =>
-                    setCommonData(prev => ({
-                      ...prev,
-                      customer: {
-                        ...prev.customer,
-                        customerId: info.customerId,
-                        name: info.name,
-                        phone: info.phone,
-                        email: info.email,
-                      },
-                    }))
-                  }
-                />
-
                 <ProjectLocationSection
                   location={commonData.location}
                   longitude={commonData.longitude}
                   latitude={commonData.latitude}
                   onChange={(field, val) =>
                     setCommonData(p => ({ ...p, [field]: val }))
+                  }
+                />
+
+                <ProjectCustomerSection
+                  customerData={customerData || []}
+                  isLoading={isLoadingCustomer}
+                  onSearch={setSearchQuery}
+                  customerInfo={commonData.customer}
+                  onChange={patch =>
+                    setCommonData(prev => ({
+                      ...prev,
+                      customer: {
+                        ...prev.customer,
+                        ...patch,
+                      },
+                    }))
+                  }
+                />
+              </div>
+
+              <div className='space-y-4'>
+                <ProjectContentSection
+                  globalLang={globalLang}
+                  currentTranslation={currentTranslation}
+                  isVisible={commonData.isVisible}
+                  errors={errors}
+                  onTranslationChange={handleTranslationChange as any}
+                  onVisibilityChange={v =>
+                    setCommonData(prev => ({ ...prev, isVisible: v }))
                   }
                 />
 
@@ -182,17 +182,6 @@ const ProjectFormModal: FC = () => {
                   onRemoveImage={handleRemoveImage}
                 />
               </div>
-
-              <ProjectContentSection
-                globalLang={globalLang}
-                currentTranslation={currentTranslation}
-                isVisible={commonData.isVisible}
-                errors={errors}
-                onTranslationChange={handleTranslationChange as any}
-                onVisibilityChange={v =>
-                  setCommonData(prev => ({ ...prev, isVisible: v }))
-                }
-              />
             </div>
           </div>
 
