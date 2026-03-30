@@ -160,6 +160,12 @@ export const useInvoiceForm = () => {
   const onSubmit = async (values: InvoiceFormValues) => {
     setLoading(true)
     nProgress.start()
+
+    // 1. Khởi tạo Toast Loading và lưu lại ID
+    const toastId = toast.loading(
+      isEdit ? 'Đang cập nhật hóa đơn...' : 'Đang tạo hóa đơn mới...',
+    )
+
     try {
       const formData = new FormData()
       formData.append('projectId', values.projectId)
@@ -186,6 +192,7 @@ export const useInvoiceForm = () => {
         formData.append('removedImageUrls', JSON.stringify(removedImageUrls))
       }
 
+      // 2. Gọi API
       const result = isEdit
         ? await purchaseInvoiceService.updatePurchaseInvoice(
             initialData._id,
@@ -193,9 +200,11 @@ export const useInvoiceForm = () => {
           )
         : await purchaseInvoiceService.createPurchaseInvoice(formData)
 
+      // 3. Xử lý kết quả dựa trên toastId đã tạo
       if (result.success || result._id) {
         toast.success(
           isEdit ? 'Cập nhật hóa đơn thành công' : 'Thêm hóa đơn thành công',
+          { id: toastId }, // Ghi đè lên cái loading cũ
         )
         closeInvoiceModal()
         refreshInvoices?.()
@@ -203,9 +212,10 @@ export const useInvoiceForm = () => {
         throw new Error(result.message || 'Lỗi xử lý hóa đơn')
       }
     } catch (error: any) {
-      toast.error(
-        error.response?.data?.message || 'Có lỗi xảy ra, vui lòng thử lại!',
-      )
+      // 4. Cập nhật lỗi lên chính cái toast đó
+      const errorMessage =
+        error.response?.data?.message || 'Có lỗi xảy ra, vui lòng thử lại!'
+      toast.error(errorMessage, { id: toastId })
       console.error('❌ Submit Invoice Error:', error)
     } finally {
       nProgress.done()

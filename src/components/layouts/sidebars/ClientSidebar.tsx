@@ -73,8 +73,8 @@ export function ClientSidebar({
           icon: Palette,
         },
         {
-          title: 'Sản phẩm',
-          url: getAppUrl('/products'), // Đổi từ /invoices sang /products
+          title: 'E-Shop',
+          url: getAppUrl('/e-shop'), // Đổi từ /invoices sang /products
           icon: PackageSearch,
         },
         {

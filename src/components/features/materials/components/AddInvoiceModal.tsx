@@ -40,11 +40,7 @@ import {
 } from '@/components/ui/popover'
 import { Calendar } from '@/components/ui/calendar'
 import { cn } from '@/lib/utils'
-import { purchaseInvoiceService } from '@/services/purchaseInvoiceService'
-import {
-  useInvoiceForm,
-  useMaterialContext,
-} from '@/components/features/materials/hooks'
+import { useInvoiceForm } from '@/components/features/materials/hooks'
 
 const paymentMethods = [
   { label: 'Tiền mặt', value: 'cash' },
@@ -57,22 +53,6 @@ const invoiceGroups = [
   { label: 'Xăng xe', value: 'fuel' },
   { label: 'Chi phí phụ', value: 'otherExpenses' },
 ]
-
-const formSchema = z.object({
-  totalAmount: z.string().min(1, 'Nhập số tiền'),
-  invoiceGroup: z.string(),
-  paymentMethod: z.string(),
-  purchasePlace: z.string().min(1, 'Nhập nơi mua'),
-  projectId: z.string().min(1, 'Chọn dự án'),
-  createdAt: z.date(),
-  note: z.string().optional(),
-})
-
-interface FilePreview {
-  url: string
-  type: string
-  name: string
-}
 
 export const AddInvoiceModal = () => {
   const {

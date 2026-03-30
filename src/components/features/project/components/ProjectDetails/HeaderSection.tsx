@@ -10,51 +10,15 @@ import {
   Loader2,
   X,
 } from 'lucide-react'
-import { projectService } from '@/services' // Import service của bạn
-import { toast } from 'sonner'
-import { useState } from 'react'
-import nProgress from 'nprogress'
+
+import { useProjectStatus } from '@/components/features/project/hooks/useProjectStatus'
 
 const HeaderSection = ({ project, mutate, setIsDetailModalOpen }: any) => {
-  const [isUpdating, setIsUpdating] = useState(false)
-  const status = project?.status
-
-  const handleUpdateStatus = async (newStatus: string) => {
-    // Xác nhận trước khi hủy hoặc kết thúc để tránh bấm nhầm
-    if (
-      newStatus === 'cancelled' &&
-      !confirm('Bạn có chắc chắn muốn hủy dự án này?')
-    )
-      return
-    if (newStatus === 'finished' && !confirm('Xác nhận hoàn thành dự án?'))
-      return
-
-    setIsUpdating(true)
-    const toastId = toast.loading('Đang cập nhật trạng thái...')
-    nProgress.start()
-
-    try {
-      const payload = { status: newStatus }
-
-      // Nếu bắt đầu thì gán startDate là hiện tại, nếu kết thúc thì gán endDate
-      if (newStatus === 'started') (payload as any).startDate = new Date()
-      if (newStatus === 'finished') (payload as any).endDate = new Date()
-
-      await projectService.updateStatus(project._id, payload)
-      setIsDetailModalOpen(false)
-      toast.success('Cập nhật trạng thái thành công', { id: toastId })
-
-      // Gọi hàm mutate để fetch lại dữ liệu mới nhất (nếu dùng SWR/React Query)
-      mutate()
-    } catch (error: any) {
-      console.error(error)
-      toast.error('Lỗi khi cập nhật trạng thái', { id: toastId })
-    } finally {
-      setIsUpdating(false)
-      setIsDetailModalOpen(false)
-      nProgress.done()
-    }
-  }
+  const { isUpdating, updateStatus, status } = useProjectStatus(
+    project,
+    mutate,
+    () => setIsDetailModalOpen(false), // Callback khi thành công
+  )
 
   return (
     <div className='bg-[#0F172A] p-6 md:p-10 text-white shrink-0 relative overflow-hidden'>
@@ -105,13 +69,13 @@ const HeaderSection = ({ project, mutate, setIsDetailModalOpen }: any) => {
                     variant='success'
                     icon={<Play size={14} fill='currentColor' />}
                     label='Bắt đầu'
-                    onClick={() => handleUpdateStatus('started')}
+                    onClick={() => updateStatus('started')}
                   />
                   <ActionButton
                     variant='danger'
                     icon={<XCircle size={14} />}
                     label='Hủy bỏ'
-                    onClick={() => handleUpdateStatus('cancelled')}
+                    onClick={() => updateStatus('cancelled')}
                   />
                 </>
               )}
@@ -122,13 +86,13 @@ const HeaderSection = ({ project, mutate, setIsDetailModalOpen }: any) => {
                     variant='blue'
                     icon={<CheckCircle2 size={14} />}
                     label='Kết thúc'
-                    onClick={() => handleUpdateStatus('finished')}
+                    onClick={() => updateStatus('finished')}
                   />
                   <ActionButton
                     variant='danger'
                     icon={<XCircle size={14} />}
                     label='Hủy bỏ'
-                    onClick={() => handleUpdateStatus('cancelled')}
+                    onClick={() => updateStatus('cancelled')}
                   />
                 </>
               )}

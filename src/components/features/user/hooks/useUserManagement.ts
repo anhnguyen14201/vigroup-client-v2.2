@@ -1,19 +1,17 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import nProgress from 'nprogress'
 import { toast } from 'sonner'
+import useSWR from 'swr'
 
 import { authService, userService } from '@/services'
 import { useAuthStore } from '@/stores'
 import { useAuth, usePaginatedCollection, useQueryState } from '@/hooks'
-import useSWR from 'swr'
 
 export const useUserManagement = (itemsPerPage: number) => {
-  // ==========================================
-  // 1. ROUTER, STORES & CUSTOM HOOKS
-  // ==========================================
   const { searchParams, setQuery } = useQueryState()
-
   const { user, signOut } = useAuthStore() as any
+  const { handleLogout } = useAuth()
+
   const isLoggedIn = !!user
   const currentPlan = user?.tenantId?.plan || 'basic'
   const userRole = user?.role
@@ -21,36 +19,35 @@ export const useUserManagement = (itemsPerPage: number) => {
   // ==========================================
   // 2. LOCAL STATES
   // ==========================================
-  // --- States: Danh sách & Bộ lọc (Lấy mặc định từ URL) ---
-  const [subTab, _setSubTab] = useState(searchParams.get('tab') || 'staff')
+  const [subTab, _setSubTab] = useState(
+    () => searchParams.get('tab') || 'staff',
+  )
   const [currentPage, _setCurrentPage] = useState(
-    Number(searchParams.get('page')) || 1,
+    () => Number(searchParams.get('page')) || 1,
   )
-  const [searchQuery, _setSearchQuery] = useState(searchParams.get('q') || '')
+  const [searchQuery, _setSearchQuery] = useState(
+    () => searchParams.get('q') || '',
+  )
   const [selectedRole, _setSelectedRole] = useState(
-    searchParams.get('role') || 'all',
+    () => searchParams.get('role') || 'all',
   )
-  const [day, _setDay] = useState(searchParams.get('day') || 'all')
+  const [day, _setDay] = useState(() => searchParams.get('day') || 'all')
   const [month, _setMonth] = useState(
-    Number(searchParams.get('month')) || new Date().getMonth() + 1,
+    () => Number(searchParams.get('month')) || new Date().getMonth() + 1,
   )
   const [year, _setYear] = useState(
-    Number(searchParams.get('year')) || new Date().getFullYear(),
+    () => Number(searchParams.get('year')) || new Date().getFullYear(),
   )
 
-  // --- States: UI (Mở form, xóa user...) ---
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [editingUser, setEditingUser] = useState<any>(null)
   const [deleteId, setDeleteId] = useState<any>(null)
-
-  // --- States: Chi tiết (Detail Modal) ---
   const [selectedDetail, setSelectedDetail] = useState<any>(null)
   const [detailPage, setDetailPage] = useState(1)
 
   // ==========================================
-  // 3. STATIC & MEMOIZED DATA (Lists)
+  // 3. MEMOIZED DATA
   // ==========================================
-
   const filteredRoles = useMemo(() => {
     const ROLE_LABELS: Record<number, string> = {
       3515: 'SUPER',
@@ -62,60 +59,70 @@ export const useUserManagement = (itemsPerPage: number) => {
       23521311920518: 'Quản trị viên',
     }
     const entries = Object.entries(ROLE_LABELS)
-    const currentUserRole = user?.role
-
-    if (currentUserRole === 3515 || currentUserRole === 1413914) return entries
-    if (currentUserRole === 1311417518)
+    if (userRole === 3515 || userRole === 1413914) return entries
+    if (userRole === 1311417518)
       return entries.filter(([val]) => Number(val) !== 1413914)
     return []
-  }, [user?.role])
+  }, [userRole])
 
   // ==========================================
-  // 4. API FETCHING HOOKS
+  // 4. API FETCHING (Optimized)
   // ==========================================
-  const {
-    items: usersData,
-    totalPages: apiTotalPages,
-    isLoading,
-    totalItems: totalItemsUsers,
-    mutate: refresh,
-  } = usePaginatedCollection(
-    isLoggedIn ? '/attendances' : null,
-    { tab: subTab, search: searchQuery, role: selectedRole, day, month, year },
+
+  // Chỉ fetch dữ liệu nhân viên khi ở tab staff
+  const staffParams = useMemo(
+    () => ({
+      tab: subTab,
+      search: searchQuery,
+      role: selectedRole,
+      day,
+      month,
+      year,
+    }),
+    [subTab, searchQuery, selectedRole, day, month, year],
+  )
+
+  const staffFetch = usePaginatedCollection(
+    isLoggedIn && subTab === 'staff' ? '/attendances' : null,
+    staffParams,
     userService.getUserAttendances,
     currentPage,
     itemsPerPage,
   )
 
-  const {
-    items: customerData,
-    totalPages: apiTotalCustomerPages,
-    isLoading: isLoadingCustomer,
-    totalItems: totalItemsCustomer,
-    mutate: refreshCustomer,
-  } = usePaginatedCollection(
-    '/customer',
-    { tab: 'customer', search: searchQuery }, // Khách hàng luôn là tab customer
+  // Chỉ fetch dữ liệu khách hàng khi ở tab customer
+  const customerParams = useMemo(
+    () => ({ tab: 'customer', search: searchQuery }),
+    [searchQuery],
+  )
+
+  const customerFetch = usePaginatedCollection(
+    isLoggedIn && subTab === 'customer' ? '/customer' : null,
+    customerParams,
     userService.getUsers,
     currentPage,
     itemsPerPage,
   )
 
-  const detailQueryKey = selectedDetail?.employeeId
-    ? [
-        `/user-detail/${selectedDetail.employeeId}`,
-        detailPage,
-        day,
-        month,
-        year,
-        subTab,
-      ]
-    : null
+  const detailQueryKey = useMemo(
+    () =>
+      selectedDetail?.employeeId
+        ? [
+            `/user-detail/${selectedDetail.employeeId}`,
+            detailPage,
+            day,
+            month,
+            year,
+            subTab,
+          ]
+        : null,
+    [selectedDetail?.employeeId, detailPage, day, month, year, subTab],
+  )
 
   const {
     data: swrDetailData,
     isLoading: isDetailLoading,
-    mutate: refreshDetail, // Dùng cái này để cập nhật dữ liệu sau khi sửa/xóa
+    mutate: refreshDetail,
   } = useSWR(
     detailQueryKey,
     () =>
@@ -125,14 +132,11 @@ export const useUserManagement = (itemsPerPage: number) => {
         pageSize: 10,
         filters: { day, month, year, tab: subTab },
       }),
-    {
-      revalidateOnFocus: false, // Tùy chọn: tắt nếu không muốn tự load lại khi chuyển tab trình duyệt
-      keepPreviousData: true, // Giữ dữ liệu cũ trong lúc load page mới (mượt hơn)
-    },
+    { revalidateOnFocus: false, keepPreviousData: true },
   )
 
   // ==========================================
-  // 5. EFFECTS
+  // 5. SYNC EFFECTS
   // ==========================================
   useEffect(() => {
     const p = Number(searchParams.get('page')) || 1
@@ -140,157 +144,60 @@ export const useUserManagement = (itemsPerPage: number) => {
   }, [searchParams])
 
   // ==========================================
-  // 6. STATE UPDATERS (Sync with URL Query)
+  // 6. MEMOIZED UPDATERS
   // ==========================================
-  const setSubTab = (tab: string) => {
-    _setSubTab(tab)
-    _setSearchQuery('') // 1. Reset state local của search về trống
-
-    // 2. Cập nhật URL: chuyển tab, reset page về 1 và xóa param 'q' (search)
-    setQuery({
-      tab,
-      page: 1,
-      q: '', // Gửi chuỗi rỗng lên URL để đồng bộ
-    })
-  }
-  const setCurrentPage = (page: number) => {
-    _setCurrentPage(page)
-    setQuery({ page })
-  }
-
-  const setSearchQuery = (q: string) => {
-    _setSearchQuery(q)
-    setQuery({ q, page: 1 }) // Reset page khi search
-  }
-
-  const setSelectedRole = (role: string) => {
-    _setSelectedRole(role)
-    setQuery({ role, page: 1 })
-  }
-
-  const setDateFilter = (d: string | number, m: number, y: number) => {
-    _setDay(String(d))
-    _setMonth(m)
-    _setYear(y)
-    setQuery({ day: d, month: m, year: y, page: 1 })
-  }
-
-  // ==========================================
-  // 7. ACTION HANDLERS
-  // ==========================================
-  const handleOpenForm = useCallback(
-    (userToEdit: any = null) => {
-      if (user?.role === 'staff') {
-        toast.error('Bạn không có quyền thực hiện thao tác này.')
-        return
-      }
-
-      console.log(userToEdit)
-      setEditingUser(userToEdit)
-      setIsFormOpen(true)
+  const setSubTab = useCallback(
+    (tab: string) => {
+      _setSubTab(tab)
+      _setSearchQuery('')
+      setQuery({ tab, page: 1, q: '' })
     },
-    [user?.role],
+    [setQuery],
   )
 
-  const handleSave = async (formData: any) => {
-    if (!isLoggedIn) {
-      toast.error('Bạn đang dùng bản thử nghiệm (Demo). Vui lòng đăng nhập.')
-      return
-    }
-
-    nProgress.start()
-    const toastId = toast.loading(
-      editingUser ? 'Đang cập nhật...' : 'Đang tạo mới...',
-    )
-
-    try {
-      const payload = {
-        ...formData,
-        username: formData.phone || formData.email,
-        role: subTab === 'staff' ? formData.role || 'staff' : 32119201513518,
-      }
-
-      if (editingUser) {
-        // --- ĐOẠN SỬA Ở ĐÂY ---
-        // Nếu là staff thì ưu tiên employeeId, ngược lại dùng _id
-        const targetId =
-          subTab === 'staff'
-            ? editingUser.employeeId || editingUser._id
-            : editingUser._id
-
-        await userService.updateUser(targetId, payload)
-        toast.success('Cập nhật thành công!', { id: toastId })
-      } else {
-        await authService.signUp(payload)
-        toast.success('Thêm mới thành công!', { id: toastId })
-      }
-
-      setIsFormOpen(false)
-      setEditingUser(null)
-      await refresh()
-      await refreshCustomer()
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Có lỗi xảy ra.'
-      toast.error('Thao tác thất bại', {
-        id: toastId,
-        description: errorMessage,
-      })
-      throw error
-    } finally {
-      nProgress.done()
-    }
-  }
-
-  const confirmDelete = async () => {
-    if (!deleteId || !isLoggedIn) return
-
-    nProgress.start()
-    const toastId = toast.loading('Đang xóa...')
-    try {
-      await userService.deleteUser(deleteId)
-      toast.success('Đã xóa thành công', { id: toastId })
-      await refresh()
-      await refreshCustomer()
-      setDeleteId(null)
-    } catch (err: any) {
-      toast.error('Xóa thất bại', { id: toastId })
-    } finally {
-      nProgress.done()
-    }
-  }
-
-  const { handleLogout } = useAuth()
-
-  const handleViewDetail = useCallback(
-    (targetUser: any, page: number = 1, customFilters?: any) => {
-      if (!targetUser?.employeeId) return
-
-      setSelectedDetail(targetUser)
-      setDetailPage(page)
-
-      // Nếu có truyền customFilters (từ modal lịch sử), cập nhật luôn state global
-      /* if (customFilters) {
-        if (customFilters.day) _setDay(String(customFilters.day))
-        if (customFilters.month) _setMonth(customFilters.month)
-        if (customFilters.year) _setYear(customFilters.year)
-      } */
+  const setCurrentPage = useCallback(
+    (page: number) => {
+      _setCurrentPage(page)
+      setQuery({ page })
     },
-    [], // Rất nhẹ nhàng
+    [setQuery],
   )
 
-  const resetAllFilters = () => {
-    // 1. Reset các State local về giá trị mặc định
+  const setSearchQuery = useCallback(
+    (q: string) => {
+      _setSearchQuery(q)
+      setQuery({ q, page: 1 })
+    },
+    [setQuery],
+  )
+
+  const setSelectedRole = useCallback(
+    (role: string) => {
+      _setSelectedRole(role)
+      setQuery({ role, page: 1 })
+    },
+    [setQuery],
+  )
+
+  const setDateFilter = useCallback(
+    (d: string | number, m: number, y: number) => {
+      _setDay(String(d))
+      _setMonth(m)
+      _setYear(y)
+      setQuery({ day: d, month: m, year: y, page: 1 })
+    },
+    [setQuery],
+  )
+
+  const resetAllFilters = useCallback(() => {
     const defaultMonth = new Date().getMonth() + 1
     const defaultYear = new Date().getFullYear()
-
     _setSearchQuery('')
     _setSelectedRole('all')
     _setDay('all')
     _setMonth(defaultMonth)
     _setYear(defaultYear)
     _setCurrentPage(1)
-
-    // 2. Reset URL: Chỉ giữ lại subTab hiện tại, xóa sạch các param khác
     setQuery({
       q: '',
       role: '',
@@ -299,107 +206,203 @@ export const useUserManagement = (itemsPerPage: number) => {
       year: defaultYear,
       page: 1,
     })
-  }
+  }, [setQuery])
 
   // ==========================================
-  // 8. DERIVED COMPUTED DATA (Logic động)
+  // 7. ACTION HANDLERS
   // ==========================================
+  const handleOpenForm = useCallback(
+    (userToEdit: any = null) => {
+      if (userRole === 'staff') {
+        toast.error('Bạn không có quyền thực hiện thao tác này.')
+        return
+      }
+      setEditingUser(userToEdit)
+      setIsFormOpen(true)
+    },
+    [userRole],
+  )
 
-  const totalItems = useMemo(() => {
-    return subTab === 'staff' ? totalItemsUsers : totalItemsCustomer
-  }, [subTab, totalItemsUsers, totalItemsCustomer])
+  const handleSave = useCallback(
+    async (formData: any) => {
+      if (!isLoggedIn) {
+        toast.error('Bạn đang dùng bản thử nghiệm (Demo). Vui lòng đăng nhập.')
+        return
+      }
+      nProgress.start()
+      const toastId = toast.loading(
+        editingUser ? 'Đang cập nhật...' : 'Đang tạo mới...',
+      )
+      try {
+        const payload = {
+          ...formData,
+          username: formData.phone || formData.email,
+          role: subTab === 'staff' ? formData.role || 'staff' : 32119201513518,
+        }
+        if (editingUser) {
+          const targetId =
+            subTab === 'staff'
+              ? editingUser.employeeId || editingUser._id
+              : editingUser._id
+          await userService.updateUser(targetId, payload)
+          toast.success('Cập nhật thành công!', { id: toastId })
+        } else {
+          await authService.signUp(payload)
+          toast.success('Thêm mới thành công!', { id: toastId })
+        }
+        setIsFormOpen(false)
+        setEditingUser(null)
+        staffFetch.mutate()
+        customerFetch.mutate()
+      } catch (error: any) {
+        toast.error('Thao tác thất bại', {
+          id: toastId,
+          description: error.response?.data?.message || 'Có lỗi xảy ra.',
+        })
+      } finally {
+        nProgress.done()
+      }
+    },
+    [isLoggedIn, editingUser, subTab, staffFetch, customerFetch],
+  )
 
-  const displayData = useMemo(() => {
-    return subTab === 'staff' ? usersData : customerData
-  }, [subTab, usersData, customerData])
+  const confirmDelete = useCallback(async () => {
+    if (!deleteId || !isLoggedIn) return
+    nProgress.start()
+    const toastId = toast.loading('Đang xóa...')
+    try {
+      await userService.deleteUser(deleteId)
+      toast.success('Đã xóa thành công', { id: toastId })
+      staffFetch.mutate()
+      customerFetch.mutate()
+      setDeleteId(null)
+    } catch (err: any) {
+      toast.error('Xóa thất bại', { id: toastId })
+    } finally {
+      nProgress.done()
+    }
+  }, [deleteId, isLoggedIn, staffFetch, customerFetch])
 
-  const finalTotalPages = useMemo(() => {
-    return subTab === 'staff' ? apiTotalPages : apiTotalCustomerPages
-  }, [subTab, apiTotalPages, apiTotalCustomerPages])
-
-  const isAnyLoading = subTab === 'staff' ? isLoading : isLoadingCustomer
-
-  const userToDelete = useMemo(() => {
-    const currentList = displayData || []
-    return currentList.find(
-      (u: any) => u._id === deleteId || u.employeeId === deleteId,
-    )
-  }, [deleteId, displayData])
+  const handleViewDetail = useCallback((targetUser: any, page: number = 1) => {
+    if (!targetUser?.employeeId) return
+    setSelectedDetail(targetUser)
+    setDetailPage(page)
+  }, [])
 
   // ==========================================
-  // 9. RETURN OBJECT
+  // 8. DERIVED COMPUTED DATA
   // ==========================================
-  return {
-    // --- User & Auth ---
-    user,
-    isLoggedIn,
-    currentPlan,
-    userRole,
+  const isStaff = subTab === 'staff'
+  const displayUsers = isStaff
+    ? staffFetch.items || []
+    : customerFetch.items || []
+  const totalItems = isStaff
+    ? staffFetch.totalItems || 0
+    : customerFetch.totalItems || 0
+  const finalTotalPages = Math.max(
+    isStaff ? staffFetch.totalPages || 1 : customerFetch.totalPages || 1,
+    1,
+  )
+  const isLoading = isStaff ? staffFetch.isLoading : customerFetch.isLoading
 
-    // --- Tab & Search ---
-    subTab,
-    setSubTab,
-    searchQuery,
-    setSearchQuery,
+  const userToDelete = useMemo(
+    () =>
+      displayUsers.find(
+        (u: any) => u._id === deleteId || u.employeeId === deleteId,
+      ),
+    [deleteId, displayUsers],
+  )
 
-    // --- Pagination ---
-    currentPage,
-    setCurrentPage,
-    finalTotalPages: finalTotalPages || 1,
-
-    // --- Filters ---
-    selectedRole,
-    setSelectedRole,
-    day,
-    month,
-    year,
-    setDateFilter,
-
-    // --- Lists & Constants ---
-
-    filteredRoles,
-
-    // --- Data & Loading ---
-    isLoading: isAnyLoading,
-    displayUsers: displayData || [],
-    totalItems: totalItems || 0,
-
-    usersData,
-    apiTotalPages,
-    refresh,
-
-    customerData,
-    apiTotalCustomerPages,
-    isLoadingCustomer,
-    refreshCustomer,
-
-    // --- UI States: Form Drawer ---
-    isFormOpen,
-    setIsFormOpen,
-    editingUser,
-    setEditingUser,
-    handleOpenForm,
-    handleSave,
-
-    // --- UI States: Delete Modal ---
-    deleteId,
-    setDeleteId,
-    userToDelete,
-    confirmDelete,
-
-    // --- UI States: Detail Modal ---
-    selectedDetail,
-    setSelectedDetail,
-    setDetailPage,
-
-    isDetailLoading,
-    handleViewDetail,
-    swrDetailData,
-    refreshDetail,
-
-    // --- Misc Handlers ---
-    signOut,
-    handleLogout,
-    resetAllFilters,
-  }
+  // ==========================================
+  // 9. RETURN MEMOIZED OBJECT
+  // ==========================================
+  return useMemo(
+    () => ({
+      user,
+      isLoggedIn,
+      currentPlan,
+      userRole,
+      subTab,
+      setSubTab,
+      searchQuery,
+      setSearchQuery,
+      currentPage,
+      setCurrentPage,
+      finalTotalPages,
+      selectedRole,
+      setSelectedRole,
+      day,
+      month,
+      year,
+      setDateFilter,
+      filteredRoles,
+      isLoading,
+      displayUsers,
+      totalItems,
+      refresh: staffFetch.mutate,
+      customerData: customerFetch.items,
+      refreshCustomer: customerFetch.mutate,
+      isFormOpen,
+      setIsFormOpen,
+      editingUser,
+      setEditingUser,
+      handleOpenForm,
+      handleSave,
+      deleteId,
+      setDeleteId,
+      userToDelete,
+      confirmDelete,
+      selectedDetail,
+      setSelectedDetail,
+      setDetailPage,
+      isDetailLoading,
+      handleViewDetail,
+      swrDetailData,
+      refreshDetail,
+      signOut,
+      handleLogout,
+      resetAllFilters,
+    }),
+    [
+      user,
+      isLoggedIn,
+      currentPlan,
+      userRole,
+      subTab,
+      setSubTab,
+      searchQuery,
+      setSearchQuery,
+      currentPage,
+      setCurrentPage,
+      finalTotalPages,
+      selectedRole,
+      setSelectedRole,
+      day,
+      month,
+      year,
+      setDateFilter,
+      filteredRoles,
+      isLoading,
+      displayUsers,
+      totalItems,
+      staffFetch.mutate,
+      customerFetch.items,
+      customerFetch.mutate,
+      isFormOpen,
+      editingUser,
+      handleOpenForm,
+      handleSave,
+      deleteId,
+      userToDelete,
+      confirmDelete,
+      selectedDetail,
+      isDetailLoading,
+      handleViewDetail,
+      swrDetailData,
+      refreshDetail,
+      signOut,
+      handleLogout,
+      resetAllFilters,
+    ],
+  )
 }

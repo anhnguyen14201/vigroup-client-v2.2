@@ -1,17 +1,11 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { motion, AnimatePresence } from 'framer-motion'
-import * as z from 'zod'
-import { toast } from 'sonner'
 import {
   X,
   Check,
   Loader2,
   FileText,
-  PlusCircle,
   Hash,
   Banknote,
   Edit3,
@@ -27,14 +21,9 @@ import {
   Input,
   Button,
 } from '@/components/ui'
-import { quotationService } from '@/services'
-import nProgress from 'nprogress'
 
-const formSchema = z.object({
-  desc: z.string().min(1, 'Vui lòng nhập nội dung'),
-  cost: z.string().min(1, 'Vui lòng nhập đơn giá'),
-  quantity: z.string().min(1, 'Số lượng tối thiểu là 1'),
-})
+import { useAddQuote } from '@/components/features/project/hooks'
+import { getQuoteTheme } from '@/constants'
 
 const AddQuoteModal = ({
   isOpen,
@@ -44,62 +33,17 @@ const AddQuoteModal = ({
   onRefresh,
   editData,
 }: any) => {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const isEdit = !!editData
+  const { form, isSubmitting, isEdit, onSubmit } = useAddQuote(
+    isOpen,
+    onClose,
+    projectId,
+    type,
+    onRefresh,
+    editData,
+  )
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { desc: '', cost: '', quantity: '1' },
-  })
-
-  // Cập nhật giá trị khi mở mode Edit
-  useEffect(() => {
-    if (editData && isOpen) {
-      form.reset({
-        desc: editData.desc,
-        cost: String(editData.cost),
-        quantity: String(editData.quantity),
-      })
-    } else if (!isOpen) {
-      form.reset({ desc: '', cost: '', quantity: '1' })
-    }
-  }, [editData, isOpen, form])
-
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsSubmitting(true)
-    nProgress.start()
-
-    try {
-      const payload = {
-        desc: values.desc,
-        cost: Number(values.cost),
-        quantity: Number(values.quantity),
-        quotationType: type,
-        projectId: projectId,
-      }
-
-      if (isEdit) {
-        await quotationService.updateQuotation(editData._id, payload)
-        toast.success('Cập nhật thành công')
-      } else {
-        await quotationService.createQuotation(payload)
-        toast.success(
-          type === 'quotation'
-            ? 'Thêm báo giá thành công'
-            : 'Thêm phát sinh thành công',
-        )
-      }
-
-      onClose()
-      if (onRefresh) await onRefresh()
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message || 'Có lỗi xảy ra')
-    } finally {
-      setIsSubmitting(false)
-      nProgress.done()
-    }
-  }
-
+  // Tối ưu UI color logic
+  const theme = getQuoteTheme(isEdit, type)
   return (
     <AnimatePresence>
       {isOpen && (
@@ -111,22 +55,14 @@ const AddQuoteModal = ({
             onClick={onClose}
             className='absolute inset-0 bg-slate-900/60 backdrop-blur-md'
           />
+
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className='relative bg-white w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl'
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            className='relative  w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl'
           >
-            <div
-              className={cn(
-                'p-6 text-white',
-                isEdit
-                  ? 'bg-blue-600'
-                  : type === 'quotation'
-                    ? 'bg-slate-900'
-                    : 'bg-emerald-600',
-              )}
-            >
+            <div className={theme.header}>
               <div className='flex items-center gap-3 text-2xl font-black uppercase'>
                 {isEdit ? <Edit3 /> : <FileText />}
                 <span>
@@ -148,7 +84,7 @@ const AddQuoteModal = ({
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className='p-8 space-y-6'
+                className='p-8 space-y-6 bg-white'
               >
                 <FormField
                   control={form.control}
@@ -162,13 +98,14 @@ const AddQuoteModal = ({
                         <Input
                           placeholder='Ví dụ: Xây tường...'
                           {...field}
-                          className='h-12 rounded-full bg-slate-50 font-semibold'
+                          className='h-12 rounded-full bg-slate-50 font-semibold focus-visible:ring-blue-100'
                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+
                 <div className='grid grid-cols-2 gap-5'>
                   <FormField
                     control={form.control}
@@ -180,16 +117,17 @@ const AddQuoteModal = ({
                         </FormLabel>
                         <FormControl>
                           <Input
-                            onWheel={e => (e.target as HTMLInputElement).blur()}
-                            onFocus={e => e.target.select()}
                             type='number'
                             {...field}
+                            onWheel={e => (e.target as HTMLInputElement).blur()}
+                            onFocus={e => e.target.select()}
                             className='h-12 rounded-full bg-slate-50 font-semibold text-center'
                           />
                         </FormControl>
                       </FormItem>
                     )}
                   />
+
                   <FormField
                     control={form.control}
                     name='cost'
@@ -200,10 +138,10 @@ const AddQuoteModal = ({
                         </FormLabel>
                         <FormControl>
                           <Input
-                            onWheel={e => (e.target as HTMLInputElement).blur()}
-                            onFocus={e => e.target.select()}
                             type='number'
                             {...field}
+                            onWheel={e => (e.target as HTMLInputElement).blur()}
+                            onFocus={e => e.target.select()}
                             className='h-12 rounded-full font-semibold bg-slate-50'
                           />
                         </FormControl>
@@ -211,6 +149,7 @@ const AddQuoteModal = ({
                     )}
                   />
                 </div>
+
                 <div className='flex gap-4 pt-4'>
                   <Button
                     type='button'
@@ -223,20 +162,13 @@ const AddQuoteModal = ({
                   <Button
                     type='submit'
                     disabled={isSubmitting}
-                    className={cn(
-                      'flex-1 rounded-full h-12 font-bold text-white',
-                      isEdit
-                        ? 'bg-blue-600'
-                        : type === 'quotation'
-                          ? 'bg-slate-900'
-                          : 'bg-emerald-600',
-                    )}
+                    className={theme.submitBtn}
                   >
                     {isSubmitting ? (
                       <Loader2 className='animate-spin' />
                     ) : (
                       <Check className='mr-2' />
-                    )}{' '}
+                    )}
                     XÁC NHẬN
                   </Button>
                 </div>

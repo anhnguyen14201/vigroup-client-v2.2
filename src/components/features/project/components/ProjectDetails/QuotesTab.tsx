@@ -56,14 +56,13 @@ const QuotesTab = ({ project, type, onRefresh }: any) => {
                 {type === 'quotation' ? 'giá trị báo giá' : 'chi phí phát sinh'}
               </p>
               <h3
-                className={`text-2xl font-black ${type === 'quotation' ? 'text-slate-900' : 'text-rose-600'}`}
+                className={`text-2xl font-black ${type === 'quotation' ? 'text-sky-600' : 'text-emerald-600'}`}
               >
                 {formatCurrency(totalAmount)}{' '}
-                <span className='text-xs opacity-50 font-medium'>CZK</span>
               </h3>
             </div>
             <div
-              className={`p-4 rounded-2xl ${type === 'quotation' ? 'bg-slate-50 text-slate-400' : 'bg-rose-50 text-rose-400'}`}
+              className={`p-4 rounded-2xl ${type === 'quotation' ? 'bg-sky-50 text-sky-600' : 'bg-emerald-50 text-emerald-600'}`}
             >
               {type === 'quotation' ? (
                 <FileText size={24} />
@@ -78,7 +77,7 @@ const QuotesTab = ({ project, type, onRefresh }: any) => {
               setSelectedQuote(null)
               setIsModalOpen(true)
             }}
-            className='h-full text-lg bg-slate-900 hover:bg-slate-800 text-white rounded-4xl font-bold gap-2'
+            className={`h-full text-lg  text-white rounded-4xl font-bold gap-2 ${type === 'quotation' ? 'bg-sky-600 hover:bg-sky-700' : 'bg-emerald-600 hover:bg-emerald-700'}`}
           >
             <Plus size={18} /> Thêm{' '}
             {type === 'quotation' ? 'báo giá' : 'phát sinh'}

@@ -1,8 +1,6 @@
 'use client'
 
-import React, { useEffect, useMemo, useRef } from 'react'
-import { useForm, Controller } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { Controller } from 'react-hook-form'
 import { motion } from 'framer-motion'
 import {
   User,
@@ -16,14 +14,11 @@ import {
   Clock,
   CircleAlert,
   Building2,
-  Hash,
-  Fingerprint,
   ShieldAlert,
   MapPin,
   Loader2,
 } from 'lucide-react'
 
-import { userSchema } from '@/lib'
 import {
   Input,
   Label,
@@ -40,8 +35,8 @@ import {
   Switch,
 } from '@/components/ui'
 import { DrawerFooter, ErrorMessage } from '@/components/shared'
-import { useUserContext } from '../hooks/UserManagementContext'
-import { useAresLookup } from '@/hooks'
+
+import { useUserForm } from '@/components/features/user/hooks'
 
 const itemVariants = {
   hidden: { opacity: 0, y: 15 },
@@ -52,168 +47,24 @@ const containerVariants = {
   visible: { transition: { staggerChildren: 0.05 } },
 }
 
-const ROLE_MAP = {
-  SUPER_ADMIN: '3515',
-  ADMIN: '1413914',
-  MANAGER: '1311417518',
-  STAFF: '5131612152555',
-  ACCOUNTANT: '19531852011825',
-  SUPPLIER: '22125518',
-  WEB_MANAGER: '23521311920518',
-  CUSTOMER: '32119201513518',
-}
-
-const ROLE_OPTIONS = [
-  { value: ROLE_MAP.ADMIN, label: 'Admin' },
-  { value: ROLE_MAP.MANAGER, label: 'Quản lý hệ thống' },
-  { value: ROLE_MAP.ACCOUNTANT, label: 'Kế toán' },
-  { value: ROLE_MAP.SUPPLIER, label: 'Nhân viên - Vật tư' },
-  { value: ROLE_MAP.WEB_MANAGER, label: 'Quản trị viên' },
-  { value: ROLE_MAP.STAFF, label: 'Nhân viên' },
-]
-
 const UserFormDrawer = () => {
-  const { isFormOpen, setIsFormOpen, handleSave, editingUser, subTab, user } =
-    useUserContext()
-  const isStaff = subTab === 'staff'
-  const [showPass, setShowPass] = React.useState(false)
-  const [showConfirmPass, setShowConfirmPass] = React.useState(false)
-  const prevEditingUserId = useRef<string | null>(null)
-
-  const currentUserRole = String(user?.role)
-
-  // Lọc Role hiển thị trong Select dựa trên cấp bậc người đang đăng nhập
-  const filteredRoles = useMemo(() => {
-    if (currentUserRole === ROLE_MAP.SUPER_ADMIN) return ROLE_OPTIONS
-    if (currentUserRole === ROLE_MAP.ADMIN) {
-      return ROLE_OPTIONS.filter(opt => opt.value !== ROLE_MAP.ADMIN)
-    }
-    if (currentUserRole === ROLE_MAP.MANAGER) {
-      const lowerRoles = [
-        ROLE_MAP.STAFF,
-        ROLE_MAP.ACCOUNTANT,
-        ROLE_MAP.SUPPLIER,
-        ROLE_MAP.WEB_MANAGER,
-      ]
-      return ROLE_OPTIONS.filter(opt => lowerRoles.includes(opt.value))
-    }
-    return []
-  }, [currentUserRole])
-
   const {
     register,
-    handleSubmit,
+    onSubmit,
     control,
-    reset,
-    watch,
-    setValue,
-    getValues,
     formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(userSchema),
-    mode: 'onChange', // Quan trọng: Validate ngay khi nhập
-    defaultValues: {
-      fullName: '',
-      phone: '',
-      email: '',
-      role: '',
-      position: '',
-      hourlyRate: '',
-      password: '',
-      confirmPassword: '',
-      companyName: '',
-      address: '',
-      ico: '',
-      dic: '',
-      street: '', // Thêm mới
-      province: '', // Thêm mới
-      postalCode: '', // Thêm mới
-      isBlock: false,
-    },
-  })
-
-  const watchedIco = watch('ico')
-
-  const { isFetching } = useAresLookup({
-    ico: watchedIco,
-    // Chỉ cho phép lookup khi không phải đang edit user cũ (hoặc tùy anh quyết định)
-    enabled: !editingUser,
-    onSuccess: data => {
-      // Cập nhật các field vào react-hook-form
-      if (data.companyName) setValue('companyName', data.companyName)
-      if (data.dic) setValue('dic', data.dic)
-      if (data.companyAddress) setValue('address', data.companyAddress)
-
-      // Nếu anh muốn bóc tách thêm street, province từ data thô,
-      // anh có thể cập nhật thêm ở hook hoặc xử lý ở đây.
-    },
-  })
-  const isBlocked = watch('isBlock')
-
-  // Cập nhật form khi mở Drawer hoặc đổi User cần sửa
-  useEffect(() => {
-    const currentId = editingUser
-      ? editingUser.employeeId || editingUser._id
-      : `new-${subTab}`
-    if (prevEditingUserId.current !== currentId) {
-      if (editingUser) {
-        reset({
-          fullName: editingUser.fullName || '',
-          phone: editingUser.phone || '',
-          email: editingUser.email || '',
-          role: String(editingUser.role) || '',
-          position: editingUser.position || '',
-          hourlyRate: editingUser.hourlyRate || '',
-          password: '',
-          confirmPassword: '',
-          companyName: editingUser.companyName || '',
-          ico: editingUser.ico || '',
-          dic: editingUser.dic || '',
-          address: editingUser.address || '',
-          street: editingUser.street || '', // Thêm mới
-          province: editingUser.province || '', // Thêm mới
-          postalCode: editingUser.postalCode || '', // Thêm mới
-          isBlock: editingUser.isBlock,
-        })
-      } else {
-        reset({
-          fullName: '',
-          phone: '',
-          email: '',
-          role: isStaff ? ROLE_MAP.STAFF : ROLE_MAP.CUSTOMER,
-          position: isStaff ? 'Nhân viên' : 'Khách hàng',
-          hourlyRate: '',
-          password: '',
-          confirmPassword: '',
-          companyName: '',
-          ico: '',
-          dic: '',
-          address: '',
-          street: '', // Thêm mới
-          province: '', // Thêm mới
-          postalCode: '', // Thêm mới
-          isBlock: false,
-        })
-      }
-      prevEditingUserId.current = currentId
-    }
-  }, [editingUser, reset, isStaff, subTab])
-
-  const onSubmit = async (data: any) => {
-    try {
-      // Chờ handleSave chạy xong, nếu có lỗi nó sẽ nhảy thẳng xuống catch
-      await handleSave(data)
-
-      // Nếu chạy đến đây tức là thành công
-      if (!editingUser) {
-        reset()
-      }
-    } catch (error) {
-      // Khi có lỗi, code dừng lại ở đây, không chạy xuống reset()
-      // Giúp giữ nguyên dữ liệu đã nhập trong các ô Input
-      console.error('Form giữ nguyên dữ liệu để sửa lỗi.')
-    }
-  }
+    isFormOpen,
+    setIsFormOpen,
+    editingUser,
+    isStaff,
+    showPass,
+    setShowPass,
+    showConfirmPass,
+    setShowConfirmPass,
+    filteredRoles,
+    isFetchingAres,
+    isBlocked,
+  } = useUserForm()
 
   return (
     <Sheet open={isFormOpen} onOpenChange={() => setIsFormOpen(false)}>
@@ -232,7 +83,7 @@ const UserFormDrawer = () => {
           </SheetHeader>
         </motion.div>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={onSubmit}>
           <motion.div
             className='px-6 py-4 space-y-5'
             variants={containerVariants}
@@ -262,9 +113,20 @@ const UserFormDrawer = () => {
                   {...register('phone')}
                   onFocus={e => e.target.select()}
                   placeholder='777...'
-                  className={`rounded-full bg-slate-50 h-10 focus-visible:ring-1 ${errors.phone ? 'ring-1 ring-red-500' : ''}`}
+                  // CHỈ KHÓA NẾU ĐÃ CÓ DỮ LIỆU SỐ ĐIỆN THOẠI
+                  disabled={!!editingUser?.phone}
+                  className={`rounded-full h-10 focus-visible:ring-1 ${
+                    editingUser?.phone
+                      ? 'bg-slate-100 text-slate-500 cursor-not-allowed opacity-70'
+                      : 'bg-slate-50'
+                  } ${errors.phone ? 'ring-1 ring-red-500' : ''}`}
                 />
                 <ErrorMessage message={errors.phone?.message as string} />
+                {editingUser?.phone && (
+                  <p className='text-[9px] text-slate-400 ml-3 italic'>
+                    * Số điện thoại đã được xác thực, không thể thay đổi
+                  </p>
+                )}
               </div>
               <div className='space-y-1.5'>
                 <Label className='text-[10px] font-bold uppercase tracking-widest text-primary flex items-center gap-2 ml-1'>
@@ -274,9 +136,20 @@ const UserFormDrawer = () => {
                   {...register('email')}
                   onFocus={e => e.target.select()}
                   placeholder='example@gmail.com'
-                  className={`rounded-full bg-slate-50 h-10 focus-visible:ring-1 ${errors.email ? 'ring-1 ring-red-500' : ''}`}
+                  // CHỈ KHÓA NẾU ĐÃ CÓ DỮ LIỆU EMAIL
+                  disabled={!!editingUser?.email}
+                  className={`rounded-full h-10 focus-visible:ring-1 ${
+                    editingUser?.email
+                      ? 'bg-slate-100 text-slate-500 cursor-not-allowed opacity-70'
+                      : 'bg-slate-50'
+                  } ${errors.email ? 'ring-1 ring-red-500' : ''}`}
                 />
                 <ErrorMessage message={errors.email?.message as string} />
+                {editingUser?.email && (
+                  <p className='text-[9px] text-slate-400 ml-3 italic'>
+                    * Email đã được liên kết với tài khoản
+                  </p>
+                )}
               </div>
             </motion.div>
 
@@ -418,7 +291,7 @@ const UserFormDrawer = () => {
                         placeholder='12345...'
                         className='rounded-full bg-indigo-50/30 border-indigo-100 h-10'
                       />
-                      {isFetching && (
+                      {isFetchingAres && (
                         <Loader2
                           size={14}
                           className='absolute right-3 top-3 animate-spin text-indigo-500'

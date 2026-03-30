@@ -135,6 +135,7 @@ const ProjectCustomerSection = ({
             placeholder='Nhập vào tên, số điện thoại hoặc email...'
             value={customerInfo.customerId ? customerInfo.name : searchValue}
             disabled={!!customerInfo.customerId}
+            onFocus={e => e.target.select()}
             onChange={e => handleSearchChange(e.target.value)}
             className='rounded-full bg-slate-50 h-10 pl-12 disabled:bg-indigo-50 disabled:text-indigo-900'
           />
@@ -150,7 +151,7 @@ const ProjectCustomerSection = ({
         </div>
 
         {!isLoading && isDropdownOpen && customerData.length > 0 && (
-          <div className='absolute z-[110] w-full mt-2 bg-white border shadow-xl rounded-3xl overflow-hidden max-h-60 overflow-y-auto top-full'>
+          <div className='absolute z-110 w-full mt-2 bg-white border shadow-xl rounded-3xl overflow-hidden max-h-60 overflow-y-auto top-full'>
             {customerData.map(c => (
               <div
                 key={c._id}
@@ -180,6 +181,7 @@ const ProjectCustomerSection = ({
             <Input
               value={customerInfo.name}
               onChange={e => onChange({ name: e.target.value })}
+              onFocus={e => e.target.select()}
               className='rounded-full bg-white h-10'
               placeholder='Tên khách hàng...'
             />
@@ -191,6 +193,7 @@ const ProjectCustomerSection = ({
                 disabled={isExistingCustomer}
                 value={customerInfo.phone}
                 onChange={e => onChange({ phone: e.target.value })}
+                onFocus={e => e.target.select()}
                 className='rounded-full bg-white h-10'
                 placeholder='SĐT...'
               />
@@ -201,6 +204,7 @@ const ProjectCustomerSection = ({
                 value={customerInfo.email}
                 disabled={isExistingCustomer}
                 onChange={e => onChange({ email: e.target.value })}
+                onFocus={e => e.target.select()}
                 className='rounded-full bg-white h-10'
                 placeholder='Email...'
               />
@@ -213,6 +217,7 @@ const ProjectCustomerSection = ({
               <Input
                 value={customerInfo.street || ''}
                 onChange={e => onChange({ street: e.target.value })}
+                onFocus={e => e.target.select()}
                 className='rounded-full bg-white h-11 border-slate-200 focus:border-indigo-500 transition-all'
                 placeholder='Số nhà, tên đường...'
               />
@@ -222,6 +227,7 @@ const ProjectCustomerSection = ({
                 <Input
                   value={customerInfo.province || ''}
                   onChange={e => onChange({ province: e.target.value })}
+                  onFocus={e => e.target.select()}
                   className='rounded-full bg-white h-11 border-slate-200 focus:border-indigo-500 transition-all'
                   placeholder='Thành phố / Tỉnh'
                 />
@@ -248,6 +254,7 @@ const ProjectCustomerSection = ({
               <div className='relative'>
                 <Input
                   value={customerInfo.ico || ''}
+                  onFocus={e => e.target.select()}
                   onChange={e => onChange({ ico: e.target.value })}
                   placeholder='ICO...'
                   className='rounded-full bg-white h-10 border-indigo-100'
@@ -264,6 +271,7 @@ const ProjectCustomerSection = ({
             <Field label='DIC'>
               <Input
                 value={customerInfo.dic || ''}
+                onFocus={e => e.target.select()}
                 onChange={e => onChange({ dic: e.target.value })}
                 placeholder='CZ...'
                 className='rounded-full bg-white h-10'
@@ -274,6 +282,7 @@ const ProjectCustomerSection = ({
           <Field label='Tên công ty'>
             <Input
               value={customerInfo.companyName || ''}
+              onFocus={e => e.target.select()}
               onChange={e => onChange({ companyName: e.target.value })}
               className='rounded-full bg-white h-10'
               placeholder='Tên doanh nghiệp...'
@@ -283,6 +292,7 @@ const ProjectCustomerSection = ({
           <Field label='Địa chỉ trụ sở'>
             <Input
               value={customerInfo.companyAddress || ''}
+              onFocus={e => e.target.select()}
               onChange={e => onChange({ companyAddress: e.target.value })}
               className='rounded-full bg-white h-10 text-xs italic'
               placeholder='Địa chỉ ARES...'

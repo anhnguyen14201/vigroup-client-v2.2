@@ -51,10 +51,15 @@ export const MaterialList = () => {
   }
 
   const handleConfirmDelete = async () => {
-    if (!selectedInvoice?._id) return // Bảo vệ nếu chưa có ID
+    if (!selectedInvoice?._id) return
 
     setIsDeleting(true)
     nProgress.start()
+
+    // 1. Khởi tạo toast loading với tên địa điểm mua hàng cho chi tiết
+    const toastId = toast.loading(
+      `Đang xóa hóa đơn tại ${selectedInvoice.purchasePlace}...`,
+    )
 
     try {
       const result = await purchaseInvoiceService.deletePurchaseInvoice(
@@ -62,27 +67,29 @@ export const MaterialList = () => {
       )
 
       if (result.success) {
-        // 1. Đóng modal ngay lập tức
+        // 2. Đóng modal và reset dữ liệu
         setIsDeleteModalOpen(false)
+        setSelectedInvoice(null)
 
-        // 2. Hiển thị thông báo thành công (Dùng toast của sonner)
+        // 3. Ghi đè toast loading bằng toast thành công
         toast.success(
           `Đã xóa hóa đơn tại ${selectedInvoice.purchasePlace} thành công!`,
+          { id: toastId },
         )
 
-        // 3. Load lại danh sách mới
+        // 4. Refresh danh sách
         refreshInvoices()
-
-        // 4. Reset state hóa đơn đang chọn
-        setSelectedInvoice(null)
       } else {
-        // Trường hợp backend trả về success: false
-        toast.error(result.message || 'Không thể xóa hóa đơn này.')
+        // Trường hợp backend trả về lỗi nghiệp vụ
+        toast.error(result.message || 'Không thể xóa hóa đơn này.', {
+          id: toastId,
+        })
       }
     } catch (error: any) {
-      // Lỗi logic hoặc lỗi mạng
+      // Lỗi mạng hoặc lỗi server
       toast.error(
         error.response?.data?.message || 'Có lỗi xảy ra, vui lòng thử lại!',
+        { id: toastId },
       )
       console.error('❌ Delete Invoice Error:', error)
     } finally {

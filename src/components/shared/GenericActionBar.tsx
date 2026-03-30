@@ -1,5 +1,5 @@
+import { Button, Input } from '@/components/ui'
 import { Search, LucideIcon, Plus } from 'lucide-react'
-import { Input, Button } from '@/components'
 
 interface GenericActionBarProps {
   searchQuery: string

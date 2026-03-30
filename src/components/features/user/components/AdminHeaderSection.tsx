@@ -1,6 +1,5 @@
 import { useUserContext } from '@/components/features/user/hooks/UserManagementContext'
 import { AdminHeader } from '@/components/layouts'
-import React from 'react'
 
 const AdminHeaderSection = () => {
   const { subTab, user, handleLogout } = useUserContext()

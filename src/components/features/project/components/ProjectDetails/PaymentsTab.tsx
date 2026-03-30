@@ -137,8 +137,8 @@ const PaymentsTab = ({ project, onRefresh }: any) => {
       <div className='space-y-6'>
         {/* Dashboard Thống kê */}
         <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-          <div className='bg-slate-900 p-6 rounded-4xl text-white'>
-            <p className='text-[10px] font-black uppercase tracking-widest opacity-50 mb-1'>
+          <div className='bg-rose-600 p-6 rounded-4xl text-white'>
+            <p className='text-[10px] font-black uppercase tracking-widest opacity-80 mb-1'>
               Còn lại phải thu
             </p>
             <h3 className='text-2xl font-black italic'>
@@ -162,7 +162,8 @@ const PaymentsTab = ({ project, onRefresh }: any) => {
 
           <Button
             onClick={() => setIsModalOpen(true)}
-            className='w-full rounded-4xl h-full font-bold text-md lg:text-lg gap-2 border'
+            className='w-full rounded-4xl h-full font-bold text-md lg:text-lg gap-2 border
+                      bg-sky-600 hover:bg-sky-700'
           >
             <Plus size={16} /> Thanh toán
           </Button>

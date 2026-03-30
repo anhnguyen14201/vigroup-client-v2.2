@@ -79,18 +79,21 @@ const ProjectFormModal: FC = () => {
           className='relative bg-white w-full max-w-6xl h-[92vh] rounded-[40px] flex flex-col border border-slate-100 overflow-hidden'
         >
           {/* HEADER */}
-          <div className='p-8 pb-4 flex items-center justify-between border-b border-slate-50'>
+          <div
+            className='p-8 pb-4 flex items-center justify-between border-b 
+                    border-slate-50'
+          >
             <div className='flex items-center gap-4'>
-              <div className='w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center text-white shadow-lg'>
+              <div
+                className='w-12 h-12 rounded-2xl bg-primary flex items-center justify-center
+                          text-white'
+              >
                 <HardHat size={22} />
               </div>
               <div>
-                <h2 className='text-xl font-black text-slate-900 uppercase tracking-tight'>
+                <h2 className='text-xl font-black text-primary uppercase tracking-tight'>
                   {isEdit ? 'Cập nhật dự án' : 'Khởi tạo dự án'}
                 </h2>
-                <p className='text-[10px] font-bold text-indigo-500 uppercase tracking-widest'>
-                  Dữ liệu hệ thống vigroup
-                </p>
               </div>
             </div>
             <div className='flex items-center gap-4'>

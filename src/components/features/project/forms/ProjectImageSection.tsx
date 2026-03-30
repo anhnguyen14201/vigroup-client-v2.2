@@ -13,11 +13,13 @@ interface ProjectImage {
 }
 
 interface ProjectImageSectionProps {
+  title?: string
   images: ProjectImage[]
   fileInputRef: any
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onSelectThumbnail: (idx: number) => void
   onRemoveImage: (idx: number) => void
+  multiple?: boolean
 }
 
 const ProjectImageSection = ({
@@ -26,16 +28,18 @@ const ProjectImageSection = ({
   onFileChange,
   onSelectThumbnail,
   onRemoveImage,
+  title = 'Hình ảnh dự án',
+  multiple = true,
 }: ProjectImageSectionProps) => {
   return (
     <section>
-      <SectionTitle icon={ImageIcon} title='Hình ảnh dự án' />
+      <SectionTitle icon={ImageIcon} title={title} />
 
       <div className='grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mt-6'>
         {/* Danh sách ảnh đã chọn/có sẵn */}
         {images.map((img, idx) => (
           <ProjectImageItem
-            key={img.id}
+            key={idx}
             img={img}
             idx={idx}
             onSelect={() => onSelectThumbnail(idx)}
@@ -46,7 +50,7 @@ const ProjectImageSection = ({
         {/* Input file ẩn */}
         <input
           type='file'
-          multiple
+          multiple={multiple}
           hidden
           ref={fileInputRef}
           onChange={onFileChange}

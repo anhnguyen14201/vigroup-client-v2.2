@@ -1,22 +1,18 @@
 import InfoTile from '@/components/features/project/components/ProjectDetails/InfoTile'
+import { useProjectFinance } from '@/components/features/project/hooks'
 import { Progress } from '@/components/ui'
 import { formatCurrency } from '@/utils'
-import React from 'react'
 
 const CashflowCard = ({ project }: any) => {
-  const totalAmount = project?.totalAmount || 0
-  const totalQuotation = project?.totalQuotationAmount || 0
-  const totalVariation = project?.totalVariationAmount || 0
-  const totalReceived = project?.totalReceived || 0
-
-  // Nếu tổng tiền bằng 0 hoặc đã thu nhiều hơn tổng tiền, remaining luôn là 0
-  const remaining =
-    totalAmount > 0 ? Math.max(0, totalAmount - totalReceived) : 0
-
-  const progressPercent =
-    totalAmount > 0
-      ? Math.min(100, Math.round((totalReceived / totalAmount) * 100))
-      : 0
+  const {
+    totalQuotation,
+    totalVariation,
+    totalReceived,
+    depositAmount,
+    remaining,
+    progressPercent,
+    hasDeposit,
+  } = useProjectFinance(project)
 
   return (
     <div

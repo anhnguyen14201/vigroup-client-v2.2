@@ -104,8 +104,9 @@ const ProjectContentSection = ({
 
       {/* Rich Text Editor */}
       <Field label='Mô tả chi tiết'>
-        <div className='rounded-2xl overflow-hidden border border-slate-100 bg-white'>
+        <div className='rounded-2xl overflow-hidden bg-slate-50'>
           <RichTextEditor
+            key={`desc-${globalLang}`}
             value={currentTranslation?.description || ''}
             onChange={content => onTranslationChange('description', content)}
           />

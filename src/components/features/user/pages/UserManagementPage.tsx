@@ -6,7 +6,7 @@ import {
   FloatingActionButton,
   ItemCounter,
 } from '@/components/shared'
-import UserFormDrawer from '@/components/features/user/components/UserFormDrawer'
+import UserFormDrawer from '@/components/features/user/forms/UserFormDrawer'
 import UserDetailModal from '@/components/features/user/components/UserDetailModal'
 import {
   AdminHeaderSection,

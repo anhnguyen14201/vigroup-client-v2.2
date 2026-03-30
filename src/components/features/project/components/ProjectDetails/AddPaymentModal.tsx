@@ -1,8 +1,5 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import {
   CalendarIcon,
@@ -15,8 +12,6 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
-import * as z from 'zod'
-import { toast } from 'sonner'
 
 import {
   Form,
@@ -38,102 +33,23 @@ import {
   PopoverTrigger,
   Calendar,
 } from '@/components/ui'
-import { usePaginatedCollection } from '@/hooks'
-import { projectService, userService } from '@/services'
-import nProgress from 'nprogress'
-
-const formSchema = z.object({
-  amount: z.string().min(1, 'Vui lòng nhập số tiền'),
-  receivedDate: z.date(),
-  receiverId: z.string().min(1, 'Vui lòng chọn người nhận tiền'), // Thay đổi ở đây
-  method: z.string(),
-  type: z.enum(['deposit', 'payment']),
-  note: z.string().optional(),
-})
+import { useAddPayment } from '@/components/features/project/hooks'
 
 const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
-  const [showResults, setShowResults] = useState(false) // Quản lý ẩn hiện danh sách kết quả
-  const hasDeposit = project?.deposit?.amount > 0 || project?.depositAmount > 0
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      amount: '',
-      receivedDate: new Date(),
-      receiverId: '',
-      method: 'cash',
-      type: hasDeposit ? 'payment' : 'payment',
-      note: '',
-    },
-  })
-
-  // Hook lấy dữ liệu nhân viên
-  const { items: customerData, isLoading: isLoadingCustomer } =
-    usePaginatedCollection(
-      '/staff',
-      { tab: 'staff', search: searchQuery },
-      userService.getUsers,
-      1,
-      'all',
-    )
-
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (!project?._id) return
-    setIsSubmitting(true)
-    nProgress.start()
-
-    try {
-      // Chuẩn bị data payload
-      const payload = {
-        amount: Number(values.amount),
-        receivedDate: values.receivedDate,
-        receivedBy: values.receiverId, // ID nhân viên nhận tiền
-        method: values.method,
-        note: values.note,
-      }
-
-      if (values.type === 'deposit') {
-        // Gọi service tạo tiền cọc
-        await projectService.createDeposit(project._id, payload)
-        toast.success('Đã ghi nhận tiền đặt cọc thành công')
-      } else {
-        // Gọi service tạo đợt thanh toán
-        await projectService.createPayment(project._id, payload)
-        toast.success('Đã ghi nhận đợt thanh toán thành công')
-      }
-
-      // Refresh lại dữ liệu ở component cha (PaymentsTab)
-      if (onRefresh) {
-        await onRefresh()
-      }
-
-      // Đóng modal và reset form
-      form.reset()
-      setSearchQuery('')
-      onClose()
-    } catch (error: any) {
-      console.error('Submit payment error:', error)
-      const errorMsg =
-        error?.response?.data?.message || 'Có lỗi xảy ra khi ghi nhận thu tiền'
-      toast.error(errorMsg)
-    } finally {
-      setIsSubmitting(false)
-      nProgress.done()
-    }
-  }
-  useEffect(() => {
-    if (isOpen) {
-      if (hasDeposit) {
-        form.setValue('type', 'payment')
-        form.setValue('note', 'Thanh toán đợt tiếp theo')
-      } else {
-        form.setValue('type', 'deposit')
-        form.setValue('note', 'Đặt cọc dự án')
-      }
-    }
-  }, [isOpen, hasDeposit, form])
+  const {
+    form,
+    isSubmitting,
+    searchQuery,
+    setSearchQuery,
+    showResults,
+    setShowResults,
+    customerData,
+    isLoadingCustomer,
+    hasDeposit,
+    onSubmit,
+    handleSelectReceiver,
+    handleClearReceiver,
+  } = useAddPayment(project, isOpen, onClose, onRefresh)
   return (
     <AnimatePresence>
       {isOpen && (
@@ -154,8 +70,7 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className='relative bg-white w-full max-w-lg rounded-[2.5rem] overflow-hidden 
-                     '
+            className='relative w-full max-w-lg rounded-[2.5rem] overflow-hidden'
           >
             {/* Header section - Adaptive color based on type */}
             <div
@@ -163,7 +78,7 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                 'p-6 text-white relative transition-colors duration-500',
                 form.watch('type') === 'deposit'
                   ? 'bg-amber-500'
-                  : 'bg-blue-600',
+                  : 'bg-sky-600',
               )}
             >
               <div
@@ -177,13 +92,17 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                 )}
                 <span>Ghi nhận thu tiền</span>
               </div>
-              <p className='text-white/80 text-[10px] uppercase tracking-[0.2em] mt-2 font-bold'>
+              <p
+                className='text-white/80 text-[10px] uppercase tracking-[0.2em] mt-2 
+                          font-bold'
+              >
                 Quản lý dòng tiền dự án & cọc của khách hàng
               </p>
 
               <button
                 onClick={onClose}
-                className='absolute top-8 right-8 p-2 hover:bg-white/20 rounded-full transition-colors'
+                className='absolute top-8 right-8 p-2 hover:bg-white/20 rounded-full 
+                          transition-colors'
               >
                 <X size={20} />
               </button>
@@ -192,7 +111,7 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className='p-8 space-y-6'
+                className='p-8 space-y-6 bg-white'
               >
                 {/* Segmented Control Toggle */}
                 <FormField
@@ -211,7 +130,8 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                             disabled={isDisabled}
                             onClick={() => field.onChange(t)}
                             className={cn(
-                              'flex-1 py-2.5 text-[11px] cursor-pointer font-black uppercase tracking-wider rounded-full transition-all duration-200 relative',
+                              'flex-1 py-2.5 text-[11px] cursor-pointer font-black uppercase' +
+                                'tracking-wider rounded-full transition-all duration-200 relative',
                               field.value === t
                                 ? 'bg-white text-slate-900 shadow-sm'
                                 : 'text-slate-400 hover:text-slate-600',
@@ -225,7 +145,11 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
 
                             {/* Hiển thị dòng text nhỏ nếu đã có cọc */}
                             {isDisabled && (
-                              <span className='absolute text-amber-600 -bottom-0.5 left-1/2 -translate-x-1/2 text-[10px] lowercase font-medium whitespace-nowrap'>
+                              <span
+                                className='absolute text-amber-600 -bottom-0.5 
+                                          left-1/2 -translate-x-1/2 text-[10px] lowercase 
+                                          font-medium whitespace-nowrap'
+                              >
                                 (Đã nhận cọc)
                               </span>
                             )}
@@ -243,7 +167,10 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                     name='amount'
                     render={({ field }) => (
                       <FormItem className='md:col-span-2'>
-                        <FormLabel className='text-[10px] font-bold uppercase text-slate-500 tracking-widest ml-1'>
+                        <FormLabel
+                          className='text-[10px] font-bold uppercase 
+                                  text-slate-500 tracking-widest ml-1'
+                        >
                           Số tiền (CZK)
                         </FormLabel>
                         <FormControl>
@@ -253,8 +180,8 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                             type='number'
                             {...field}
                             onFocus={e => e.target.select()}
-                            className='h-12 px-5 text-md rounded-full bg-slate-50 text-xl font-semibold focus-visible:ring-2 
-                                    focus-visible:ring-slate-200 transition-all'
+                            className='h-12 px-5 text-md rounded-full bg-slate-50 text-xl 
+                                      font-semibold transition-all'
                           />
                         </FormControl>
                         <FormMessage className='text-[11px]' />
@@ -268,7 +195,10 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                     name='receivedDate'
                     render={({ field }) => (
                       <FormItem className='flex flex-col'>
-                        <FormLabel className='text-[10px] font-bold uppercase text-slate-500 tracking-widest ml-1'>
+                        <FormLabel
+                          className='text-[10px] font-bold uppercase 
+                                  text-slate-500 tracking-widest ml-1'
+                        >
                           Ngày nhận
                         </FormLabel>
                         <Popover>
@@ -277,7 +207,8 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                               <Button
                                 variant='outline'
                                 className={cn(
-                                  'h-12 rounded-full bg-slate-50 pl-4 text-left font-bold text-slate-700',
+                                  'h-12 rounded-full bg-slate-50 pl-4 text-left font-bold' +
+                                    'text-slate-700',
                                   !field.value && 'text-muted-foreground',
                                 )}
                               >
@@ -313,7 +244,10 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                     name='method'
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className='text-[10px] font-bold uppercase text-slate-500 tracking-widest ml-1'>
+                        <FormLabel
+                          className='text-[10px] font-bold uppercase text-slate-500 
+                                    tracking-widest ml-1'
+                        >
                           Phương thức
                         </FormLabel>
                         <Select
@@ -321,7 +255,10 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                           defaultValue={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className='h-12 py-6 w-full rounded-full bg-slate-50 font-bold text-slate-700 shadow-none'>
+                            <SelectTrigger
+                              className='h-12 py-6 w-full rounded-full 
+                                      bg-slate-50 font-semibold text-slate-700 shadow-none'
+                            >
                               <SelectValue placeholder='Chọn phương thức' />
                             </SelectTrigger>
                           </FormControl>
@@ -342,15 +279,17 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                   />
                 </div>
 
-                {/* Receiver Name */}
                 {/* Người nhận tiền (Combobox) */}
-                {/* PHẦN CẬP NHẬT: NGƯỜI NHẬN TIỀN VỚI NÚT CLEAR */}
+
                 <FormField
                   control={form.control}
                   name='receiverId'
                   render={({ field }) => (
                     <FormItem className='relative'>
-                      <FormLabel className='text-[10px] font-bold uppercase text-slate-500 tracking-widest ml-1'>
+                      <FormLabel
+                        className='text-[10px] font-bold uppercase text-slate-500 
+                                  tracking-widest ml-1'
+                      >
                         Người nhận tiền (Tên hoặc SĐT)
                       </FormLabel>
                       <div className='relative group'>
@@ -365,11 +304,15 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                             }}
                             onFocus={() => setShowResults(true)}
                             // Thêm padding-right lớn hơn để không bị đè lên các icon
-                            className='h-12 px-5 pr-12 rounded-full bg-slate-50 font-semibold text-slate-700 focus-visible:ring-2 focus-visible:ring-blue-100 transition-all'
+                            className='h-12 px-5 pr-12 rounded-full bg-slate-50 
+                                      font-semibold text-slate-700 transition-all'
                           />
                         </FormControl>
 
-                        <div className='absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1'>
+                        <div
+                          className='absolute right-2 top-1/2 -translate-y-1/2 flex 
+                                    items-center gap-1'
+                        >
                           {/* Nút Hủy (Clear) - Chỉ hiện khi có chữ hoặc đã chọn người */}
                           {(searchQuery.length > 0 || field.value) && (
                             <button
@@ -379,7 +322,8 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                                 field.onChange('')
                                 setShowResults(false)
                               }}
-                              className='p-1.5 hover:bg-slate-200 rounded-full text-slate-400 hover:text-slate-600 transition-colors'
+                              className='p-1.5 hover:bg-slate-200 rounded-full cursor-pointer
+                                      text-slate-400 hover:text-slate-600 transition-colors'
                             >
                               <X size={14} strokeWidth={3} />
                             </button>
@@ -403,7 +347,9 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 5 }}
                             exit={{ opacity: 0, y: -10 }}
-                            className='absolute z-300 top-18 w-full bg-white rounded-2xl shadow-2xl border border-slate-50 max-h-62.5 overflow-y-auto p-2 custom-scrollbar'
+                            className='absolute z-300 top-18 w-full bg-white rounded-2xl 
+                                      border border-slate-50 max-h-62.5 overflow-y-auto 
+                                      p-2 custom-scrollbar'
                           >
                             {customerData?.length > 0
                               ? customerData.map((person: any) => (
@@ -415,7 +361,9 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                                       setShowResults(false)
                                     }}
                                     className={cn(
-                                      'flex items-center justify-between px-4 py-3 cursor-pointer rounded-xl transition-all hover:bg-slate-50 active:scale-[0.98]',
+                                      'flex items-center justify-between px-4 py-3' +
+                                        'cursor-pointer rounded-xl transition-all' +
+                                        'hover:bg-slate-50 active:scale-[0.98]',
                                       field.value === person._id
                                         ? 'bg-blue-50 text-blue-600'
                                         : 'text-slate-700',
@@ -455,7 +403,10 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                   name='note'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='text-[10px] font-bold uppercase text-slate-500 tracking-widest ml-1'>
+                      <FormLabel
+                        className='text-[10px] font-bold uppercase text-slate-500 
+                                  tracking-widest ml-1'
+                      >
                         Ghi chú
                       </FormLabel>
                       <FormControl>
@@ -463,7 +414,7 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                           placeholder='Thông tin bổ sung...'
                           {...field}
                           onFocus={e => e.target.select()}
-                          className='rounded-2xl bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-200 min-h-25 p-4 resize-none'
+                          className='rounded-2xl bg-slate-50 min-h-25 p-4 resize-none'
                         />
                       </FormControl>
                       <FormMessage className='text-[11px]' />
@@ -485,7 +436,8 @@ const AddPaymentModal = ({ isOpen, onClose, project, onRefresh }: any) => {
                     type='submit'
                     disabled={isSubmitting}
                     className={cn(
-                      'flex-1 rounded-full h-12 font-bold text-white transition-all hover:scale-[1.02] active:scale-[0.98]',
+                      'flex-1 rounded-full h-12 font-bold text-white transition-all' +
+                        'hover:scale-[1.02] active:scale-[0.98]',
                       form.watch('type') === 'deposit'
                         ? 'bg-amber-500 hover:bg-amber-600'
                         : 'bg-slate-900 hover:bg-slate-800',
