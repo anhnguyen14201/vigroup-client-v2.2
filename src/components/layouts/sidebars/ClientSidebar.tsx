@@ -47,11 +47,7 @@ export function ClientSidebar({
           url: getAppUrl('/dashboard'),
           icon: LayoutDashboard,
         },
-        {
-          title: 'Người dùng',
-          url: getAppUrl('/users'),
-          icon: Users2,
-        },
+        // --- NHÓM VẬN HÀNH DỰ ÁN (Core Business) ---
         {
           title: 'Dự án',
           url: getAppUrl('/projects'),
@@ -59,34 +55,42 @@ export function ClientSidebar({
         },
         {
           title: 'Vật tư',
-          url: getAppUrl('/materials'), // Đổi từ /bookings sang /materials cho đúng nghĩa
+          url: getAppUrl('/materials'),
           icon: Box,
         },
         {
           title: 'Thiết bị',
-          url: getAppUrl('/equipments'), // Đổi sang /equipments
+          url: getAppUrl('/equipments'),
           icon: HardHat,
         },
         {
           title: 'Mẫu thiết kế',
-          url: getAppUrl('/designs'), // Đổi từ /promotions sang /designs
+          url: getAppUrl('/designs'),
           icon: Palette,
         },
+        // --- NHÓM BÁN HÀNG & E-SHOP (Revenue) ---
         {
           title: 'E-Shop',
-          url: getAppUrl('/e-shop'), // Đổi từ /invoices sang /products
+          url: getAppUrl('/e-shop'),
           icon: PackageSearch,
         },
         {
           title: 'Đơn hàng',
-          url: getAppUrl('/orders'), // Đổi từ /branches sang /orders
+          url: getAppUrl('/orders'),
           icon: ShoppingCart,
         },
         {
-          title: 'Điều hòa',
-          url: getAppUrl('/air-conditioners'),
-          icon: Wind,
+          title: 'Hóa đơn & Bảo hành',
+          url: getAppUrl('/invoices'), // Lưu ý: Để chữ thường /invoices cho đồng bộ
+          icon: FileText, // Thay Wind bằng FileText sẽ đúng nghĩa hóa đơn hơn
         },
+        // --- NHÓM QUẢN TRỊ (Administration) ---
+        {
+          title: 'Người dùng',
+          url: getAppUrl('/users'),
+          icon: Users2,
+        },
+        // --- NHÓM CẤU HÌNH (Settings) ---
         {
           title: 'SEO',
           url: getAppUrl('/seo-settings'),

@@ -100,9 +100,27 @@ const SeriesModal = ({
   }
 
   const toggleParentSelection = (id: string) => {
-    setParentIds(prev =>
-      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id],
-    )
+    setParentIds(prev => {
+      const isSelecting = !prev.includes(id)
+
+      if (isSelecting) {
+        // Logic Chọn (như trên)
+        const selectedItem = [...categories, ...filteredSubCats].find(
+          item => item._id === id,
+        )
+        const parentId = selectedItem?.parent?._id || selectedItem?.parent
+        return Array.from(
+          new Set([...prev, id, ...(parentId ? [parentId] : [])]),
+        )
+      } else {
+        // Logic Bỏ chọn: Bỏ chính nó VÀ tất cả những thằng có cha là chính nó
+        const childrenIds = filteredSubCats
+          .filter((c: any) => (c.parent?._id || c.parent) === id)
+          .map((c: any) => c._id)
+
+        return prev.filter(i => i !== id && !childrenIds.includes(i))
+      }
+    })
   }
 
   const toggleBrandSelection = (id: string) => {
@@ -287,6 +305,8 @@ const SeriesModal = ({
                     </label>
                     <Input
                       required
+                      autoFocus
+                      onFocus={e => e.target.select()}
                       value={currentTranslation.name || data?.seriesName || ''}
                       onChange={e =>
                         onTranslationChange('name', e.target.value)
@@ -302,6 +322,7 @@ const SeriesModal = ({
                     </label>
                     <div className='relative'>
                       <Textarea
+                        onFocus={e => e.target.select()}
                         value={currentTranslation.metaDescription}
                         onChange={e =>
                           onTranslationChange('metaDescription', e.target.value)
@@ -375,9 +396,9 @@ const SeriesModal = ({
                     </div>
                     <div className='flex-1 overflow-y-auto p-3 space-y-1.5 no-scrollbar'>
                       {filteredSubCats
-                        .filter(s => !s.parent)
-                        .map(parentSub => (
-                          <div key={parentSub._id} className='space-y-1.5'>
+                        .filter((s: any) => !s.parent)
+                        .map((parentSub: any) => (
+                          <div key={parentSub._id} className='space-y-1'>
                             <CategoryItem
                               item={parentSub}
                               activeLang={modalLang}
@@ -390,14 +411,13 @@ const SeriesModal = ({
                             />
                             {filteredSubCats
                               .filter(
-                                child =>
-                                  (child.parent?._id || child.parent) ===
-                                  parentSub._id,
+                                (c: any) =>
+                                  (c.parent?._id || c.parent) === parentSub._id,
                               )
-                              .map(child => (
+                              .map((child: any) => (
                                 <div
                                   key={child._id}
-                                  className='ml-4 pl-2 border-l border-slate-100'
+                                  className='ml-4 pl-2 border-l border-slate-200'
                                 >
                                   <CategoryItem
                                     item={child}
@@ -408,7 +428,7 @@ const SeriesModal = ({
                                     onToggle={() =>
                                       toggleParentSelection(child._id)
                                     }
-                                    className='scale-[0.98] origin-left'
+                                    className='scale-95 origin-left'
                                   />
                                 </div>
                               ))}

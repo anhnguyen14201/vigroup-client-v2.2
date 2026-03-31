@@ -19,9 +19,10 @@ const SubCategoryModal = ({
   activeLang,
   categories,
   filteredSubCats,
+  refreshSubCats,
 }: any) => {
   const isEdit = !!data
-  const { refreshSubCats, getTranslation } = useProductManagement(10)
+  const { getTranslation } = useProductManagement(10)
 
   // --- INITIAL DATA PARSER ---
   const parseInitialTranslations = (data: any, languagesData: any) => {
@@ -61,7 +62,6 @@ const SubCategoryModal = ({
     name: '',
     metaDescription: '',
   }
-  const seoLength = currentTranslation.metaDescription?.length || 0
 
   // --- HANDLERS ---
   const onTranslationChange = (field: string, value: string) => {

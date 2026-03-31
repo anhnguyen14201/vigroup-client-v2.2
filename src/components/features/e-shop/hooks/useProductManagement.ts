@@ -26,6 +26,16 @@ export const useProductManagement = (itemsPerPage: number = 10) => {
   const qParam = searchParams.get('q') || ''
   const pageParam = Number(searchParams.get('page')) || 1
 
+  const [deleteTarget, setDeleteTarget] = useState<{
+    id: string
+    name: string
+    type: string
+  } | null>(null)
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  // State quản lý Modal chung (Thêm/Sửa)
+  // Cập nhật Type để hỗ trợ PRODUCT
+
   // 2. LOCAL STATES
   const [activeLangCode, setActiveLangCode] = useState('vi')
   const [searchQuery, _setSearchQuery] = useState(
@@ -231,5 +241,9 @@ export const useProductManagement = (itemsPerPage: number = 10) => {
     getTranslation,
     user,
     handleLogout,
+    deleteTarget,
+    setDeleteTarget,
+    isDeleting,
+    setIsDeleting,
   }
 }

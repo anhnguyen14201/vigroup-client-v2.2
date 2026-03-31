@@ -7,6 +7,7 @@ const ProductCard = ({
   translation,
   onEdit,
   onDelete,
+  onClick,
   onAdd,
 }: any) => {
   const getStockInfo = (qty: number) => {
@@ -20,8 +21,18 @@ const ProductCard = ({
   const stock = getStockInfo(product.quantity)
   const hasPromo = product.discount && product.discount > 0
 
+  const handleCardClick = () => {
+    // NẾU KHÔNG CÓ onAdd THÌ MỚI CHO PHÉP CHẠY onClick
+    if (!onAdd && onClick) {
+      onClick()
+    }
+  }
+
   return (
-    <div className='group bg-white rounded-3xl border border-slate-100 p-3 cursor-pointer hover:border-indigo-500 hover:shadow-xl hover:shadow-indigo-100/30 transition-all duration-300'>
+    <div
+      onClick={handleCardClick}
+      className='group bg-white rounded-3xl border border-slate-100 p-3 cursor-pointer hover:border-indigo-500 hover:shadow-xl hover:shadow-indigo-100/30 transition-all duration-300'
+    >
       <div className='flex flex-col lg:flex-row items-center gap-4 lg:gap-6'>
         {/* 1. Ảnh & Thông tin chính */}
         <div className='flex items-center gap-4 w-full lg:w-[30%]'>

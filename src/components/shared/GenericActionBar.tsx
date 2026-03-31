@@ -30,8 +30,10 @@ export const GenericActionBar = ({
             size={18}
           />
           <Input
+            autoFocus
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
+            onFocus={e => e.target.select()}
             placeholder={placeholder}
             className='h-11 pl-12 pr-4 border-none rounded-full focus-visible:ring-0 bg-transparent text-sm font-medium w-full shadow-none'
           />

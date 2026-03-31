@@ -88,6 +88,30 @@ const BrandModal = ({
     )
   }
 
+  const toggleParentSelection = (id: string) => {
+    setParentIds(prev => {
+      const isSelecting = !prev.includes(id)
+
+      if (isSelecting) {
+        // Logic Chọn (như trên)
+        const selectedItem = [...categories, ...filteredSubCats].find(
+          item => item._id === id,
+        )
+        const parentId = selectedItem?.parent?._id || selectedItem?.parent
+        return Array.from(
+          new Set([...prev, id, ...(parentId ? [parentId] : [])]),
+        )
+      } else {
+        // Logic Bỏ chọn: Bỏ chính nó VÀ tất cả những thằng có cha là chính nó
+        const childrenIds = filteredSubCats
+          .filter((c: any) => (c.parent?._id || c.parent) === id)
+          .map((c: any) => c._id)
+
+        return prev.filter(i => i !== id && !childrenIds.includes(i))
+      }
+    })
+  }
+
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
     if (files.length === 0) return
@@ -264,6 +288,7 @@ const BrandModal = ({
                   <Input
                     required
                     value={brandName}
+                    autoFocus
                     onChange={e => setBrandName(e.target.value)}
                     onFocus={e => e.target.select()}
                     placeholder='VD: Apple, Samsung...'
@@ -341,38 +366,41 @@ const BrandModal = ({
                       {filteredSubCats
                         .filter((s: any) => !s.parent)
                         .map((parentSub: any) => (
-                          <React.Fragment key={parentSub._id}>
+                          <div key={parentSub._id} className='space-y-1'>
                             <CategoryItem
                               item={parentSub}
                               activeLang={modalLang}
-                              isSelected={parentIds.includes(parentSub._id)}
-                              onToggle={() => toggleSelection(parentSub._id)}
-                              getTranslation={getTranslation}
                               variant='secondary'
+                              getTranslation={getTranslation}
+                              isSelected={parentIds.includes(parentSub._id)}
+                              onToggle={() =>
+                                toggleParentSelection(parentSub._id)
+                              }
                             />
                             {filteredSubCats
                               .filter(
-                                (child: any) =>
-                                  (child.parent?._id || child.parent) ===
-                                  parentSub._id,
+                                (c: any) =>
+                                  (c.parent?._id || c.parent) === parentSub._id,
                               )
                               .map((child: any) => (
                                 <div
                                   key={child._id}
-                                  className='ml-5 pl-3 border-l-2 border-slate-100'
+                                  className='ml-4 pl-2 border-l border-slate-200'
                                 >
                                   <CategoryItem
                                     item={child}
                                     activeLang={modalLang}
-                                    isSelected={parentIds.includes(child._id)}
-                                    onToggle={() => toggleSelection(child._id)}
-                                    getTranslation={getTranslation}
                                     variant='secondary'
+                                    getTranslation={getTranslation}
+                                    isSelected={parentIds.includes(child._id)}
+                                    onToggle={() =>
+                                      toggleParentSelection(child._id)
+                                    }
                                     className='scale-95 origin-left'
                                   />
                                 </div>
                               ))}
-                          </React.Fragment>
+                          </div>
                         ))}
                     </div>
                   </div>

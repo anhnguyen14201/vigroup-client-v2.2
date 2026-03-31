@@ -82,16 +82,6 @@ const ProductModal = ({
     onClose,
   )
 
-  console.log(categories)
-
-  const {
-    products,
-    searchQuery,
-    setSearchQuery,
-    currentPage,
-    totalPages,
-    setCurrentPage,
-  } = useProductManagement(10)
   const [isOpenRelatedModal, setIsOpenRelatedModal] = useState(false)
   const removeRelatedProduct = (productId: string) => {
     setCommonData(prev => ({
@@ -161,6 +151,7 @@ const ProductModal = ({
                 <section className='grid grid-cols-2 gap-4'>
                   <Field label='Mã sản phẩm' required>
                     <Input
+                      autoFocus
                       value={commonData.code}
                       onFocus={e => e.target.select()}
                       onChange={e => onCommonDataChange('code', e.target.value)}
@@ -603,12 +594,12 @@ const ProductModal = ({
                                   rounded-2xl transition-shadow group relative'
                       >
                         {/* 1. Ảnh sản phẩm */}
-                        <div className='relative w-12 h-12 flex-shrink-0'>
+                        <div className='relative w-12 h-12 shrink-0'>
                           <Image
                             src={
                               product?.thumbnailUrls?.[0] ||
                               product?.images?.[0]?.url ||
-                              '/placeholder.png'
+                              ''
                             }
                             alt={translation?.productName || 'Product image'}
                             fill // Để ảnh lấp đầy thẻ div cha có relative
@@ -624,7 +615,7 @@ const ProductModal = ({
                           <p className='text-[10px] font-bold text-indigo-500 mt-0.5 tracking-wider uppercase'>
                             Mã: {product?.code || 'N/A'}
                           </p>
-                          <h4 className='text-[10px] font-semibold uppercase text-slate-800 leading-tight uppercase italic'>
+                          <h4 className='text-[10px] font-semibold text-slate-800 leading-tight uppercase italic'>
                             {translation?.productName || 'Chưa có tên'}
                           </h4>
                         </div>
@@ -646,7 +637,7 @@ const ProductModal = ({
                   /* Trạng thái trống */
                   <div
                     onClick={() => setIsOpenRelatedModal(true)}
-                    className='col-span-full py-8 border-2 border-dashed border-slate-200 rounded-[32px] flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-white transition-colors'
+                    className='col-span-full py-8 border-2 border-dashed border-slate-200 rounded-4xl flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-white transition-colors'
                   >
                     <div className='p-3 bg-indigo-50 rounded-2xl text-indigo-500'>
                       <ShoppingBag size={24} />
@@ -691,7 +682,6 @@ const ProductModal = ({
       <RelatedProductSelector
         isOpen={isOpenRelatedModal}
         onClose={() => setIsOpenRelatedModal(false)}
-        products={products}
         selectedIds={commonData.relatedProducts || []}
         onToggle={addRelatedProduct}
         modalLang={modalLang}

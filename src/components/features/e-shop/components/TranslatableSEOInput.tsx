@@ -34,6 +34,7 @@ const TranslatableSEOInput = ({
         </label>
         <Input
           required
+          autoFocus
           value={nameValue || ''} // Chống lỗi Uncontrolled
           onChange={e => onNameChange(e.target.value)}
           onFocus={e => e.target.select()}

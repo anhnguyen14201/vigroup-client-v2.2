@@ -29,6 +29,9 @@ import { AdminHeader } from '@/components/layouts'
 import nProgress from 'nprogress'
 import ProductModal from '@/components/features/e-shop/forms/ProductModal'
 import ImportProductModal from '@/components/features/e-shop/forms/ImportProductModal'
+import { Button } from '@/components/ui'
+import ProductDetailModal from '@/components/features/e-shop/components/ProductDetailModal'
+import ProductList from '@/components/features/e-shop/components/ProductList'
 
 const EShopManagementPage = () => {
   const {
@@ -67,6 +70,13 @@ const EShopManagementPage = () => {
   } | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
 
+  const [detailModal, setDetailModal] = useState<{ open: boolean; data?: any }>(
+    {
+      open: false,
+      data: null,
+    },
+  )
+
   // State quản lý Modal chung (Thêm/Sửa)
   // Cập nhật Type để hỗ trợ PRODUCT
   const [activeModal, setActiveModal] = useState<{
@@ -82,18 +92,18 @@ const EShopManagementPage = () => {
 
   const closeModal = () => setActiveModal(null)
 
-  const handleCheckProductSku = (sku: string) => {
-    // Tìm trong danh sách products hiện tại hoặc có thể dùng service để check API
-    const existingProduct = products.find((p: any) => p.sku === sku)
+  // 2. Thêm một State riêng cho Product (Thêm/Sửa nhanh)
+  const [productModal, setProductModal] = useState<{
+    open: boolean
+    data?: any
+  }>({
+    open: false,
+    data: null,
+  })
 
-    if (existingProduct) {
-      // Nếu thấy, giữ nguyên ở modal IMPORT nhưng truyền data sản phẩm vào
-      setActiveModal({ type: 'IMPORT', data: existingProduct })
-    } else {
-      // Nếu không thấy, mở ProductModal và truyền sku vào làm default value
-      toast.info('Không tìm thấy sản phẩm. Đang chuyển sang thêm mới...')
-      setActiveModal({ type: 'PRODUCT', data: { sku: sku } })
-    }
+  // Hàm mở ProductModal từ bất cứ đâu (kể cả từ ImportModal)
+  const handleOpenProductModal = (data?: any) => {
+    setProductModal({ open: true, data })
   }
 
   const openEditModal = (type: any, item: any) => {
@@ -186,6 +196,7 @@ const EShopManagementPage = () => {
 
   const handleCreateNew = () => {
     setActiveModal({ type: 'PRODUCT' })
+    setProductModal({ open: true })
   }
 
   return (
@@ -196,7 +207,10 @@ const EShopManagementPage = () => {
         </h1>
       </AdminHeader>
 
-      <div className='min-h-screen bg-[#F8FAFC] font-sans text-slate-900 p-4 lg:p-6'>
+      <div
+        className='flex flex-col w-full p-6 font-sans text-slate-900 no-scrollbar overflow-y-auto'
+        data-lenis-prevent
+      >
         <div className='flex flex-col lg:flex-row gap-6'>
           {/* LEFT PANEL: FILTERS */}
           <aside className='w-full lg:w-72 space-y-4 shrink-0'>
@@ -294,17 +308,17 @@ const EShopManagementPage = () => {
                 onChange={(id: string) => updateFilters({ seriesId: id })}
               />
 
-              <button
+              {/* <button
                 onClick={resetFilters}
                 className='w-full mt-8 py-3 text-[10px] font-black uppercase text-slate-400 hover:text-red-500 transition-colors'
               >
                 Xóa tất cả bộ lọc
-              </button>
+              </button> */}
             </div>
           </aside>
 
           {/* RIGHT PANEL: ACTION BAR & TABLE */}
-          <main className='flex-1 space-y-6'>
+          <main className='flex-1'>
             {/* GenericActionBar thay thế cho Input cũ */}
             <div className='flex gap-2 items-center'>
               <GenericActionBar
@@ -316,42 +330,31 @@ const EShopManagementPage = () => {
                 onButtonClick={handleCreateNew}
               />
               {/* Nút Nhập hàng mới */}
-              <button
+              <Button
                 onClick={() => setActiveModal({ type: 'IMPORT' })}
-                className='flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl font-medium transition-all shrink-0 shadow-sm'
+                className='flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 
+                        text-white px-4 py-2.5 rounded-full font-medium transition-all 
+                        shrink-0 mb-6 h-11 uppercase'
               >
                 <PackagePlus size={20} />
                 <span>Nhập hàng</span>
-              </button>
+              </Button>
             </div>
 
-            <div className='flex flex-col gap-3'>
-              {products?.map((product: any) => (
-                <ProductCard
-                  key={product._id}
-                  product={product}
-                  translation={getTranslation(product, activeLangCode)}
-                  onEdit={() => openEditModal('PRODUCT', product)}
-                  onDelete={() => {
-                    setDeleteTarget({
-                      id: product._id,
-                      name:
-                        getTranslation(product, activeLangCode)?.productName ||
-                        'Sản phẩm này',
-                      type: 'PRODUCT',
-                    })
-                  }}
-                />
-              ))}
-            </div>
-            <Pagination
-              currentPage={currentPage}
+            <ProductList
+              setProductModal={setProductModal}
+              setDetailModal={setDetailModal}
+              setDeleteTarget={setDeleteTarget}
+              products={products}
               totalPages={totalPages}
-              onPageChange={setCurrentPage}
+              activeLangCode={activeLangCode}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              getTranslation={getTranslation}
+              isLoading={isLoading}
             />
           </main>
         </div>
-
         {/* MODALS SECTION */}
         <ConfirmDeleteModal
           open={!!deleteTarget}
@@ -369,88 +372,81 @@ const EShopManagementPage = () => {
           }
           loading={isDeleting}
         />
+        {activeModal?.type === 'CATEGORY' && (
+          <CategoryModal
+            data={activeModal.data}
+            onClose={closeModal}
+            languagesData={languagesData}
+            activeLang={activeLangCode}
+          />
+        )}
+        {activeModal?.type === 'SUB_CATEGORY' && (
+          <SubCategoryModal
+            data={activeModal.data}
+            onClose={closeModal}
+            languagesData={languagesData}
+            activeLang={activeLangCode}
+            categories={categoriesData}
+            filteredSubCats={filteredSubCats}
+          />
+        )}
+        {activeModal?.type === 'BRAND' && (
+          <BrandModal
+            data={activeModal.data}
+            onClose={closeModal}
+            languagesData={languagesData}
+            activeLang={activeLangCode}
+            categories={categoriesData}
+            filteredSubCats={filteredSubCats}
+          />
+        )}
+        {activeModal?.type === 'SERIES' && (
+          <SeriesModal
+            data={activeModal.data}
+            onClose={closeModal}
+            languagesData={languagesData}
+            activeLang={activeLangCode}
+            categories={categoriesData}
+            filteredSubCats={filteredSubCats}
+            brands={filteredBrands}
+          />
+        )}
+        {/* MODAL THÊM/SỬA SẢN PHẨM MỚI */}
+        {productModal.open && (
+          <ProductModal
+            data={productModal?.data}
+            onClose={() => setProductModal({ open: false, data: null })}
+            languagesData={languagesData}
+            activeLang={activeLangCode}
+            categories={categoriesData}
+            filteredSubCats={filteredSubCats}
+            brands={filteredBrands}
+            series={filteredSeries}
+          />
+        )}
+        {activeModal?.type === 'IMPORT' && (
+          <ImportProductModal
+            onClose={closeModal}
+            products={products} // Danh sách products từ hook
+            searchQuery={searchQuery} // Biến searchQuery từ hook
+            setSearchQuery={setSearchQuery} // Hàm setSearchQuery từ hook
+            activeLang={activeLangCode}
+            getTranslation={getTranslation}
+            onOpenCreate={(sku: any) => {
+              // Không gọi setActiveModal(null) nữa để giữ ImportModal lại
+              setProductModal({ open: true, data: { code: sku } })
+              setSearchQuery('')
+            }}
+            refreshProducts={refreshProducts}
+          />
+        )}
 
-        <AnimatePresence>
-          {activeModal?.type === 'CATEGORY' && (
-            <CategoryModal
-              data={activeModal.data}
-              onClose={closeModal}
-              languagesData={languagesData}
-              activeLang={activeLangCode}
-            />
-          )}
-          {activeModal?.type === 'SUB_CATEGORY' && (
-            <SubCategoryModal
-              data={activeModal.data}
-              onClose={closeModal}
-              languagesData={languagesData}
-              activeLang={activeLangCode}
-              categories={categoriesData}
-              filteredSubCats={filteredSubCats}
-            />
-          )}
-          {activeModal?.type === 'BRAND' && (
-            <BrandModal
-              data={activeModal.data}
-              onClose={closeModal}
-              languagesData={languagesData}
-              activeLang={activeLangCode}
-              categories={categoriesData}
-              filteredSubCats={filteredSubCats}
-            />
-          )}
-          {activeModal?.type === 'SERIES' && (
-            <SeriesModal
-              data={activeModal.data}
-              onClose={closeModal}
-              languagesData={languagesData}
-              activeLang={activeLangCode}
-              categories={categoriesData}
-              filteredSubCats={filteredSubCats}
-              brands={filteredBrands}
-            />
-          )}
-
-          {/* MODAL THÊM/SỬA SẢN PHẨM MỚI */}
-          {activeModal?.type === 'PRODUCT' && (
-            <ProductModal
-              data={activeModal?.data}
-              onClose={closeModal}
-              languagesData={languagesData}
-              activeLang={activeLangCode}
-              categories={categoriesData}
-              filteredSubCats={filteredSubCats}
-              brands={filteredBrands}
-              series={filteredSeries}
-            />
-          )}
-
-          {activeModal?.type === 'IMPORT' && (
-            <ImportProductModal
-              onClose={closeModal}
-              products={products} // Danh sách products từ hook
-              searchQuery={searchQuery} // Biến searchQuery từ hook
-              setSearchQuery={setSearchQuery} // Hàm setSearchQuery từ hook
-              activeLang={activeLangCode}
-              getTranslation={getTranslation}
-              onOpenCreate={sku => {
-                closeModal()
-                // Logic: Khi tạo mới, ta xóa search cũ để hiện form trống hoặc giữ nguyên sku
-                setSearchQuery('')
-                setTimeout(() => {
-                  setActiveModal({
-                    type: 'PRODUCT',
-                    data: { sku: sku },
-                  })
-                }, 200)
-              }}
-              onSuccess={() => {
-                refreshProducts()
-                setSearchQuery('') // Reset tìm kiếm sau khi nhập thành công
-              }}
-            />
-          )}
-        </AnimatePresence>
+        <ProductDetailModal
+          isOpen={detailModal.open}
+          product={detailModal.data}
+          onClose={() => setDetailModal({ open: false, data: null })}
+          activeLang={activeLangCode}
+        />
       </div>
     </>
   )

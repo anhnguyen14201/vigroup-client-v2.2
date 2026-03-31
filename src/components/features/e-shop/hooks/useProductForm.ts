@@ -255,9 +255,14 @@ export const useProductForm = (
 
     const currentName = translationsMap[modalLang]?.productName // Đổi từ .name sang .productName cho khớp API
 
-    if (!currentName?.trim()) return toast.error('Vui lòng nhập tên sản phẩm')
-    if (!selectedBrandId) return toast.error('Vui lòng chọn Thương hiệu')
-
+    if (!commonData.code || !commonData.code.trim()) {
+      return toast.error('Vui lòng nhập MÃ sản phẩm')
+    }
+    if (!currentName || !currentName.trim()) {
+      return toast.error(
+        `Vui lòng nhập TÊN sản phẩm (${modalLang.toUpperCase()})`,
+      )
+    }
     setIsSubmitting(true)
     nProgress.start()
 
@@ -286,7 +291,7 @@ export const useProductForm = (
 
       // IDs quan hệ
       formData.append('brandIds', selectedBrandId) // API dùng brandIds (số nhiều)
-      if (selectedSeriesId) formData.append('seriesIds', selectedSeriesId)
+      formData.append('seriesIds', selectedSeriesId)
 
       const relatedProductIds =
         commonData.relatedProducts?.map((p: any) =>
