@@ -12,6 +12,7 @@ import {
 } from '@/services'
 import {
   ConfirmDeleteModal,
+  FloatingActionButton,
   GenericActionBar,
   Pagination,
 } from '@/components/shared'
@@ -355,6 +356,11 @@ const EShopManagementPage = () => {
             />
           </main>
         </div>
+
+        <FloatingActionButton
+          onClick={handleCreateNew}
+          // icon={Wallet} // Nếu không truyền sẽ mặc định là dấu Plus
+        />
         {/* MODALS SECTION */}
         <ConfirmDeleteModal
           open={!!deleteTarget}

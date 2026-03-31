@@ -80,7 +80,7 @@ export function ClientSidebar({
           icon: ShoppingCart,
         },
         {
-          title: 'Hóa đơn & Bảo hành',
+          title: 'Báo giá & Bảo hành',
           url: getAppUrl('/invoices'), // Lưu ý: Để chữ thường /invoices cho đồng bộ
           icon: FileText, // Thay Wind bằng FileText sẽ đúng nghĩa hóa đơn hơn
         },

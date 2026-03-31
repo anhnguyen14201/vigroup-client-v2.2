@@ -1,7 +1,9 @@
-import React from 'react'
-
+import { InvoicesManagementPage } from '@/components'
+export const metadata = {
+  title: 'Vigroup | Quản lý báo giá & Bảo hành',
+}
 const page = () => {
-  return <div>page</div>
+  return <InvoicesManagementPage />
 }
 
 export default page
